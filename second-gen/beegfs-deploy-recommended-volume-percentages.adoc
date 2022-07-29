@@ -1,0 +1,39 @@
+---
+sidebar: sidebar 
+permalink: beegfs-deploy-recommended-volume-percentages.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: 对于第二代构建块、在每个存储池配置中使用标准的四个卷时、请参考以下建议百分比。 
+---
+= 建议的存储池过度配置百分比
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+如果对第二代构建块采用每个存储池配置的标准四个卷、请参见下表。
+
+下表提供了在`eseries_storage_pool_configuration`中为每个BeeGFS元数据或存储目标用作卷大小的建议百分比：
+
+|===
+| 驱动器大小 | Size 
+
+
+| 1.92 TB | 18 
+
+
+| 3.84 TB | 21.5. 
+
+
+| 7.68 TB | 22.5 
+
+
+| 15.3 TB | 24 
+|===
+
+NOTE: 上述指南不适用于包含管理服务的存储池、该存储池应将上述大小减少0.25%、以便为管理数据分配1%的存储池。
+
+要了解如何确定这些值、请参见 https://www.netapp.com/media/17009-tr4800.pdf["TR-4800：附录A：了解SSD持久性和过度配置"^]。

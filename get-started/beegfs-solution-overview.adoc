@@ -1,0 +1,79 @@
+---
+sidebar: sidebar 
+permalink: beegfs-solution-overview.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: NetApp解决方案 上的BeeGFS将BeeGFS并行文件系统与NetApp EF600存储系统相结合、打造了一个可靠、可扩展且经济高效的基础架构、可满足苛刻的工作负载要求。 
+---
+= 解决方案概述
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+NetApp解决方案 上的BeeGFS将BeeGFS并行文件系统与NetApp EF600存储系统相结合、打造了一个可靠、可扩展且经济高效的基础架构、可满足苛刻的工作负载要求。
+
+这种设计利用了最新企业级服务器和存储硬件以及网络速度所提供的性能密度、 要求文件节点采用双AMD EPYC 7003 "米兰"处理器并支持使用200 GB (HDR) InfiniBand直接连接的PCIe 4.0、以块节点使用NVMe/IB协议提供端到端NVMe和NVMeOF。
+
+
+
+== NVA计划
+
+NetApp解决方案 上的BeeGFS是NetApp验证架构(NVA)计划的一部分、该计划为客户提供针对特定工作负载和使用情形的参考配置和规模估算指导。NVA解决方案经过全面测试和设计、可最大限度地降低部署风险并加快上市速度。
+
+
+
+== 用例
+
+以下使用情形适用于NetApp解决方案 上的BeeGFS：
+
+* 人工智能(AI)、包括机器学习(ML)、深度学习(DL)、大规模自然语言处理(NLP)和自然语言理解(NLF)。有关详细信息，请参见 https://www.netapp.com/blog/beefs-for-ai-fact-vs-fiction/["BeeGFS for AI：事实与虚构"^]。
+* 高性能计算(HPC)、包括通过MPI (消息传递接口)和其他分布式计算技术加速的应用程序。有关详细信息，请参见 https://www.netapp.com/blog/beegfs-for-ai-ml-dl/["BeeGFS为何超越HPC"^]。
+* 应用程序工作负载的特征为：
++
+** 读取或写入大于1 GB的文件
+** 多个客户端(10、100和1000)读取或写入同一文件
+
+
+* 多TB或多PB数据集。
+* 需要一个存储命名空间的环境、可以优化大小文件的组合。
+
+
+
+
+== 优势
+
+在NetApp上使用BeeGFS的主要优势包括：
+
+* 提供经验证的硬件设计、可实现硬件和软件组件的全面集成、以确保可预测的性能和可靠性。
+* 使用Ansible进行部署和管理、以实现规模化的精简性和一致性。
+* 使用E系列性能分析器和BeeGFS插件提供监控和可观察性。有关详细信息，请参见 https://www.netapp.com/blog/monitoring-netapp-eseries/["介绍用于监控NetApp E系列解决方案的框架"^]。
+* 高可用性采用共享磁盘架构、可提供数据持久性和可用性。
+* 支持使用容器和Kubernetes进行现代工作负载管理和流程编排。有关详细信息，请参见 https://www.netapp.com/blog/kubernetes-meet-beegfs/["Kubernetes认识BeeGFS：一个适应未来需求的投资故事"^]。
+
+
+
+
+== HA架构
+
+NetApp上的BeeGFS通过创建与NetApp硬件完全集成的解决方案 来扩展BeeGFS企业版的功能、从而实现共享磁盘高可用性(HA)架构。
+
+
+NOTE: 虽然BeeGFS社区版可以免费使用、但企业版要求从NetApp等合作伙伴购买专业支持订阅合同。企业版支持使用多项附加功能、包括故障恢复能力、配额强制实施和存储池。
+
+下图对无共享和共享磁盘HA架构进行了比较。
+
+image:../media/beegfs-design-image1.png[""]
+
+有关详细信息，请参见 https://www.netapp.com/blog/high-availability-beegfs/["宣布NetApp支持的BeeGFS高可用性"^]。
+
+
+
+== Ansible
+
+NetApp上的BeeGFS是使用Ansible自动化交付和部署的、Ansible自动化托管在GitHub和Ansible GALAXY上(BeeGFS集合可从获取 https://galaxy.ansible.com/netapp_eseries/beegfs["Ansible Galax河"^] 和 https://github.com/netappeseries/beegfs/["NetApp的E系列GitHub"^]）。虽然Ansible主要是使用用于组装BeeGFS组件的硬件进行测试的、但您可以将其配置为使用受支持的Linux版本在几乎任何基于x86的服务器上运行。
+
+有关详细信息，请参见 https://www.netapp.com/blog/deploying-beegfs-eseries/["使用E系列存储部署BeeGFS"^]。

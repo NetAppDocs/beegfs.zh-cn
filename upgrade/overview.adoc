@@ -1,0 +1,14 @@
+---
+permalink: upgrade/overview.html 
+sidebar: sidebar 
+keywords: upgrade, overview 
+summary: 升级概述 
+---
+= 升级概述
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Lorem ipsum dolor sit amet、consectetur adipiscing elit、sed do eiusmod tempdor incidunt ut labore et dolore magna aliqua。

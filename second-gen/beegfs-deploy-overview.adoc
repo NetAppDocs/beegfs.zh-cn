@@ -1,0 +1,73 @@
+---
+sidebar: sidebar 
+permalink: beegfs-deploy-overview.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: 您可以使用NetApp的第二代BeeGFS组件设计将NetApp上的BeeGFS部署到经验证的文件和块节点。 
+---
+= 部署概述
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+您可以使用NetApp的第二代BeeGFS组件设计将NetApp上的BeeGFS部署到经验证的文件和块节点。
+
+
+
+== Ansible集合和角色
+
+您可以使用Ansible在NetApp解决方案 上部署BeeGFS、Ansible是一种常用的IT自动化引擎、用于自动执行应用程序部署。Ansible使用一系列文件、统称为清单、用于为要部署的BeeGFS文件系统建立模型。
+
+Ansible允许NetApp等公司使用Ansible Galax星 上的集合扩展内置功能(请参见 https://galaxy.ansible.com/netapp_eseries["NetApp E系列BeeGFS集合"^]）。集合包括执行某些特定功能或任务(例如创建E系列卷)的模块、以及可以调用多个模块和其他角色的角色。这种自动化方法可减少部署BeeGFS文件系统和底层HA集群所需的时间。此外、它还简化了添加组件以扩展现有文件系统的过程。
+
+有关其他详细信息，请参见 link:beegfs-deploy-learn-ansible.html["了解Ansible清单"]。
+
+
+NOTE: 由于在NetApp解决方案 上部署BeeGFS涉及许多步骤、因此NetApp不支持手动部署解决方案。
+
+
+
+== BeeGFS组件的配置配置文件
+
+部署过程包括以下配置文件：
+
+* 一个基础组件、其中包括管理、元数据和存储服务。
+* 包含元数据和存储服务的第二个组件。
+* 仅包含存储服务的第三个组件。
+
+
+这些配置文件展示了NetApp BeeGFS组件的完整建议配置文件。对于每个部署、元数据和存储组件或仅存储服务组件的数量可能因容量和性能要求而有所不同。
+
+
+
+== 部署步骤概述
+
+部署涉及以下高级任务：
+
+.硬件部署
+. 以物理方式组装每个组件。
+. 机架和缆线硬件。有关详细过程、请参见 link:beegfs-deploy-hardware.html["部署硬件"]。
+
+
+.软件部署
+. link:beegfs-deploy-setup-nodes.html["设置文件和块节点"]。
++
+** 在文件节点上配置BMC IP
+** 安装受支持的操作系统并在文件节点上配置管理网络
+** 在块节点上配置管理IP
+
+
+. link:beegfs-deploy-setting-up-an-ansible-control-node.html["设置Ansible控制节点"]。
+. link:beegfs-deploy-file-node-tuning.html["调整系统性能设置"]。
+. link:beegfs-deploy-create-inventory.html["创建Ansible清单"]。
+. link:beegfs-deploy-define-inventory.html["为BeeGFS组件定义Ansible清单"]。
+. link:beegfs-deploy-playbook.html["使用Ansible部署BeeGFS"]。
+. link:beegfs-deploy-configure-clients.html["配置BeeGFS客户端"]。
+
+
+
+NOTE: 部署过程包括几个示例、其中需要将文本复制到文件。请密切注意对于任何应针对特定部署进行修改或可修改的内容、任何以"#"或"/"字符表示的实时注释。例如：`beegfs_ha_ntp_server_pools：# This is an example of a comment！-"pool 0.pool.ntp.org iBurst maxsources 3"-"pool 1.pool.ntp.org iBurst maxsources 3"`

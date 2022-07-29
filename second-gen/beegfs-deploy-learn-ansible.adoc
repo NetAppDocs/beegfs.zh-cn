@@ -1,0 +1,103 @@
+---
+sidebar: sidebar 
+permalink: beegfs-deploy-learn-ansible.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: 开始部署之前、请确保了解如何使用Ansible使用第二代BeeGFS组件设计在NetApp解决方案 上配置和部署BeeGFS。 
+---
+= 了解Ansible清单
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+开始部署之前、请确保了解如何使用Ansible使用第二代BeeGFS组件设计在NetApp解决方案 上配置和部署BeeGFS。
+
+Ansible清单定义了文件和块节点的配置、并表示要部署的BeeGFS文件系统。清单包括描述所需BeeGFS文件系统的主机、组和变量。可从下载示例清单 https://github.com/netappeseries/beegfs/tree/master/getting_started/["NetApp E系列BeeGFS GitHub"^]。
+
+
+
+== Ansible模块和角色
+
+要应用Ansible清单所述的配置、请使用NetApp E系列Ansible集合中提供的各种Ansible模块和角色、尤其是BeeGFS HA 7.2角色(可从获取 https://github.com/netappeseries/beegfs/tree/master/roles/beegfs_ha_7_2["NetApp E系列BeeGFS GitHub"^])部署端到端解决方案。
+
+NetApp E系列Ansible资料集中的每个角色都是在NetApp解决方案 上完整地端到端部署BeeGFS。这些角色使用NetApp E系列SANtricity 、主机和BeeGFS集合、通过这些集合、您可以使用HA (高可用性)配置BeeGFS文件系统。然后、您可以配置和映射存储、并确保集群存储已准备就绪、可以使用。
+
+虽然角色附带了深入的文档、但部署过程介绍了如何使用角色使用第二代BeeGFS组件设计部署经验证的NetApp架构。
+
+
+NOTE: 尽管部署步骤会尝试提供足够详细的信息、以便事先使用Ansible并不是前提条件、但您应该对Ansible及相关术语有所熟悉。
+
+
+
+== BeeGFS HA集群的清单布局
+
+使用Ansible清单结构定义BeeGFS HA集群。
+
+任何以前具有Ansible经验的用户都应了解BeeGFS HA角色可通过一种自定义方法来发现每个主机适用的变量(或事实)。要简化Ansible清单的构建、使其能够描述可在多个服务器上运行的资源、需要执行此操作。
+
+Ansible清单通常由`host_vars`和`group_vars`中的文件以及一个`inventory.yml`文件组成、该文件可将主机分配给特定组(并可能将组分配给其他组)。
+
+
+NOTE: 请勿使用本小节中的内容创建任何文件、本小节仅用作示例。
+
+尽管此配置是根据配置配置文件预先确定的、但您应大致了解如何将所有内容作为Ansible清单进行布局、如下所示：
+
+....
+# BeeGFS HA (High Availability) cluster inventory.
+all:
+  children:
+    # Ansible group representing all block nodes:
+    eseries_storage_systems:
+      hosts:
+        ictad22a01:
+        ictad22a02:
+        ictad22a03:
+        ictad22a04:
+        ictad22a05:
+        ictad22a06:
+    # Ansible group representing all file nodes:
+    ha_cluster:
+      children:
+        meta_01:  # Group representing a metadata service with ID 01.
+          hosts:
+            file_node_01:  # This service is preferred on the first file node.
+            file_node_02:  # And can failover to the second file node.
+        meta_02:  # Group representing a metadata service with ID 02.
+          hosts:
+            file_node_02:  # This service is preferred on the second file node.
+            file_node_01: # And can failover to the first file node.
+....
+对于每个服务、将在`group_vars`下创建一个附加文件、用于描述其配置：
+
+....
+# meta_01 - BeeGFS HA Metadata Resource Group
+beegfs_ha_beegfs_meta_conf_resource_group_options:
+  connMetaPortTCP: 8015
+  connMetaPortUDP: 8015
+  tuneBindToNumaZone: 0
+floating_ips:
+  - i1b: <IP>/<SUBNET_MASK>
+  - i4b: <IP>/<SUBNET_MASK>
+# Type of BeeGFS service the HA resource group will manage.
+beegfs_service: metadata # Choices: management, metadata, storage.
+# What block node should be used to create a volume for this service:
+beegfs_targets:
+  ictad22a01:
+    eseries_storage_pool_configuration:
+      - name: beegfs_m1_m2_m5_m6
+        raid_level: raid1
+        criteria_drive_count: 4
+        owning_controller: A
+        common_volume_configuration:
+          segment_size_kb: 128
+        volumes:
+          - size: 21.25
+....
+通过此布局、可以在一个位置为每个资源定义BeeGFS服务、网络和存储配置。在后台、BeeGFS角色会根据此清单结构为每个文件和块节点聚合所需的配置。有关详细信息、请参见以下博客文章： https://www.netapp.com/blog/accelerate-deployment-of-ha-for-beegfs-with-ansible/["NetApp借助Ansible加快了BeeGFS HA的部署"^]。
+
+
+NOTE: 系统会根据组名称自动配置每个服务的BeeGFS数字和字符串节点ID。因此、除了组名称唯一的一般可逆要求之外、表示BeeGFS服务的组必须以该组所代表的BeeGFS服务类型唯一的数字结尾。例如、允许使用meta_01和stor_01、但不允许使用metadata_01和metada_01。

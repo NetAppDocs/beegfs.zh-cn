@@ -1,0 +1,417 @@
+---
+sidebar: sidebar 
+permalink: beegfs-deploy-create-inventory.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: 要定义文件和块节点的配置、请创建一个Ansible清单、用于表示要部署的BeeGFS文件系统。 
+---
+= 创建Ansible清单
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+要定义文件和块节点的配置、请创建一个Ansible清单、用于表示要部署的BeeGFS文件系统。清单包括描述所需BeeGFS文件系统的主机、组和变量。
+
+
+
+== 第1步：定义所有组件的配置
+
+定义适用场景 所有组件的配置、无论您可以单独应用于这些组件的配置文件如何。
+
+.开始之前
+* 使用BitBucket或Git等源控制系统存储包含Ansible清单和攻略手册文件的目录的内容。
+* 创建一个`.gitignore`文件、用于指定Git应忽略的文件。这有助于避免在Git中存储大型文件。
+
+
+.步骤
+. 在Ansible控制节点上、确定要用于存储Ansible清单和攻略手册文件的目录。
++
+除非另有说明、否则在此步骤中创建的所有文件和目录以及后续步骤均会相对于此目录创建。
+
+. 创建以下子目录：
++
+`host_vars`
+
++
+`group_vars`
+
++
+`软件包`
+
+
+
+
+
+== 第2步：为单个文件和块节点定义配置
+
+定义适用场景 单个文件节点和单个组件节点的配置。
+
+. 在`host_vars/`下、为名为`<HOSTNAME>.yml`的每个BeeGFS文件节点创建一个文件、其中包含以下内容、请特别注意有关BeeGFS集群IP和以奇数与偶数结尾的主机名要填充的内容的注释。
++
+最初、文件节点接口名称与此处列出的名称匹配(例如ib0或ibs1f0)。这些自定义名称在中进行配置 <<Step 4: Define configuration that should apply to all file nodes>>。
+
++
+....
+ansible_host: “<MANAGEMENT_IP>”
+eseries_ipoib_interfaces:  # Used to configure BeeGFS cluster IP addresses.
+  - name: i1b
+    address: 100.127.100. <NUMBER_FROM_HOSTNAME>/16
+  - name: i4b
+    address: 100.128.100. <NUMBER_FROM_HOSTNAME>/16
+beegfs_ha_cluster_node_ips:
+  - <MANAGEMENT_IP>
+  - <i1b_BEEGFS_CLUSTER_IP>
+  - <i4b_BEEGFS_CLUSTER_IP>
+# NVMe over InfiniBand storage communication protocol information
+# For odd numbered file nodes (i.e., h01, h03, ..):
+eseries_nvme_ib_interfaces:
+  - name: i1a
+    address: 192.168.1.10/24
+    configure: true
+  - name: i2a
+    address: 192.168.3.10/24
+    configure: true
+  - name: i3a
+    address: 192.168.5.10/24
+    configure: true
+  - name: i4a
+    address: 192.168.7.10/24
+    configure: true
+# For even numbered file nodes (i.e., h02, h04, ..):
+# NVMe over InfiniBand storage communication protocol information
+eseries_nvme_ib_interfaces:
+  - name: i1a
+    address: 192.168.2.10/24
+    configure: true
+  - name: i2a
+    address: 192.168.4.10/24
+    configure: true
+  - name: i3a
+    address: 192.168.6.10/24
+    configure: true
+  - name: i4a
+    address: 192.168.8.10/24
+    configure: true
+....
++
+
+NOTE: 如果您已部署BeeGFS集群、则必须先停止此集群、然后才能添加或更改静态配置的IP地址、包括用于NVMe/IB的集群IP和IP。这是必需的、以便这些更改能够正确生效、并且不会中断集群操作。
+
+. 在`host_vars/`下、为名为`<HOSTNAME>.yml`的每个BeeGFS块节点创建一个文件、并使用以下内容填充该文件。
++
+请特别注意有关以奇数与偶数结尾的存储阵列名称要填充的内容的注释。
+
++
+对于每个块节点、创建一个文件并为两个控制器(通常为A)之一指定`<management_IP>`。
+
++
+....
+eseries_system_name: <STORAGE_ARRAY_NAME>
+eseries_system_api_url: https://<MANAGEMENT_IP>:8443/devmgr/v2/
+eseries_initiator_protocol: nvme_ib
+# For odd numbered block nodes (i.e., a01, a03, ..):
+eseries_controller_nvme_ib_port:
+  controller_a:
+    - 192.168.1.101
+    - 192.168.2.101
+    - 192.168.1.100
+    - 192.168.2.100
+  controller_b:
+    - 192.168.3.101
+    - 192.168.4.101
+    - 192.168.3.100
+    - 192.168.4.100
+# For even numbered block nodes (i.e., a02, a04, ..):
+eseries_controller_nvme_ib_port:
+  controller_a:
+    - 192.168.5.101
+    - 192.168.6.101
+    - 192.168.5.100
+    - 192.168.6.100
+  controller_b:
+    - 192.168.7.101
+    - 192.168.8.101
+    - 192.168.7.100
+    - 192.168.8.100
+....
+
+
+
+
+== 第3步：定义应应用于所有文件和块节点的配置
+
+您可以使用与组对应的文件名在`group_vars`下定义一组主机的通用配置。这样可以防止在多个位置重复使用共享配置。
+
+主机可以位于多个组中、运行时、Ansible会根据特定主机的可变优先级规则选择哪些变量适用于该主机。(有关这些规则的详细信息、请参见的Ansible文档 https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html["使用变量"^]）
+
+主机到组分配在实际可Ansible清单文件中进行定义、该文件在该操作步骤 接近末尾时创建。
+
+在Ansible中、可以在名为`All`的组中定义要应用于所有主机的任何配置。使用以下内容创建文件`group_vars/all.yml`：
+
+....
+ansible_python_interpreter: /usr/bin/python3
+beegfs_ha_ntp_server_pools:  # Modify the NTP server addressess if desired.
+  - "pool 0.pool.ntp.org iburst maxsources 3"
+  - "pool 1.pool.ntp.org iburst maxsources 3"
+....
+
+
+== 第4步：定义应应用于所有文件节点的配置
+
+文件节点的共享配置在名为`ha_cluster`的组中定义。本节中的步骤将构建应包含在`group_vars/ha_cluster.yml`文件中的配置。
+
+.步骤
+. 在文件顶部、定义默认值、包括用作文件节点上的`sUdo`用户的密码。
++
+....
+### ha_cluster Ansible group inventory file.
+# Place all default/common variables for BeeGFS HA cluster resources below.
+### Cluster node defaults
+ansible_ssh_user: root
+ansible_become_password: <PASSWORD>
+eseries_ipoib_default_hook_templates:
+  - 99-multihoming.j2 # This is required when configuring additional static IPs (for example cluster IPs) when multiple IB ports are in the same IPoIB subnet.
+# If the following options are specified, then Ansible will automatically reboot nodes when necessary for changes to take effect:
+eseries_common_allow_host_reboot: true
+eseries_common_reboot_test_command: "systemctl --state=active,exited | grep eseries_nvme_ib.service"
+....
++
+
+NOTE: 尤其是在生产环境中、不要以纯文本格式存储密码。请改用Ansible Vault (请参见 https://docs.ansible.com/ansible/latest/user_guide/vault.html["使用Ansible Vault加密内容"^])或运行攻略手册时的`-ask-pass-pass`选项。如果`Ansible _ssh_user`已是`root`、则可以选择省略`Ansible变为密码`。
+
+. (可选)配置高可用性(HA)集群的名称、并为集群内通信指定用户。
++
+如果要修改专用IP寻址方案、则还必须更新默认值`beegfs_ha_mgmtd_float_IP`。这必须与您稍后为BeeGFS管理资源组配置的内容匹配。
+
++
+使用`beegfs_ha_alert_email_list`指定一个或多个应接收集群事件警报的电子邮件。
+
++
+....
+### Cluster information
+beegfs_ha_firewall_configure: True
+eseries_beegfs_ha_disable_selinux: True
+eseries_selinux_state: disabled
+# The following variables should be adjusted depending on the desired configuration:
+beegfs_ha_cluster_name: hacluster                  # BeeGFS HA cluster name.
+beegfs_ha_cluster_username: hacluster              # BeeGFS HA cluster username.
+beegfs_ha_cluster_password: hapassword             # BeeGFS HA cluster username's password.
+beegfs_ha_cluster_password_sha512_salt: randomSalt # BeeGFS HA cluster username's password salt.
+beegfs_ha_mgmtd_floating_ip: 100.127.101.0         # BeeGFS management service IP address.
+# Email Alerts Configuration
+beegfs_ha_enable_alerts: True
+beegfs_ha_alert_email_list: ["email@example.com"]  # E-mail recipient list for notifications when BeeGFS HA resources change or fail.  Often a distribution list for the team responsible for managing the cluster.
+beegfs_ha_alert_conf_ha_group_options:
+      mydomain: “example.com”
+# The mydomain parameter specifies the local internet domain name. This is optional when the cluster nodes have fully qualified hostnames (i.e. host.example.com).
+# Adjusting the following parameters is optional:
+beegfs_ha_alert_timestamp_format: "%Y-%m-%d %H:%M:%S.%N" #%H:%M:%S.%N
+beegfs_ha_alert_verbosity: 3
+#  1) high-level node activity
+#  3) high-level node activity + fencing action information + resources (filter on X-monitor)
+#  5) high-level node activity + fencing action information + resources
+....
++
+
+NOTE: 虽然`冗余、但当您将BeeGFS文件系统扩展到单个HA集群之外时、`beegfs_ha_mgmtd_floating_ip非常重要。部署后续HA集群时无需额外的BeeGFS管理服务、并指向第一个集群提供的管理服务。
+
+. 配置隔离代理。(有关详细信息、请参见 https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_and_managing_high_availability_clusters/assembly_configuring-fencing-configuring-and-managing-high-availability-clusters["在Red Hat High Availability集群中配置隔离"^]) 以下输出显示了配置通用隔离代理的示例。选择以下选项之一。
++
+在此步骤中、请注意：
+
++
+** 默认情况下、隔离处于启用状态、但您需要配置隔离_agent_。
+** 在`PCMK_HOST_MAP`或`PCMK_HOST_LIST`中指定的`<HOSTNAME>`必须与Ansible清单中的主机名相对应。
+** 不支持在不使用隔离的情况下运行BeeGFS集群、尤其是在生产环境中。这在很大程度上是为了确保当BeeGFS服务(包括块设备等任何资源依赖关系)因问题描述 而发生故障转移时、不会存在多个节点并发访问导致文件系统损坏或其他不希望或意外行为的风险。如果必须禁用隔离、请参阅BeeGFS HA角色的入门指南中的一般说明、并在`ha_cluster_crm_config_options["stonith-enabled"]`中将`beegfs_ha_cluster.yml`设置为false。
+** 可以使用多个节点级别的隔离设备、BeeGFS HA角色可以配置Red Hat HA软件包存储库中可用的任何隔离代理。如果可能、请使用通过不间断电源(UPS)或机架配电单元(rPDU)工作的隔离代理。 因为在某些故障情形下、某些隔离代理(如基板管理控制器(BMC)或服务器中内置的其他无人值守设备)可能无法响应隔离请求。
++
+....
+### Fencing configuration:
+# OPTION 1: To enable fencing using APC Power Distribution Units (PDUs):
+beegfs_ha_fencing_agents:
+ fence_apc:
+   - ipaddr: <PDU_IP_ADDRESS>
+     login: <PDU_USERNAME>
+     passwd: <PDU_PASSWORD>
+     pcmk_host_map: "<HOSTNAME>:<PDU_PORT>,<PDU_PORT>;<HOSTNAME>:<PDU_PORT>,<PDU_PORT>"
+# OPTION 2: To enable fencing using the Redfish APIs provided by the Lenovo XCC (and other BMCs):
+redfish: &redfish
+  username: <BMC_USERNAME>
+  password: <BMC_PASSWORD>
+  ssl_insecure: 1 # If a valid SSL certificate is not available specify “1”.
+beegfs_ha_fencing_agents:
+  fence_redfish:
+    - pcmk_host_list: <HOSTNAME>
+      ip: <BMC_IP>
+      <<: *redfish
+    - pcmk_host_list: <HOSTNAME>
+      ip: <BMC_IP>
+      <<: *redfish
+# For details on configuring other fencing agents see https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_and_managing_high_availability_clusters/assembly_configuring-fencing-configuring-and-managing-high-availability-clusters.
+....
+
+
+. 在Linux操作系统中启用建议的性能调整。
++
+虽然许多用户发现性能参数的默认设置通常运行良好、但您也可以选择更改特定工作负载的默认设置。因此、这些建议包含在BeeGFS角色中、但默认情况下不会启用、以确保用户了解应用于其文件系统的调整。
+
++
+要启用性能调整、请指定：
+
++
+....
+### Performance Configuration:
+beegfs_ha_enable_performance_tuning: True
+....
+. (可选)您可以根据需要调整Linux操作系统中的性能调整参数。
++
+有关可调整的可用调整参数的完整列表、请参见中BeeGFS HA角色的"性能调整默认值"部分 https://github.com/netappeseries/beegfs/tree/master/roles/beegfs_ha_7_2/defaults/main.yml["E系列BeeGFS GitHub站点"^]。可以覆盖此文件或单个节点的`host_vars`文件中集群中所有节点的默认值。
+
+. 要在块节点和文件节点之间实现完整的200 GB/HDR连接、请使用Mellanox Open Fabrics Enterprise Distribution (MLNx_OFED)中的Open Subnet Manager (OpenSM)软件包。(收件箱`opensm`软件包不支持所需的虚拟化功能。) 尽管支持使用Ansible进行部署、但您必须先将所需的软件包下载到用于运行BeeGFS角色的Ansible控制节点。
++
+.. 使用`cURL`或您所需的工具、将技术要求部分所列OpenSM版本的软件包从Mellanox的网站下载到`packages/`目录。例如：
++
+....
+curl -o packages/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm https://linux.mellanox.com/public/repo/mlnx_ofed/5.4-1.0.3.0/rhel8.4/x86_64/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
+
+curl -o packages/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm https://linux.mellanox.com/public/repo/mlnx_ofed/5.4-1.0.3.0/rhel8.4/x86_64/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
+....
+.. 在`group_vars/ha_cluster.yml`中填充以下参数(根据需要调整软件包)：
++
+....
+### OpenSM package and configuration information
+eseries_ib_opensm_allow_upgrades: true
+eseries_ib_opensm_skip_package_validation: true
+eseries_ib_opensm_rhel_packages: []
+eseries_ib_opensm_custom_packages:
+  install:
+    - files:
+        add:
+          "packages/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm": "/tmp/"
+          "packages/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm": "/tmp/"
+    - packages:
+        add:
+          - /tmp/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
+          - /tmp/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
+  uninstall:
+    - packages:
+        remove:
+          - opensm
+          - opensm-libs
+      files:
+        remove:
+          - /tmp/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
+          - /tmp/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
+eseries_ib_opensm_options:
+  virt_enabled: "2"
+....
+
+
+. 配置`udev`规则、以确保逻辑InfiniBand端口标识符与底层PCIe设备的映射一致。
++
+`udev`规则对于用作BeeGFS文件节点的每个服务器平台的PCIe拓扑来说必须是唯一的。
+
++
+对于已验证的文件节点、请使用以下值：
+
++
+....
+### Ensure Consistent Logical IB Port Numbering
+# OPTION 1: Lenovo SR665 PCIe address-to-logical IB port mapping:
+eseries_ipoib_udev_rules:
+  "0000:41:00.0": i1a
+  "0000:41:00.1": i1b
+  "0000:01:00.0": i2a
+  "0000:01:00.1": i2b
+  "0000:a1:00.0": i3a
+  "0000:a1:00.1": i3b
+  "0000:81:00.0": i4a
+  "0000:81:00.1": i4b
+
+# Note: At this time no other x86 servers have been qualified. Configuration for future qualified file nodes will be added here.
+....
+. (可选)更新元数据目标选择算法。
++
+....
+beegfs_ha_beegfs_meta_conf_ha_group_options:
+  tuneTargetChooser: randomrobin
+....
++
+
+NOTE: 在验证测试中、通常会使用`Randomrobin`来确保测试文件在性能基准测试期间均匀分布在所有BeeGFS存储目标上(有关基准测试的详细信息、请参见BeeGFS站点 https://doc.beegfs.io/latest/advanced_topics/benchmark.html["对BeeGFS系统进行基准测试"^]）。在实际使用情况下、这可能会导致编号较低的目标达到发生原因 、从而比编号较高的目标更快地达到填充速度。已显示省略`randomrobin`以及仅使用默认值`randomized`值可在仍利用所有可用目标的情况下提供良好的性能。
+
+
+
+
+
+== 第5步：定义通用块节点的配置
+
+块节点的共享配置在名为`Eseries_storage_systems`的组中定义。本节中的步骤构建了应包含在`group_vars/ eseries_storage_systems.yml`文件中的配置。
+
+.步骤
+. 将Ansible连接设置为local、提供系统密码、并指定是否应验证SSL证书。(通常、Ansible使用SSH连接到受管主机、但对于用作块节点的NetApp E系列存储系统、模块使用REST API进行通信。) 在文件顶部、添加以下内容：
++
+....
+### eseries_storage_systems Ansible group inventory file.
+# Place all default/common variables for NetApp E-Series Storage Systems here:
+ansible_connection: local
+eseries_system_password: <PASSWORD>
+eseries_validate_certs: false
+....
++
+
+NOTE: 不建议以纯文本格式列出任何密码。使用`-ext-vars`运行Ansible时、请使用Ansible vault或提供`E系列系统密码`。
+
+. 为确保获得最佳性能、请在中安装为块节点列出的版本 link:beegfs-technology-requirements.html["技术要求"]。
++
+从下载相应的文件 https://mysupport.netapp.com/site/products/all/details/eseries-santricityos/downloads-tab["NetApp 支持站点"^]。您可以手动升级它们、也可以将其包含在Ansible控制节点的`packages/`目录中、然后在`Esery_storage_systems.yml`中填充以下参数以使用Ansible进行升级：
+
++
+....
+# Firmware, NVSRAM, and Drive Firmware (modify the filenames as needed):
+eseries_firmware_firmware: "packages/RCB_11.70.2_6000_61b1131d.dlp"
+eseries_firmware_nvsram: "packages/N6000-872834-D06.dlp"
+....
+. 从下载并安装可用于块节点中安装的驱动器的最新驱动器固件 https://mysupport.netapp.com/NOW/download/tools/diskfw_eseries/["NetApp 支持站点"^]。您可以手动升级它们、也可以将其包含在Ansible控制节点的`packages/`目录中、然后在`Esery_storage_systems.yml`中填充以下参数以使用Ansible进行升级：
++
+....
+eseries_drive_firmware_firmware_list:
+  - "packages/<FILENAME>.dlp"
+eseries_drive_firmware_upgrade_drives_online: true
+....
++
+
+NOTE: 将`esery_drive_firmware_upgrade_drives_online`设置为`false`可以加快升级速度、但在部署BeeGFS之前不应执行此操作。这是因为该设置要求在升级之前停止驱动器的所有I/O、以避免应用程序错误。尽管在配置卷之前执行联机驱动器固件升级仍很快、但我们建议您始终将此值设置为`true`以避免稍后出现问题。
+
+. 要优化性能、请对全局配置进行以下更改：
++
+....
+# Global Configuration Defaults
+eseries_system_cache_block_size: 32768
+eseries_system_cache_flush_threshold: 80
+eseries_system_default_host_type: linux dm-mp
+eseries_system_autoload_balance: disabled
+eseries_system_host_connectivity_reporting: disabled
+eseries_system_controller_shelf_id: 99 # Required.
+....
+. 要确保最佳卷配置和行为、请指定以下参数：
++
+....
+# Storage Provisioning Defaults
+eseries_volume_size_unit: pct
+eseries_volume_read_cache_enable: true
+eseries_volume_read_ahead_enable: false
+eseries_volume_write_cache_enable: true
+eseries_volume_write_cache_mirror_enable: true
+eseries_volume_cache_without_batteries: false
+eseries_storage_pool_usable_drives: "99:0,99:23,99:1,99:22,99:2,99:21,99:3,99:20,99:4,99:19,99:5,99:18,99:6,99:17,99:7,99:16,99:8,99:15,99:9,99:14,99:10,99:13,99:11,99:12"
+....
++
+
+NOTE: 为`E系列_storage_pool_usable_drives`指定的值特定于NetApp EF600块节点、并控制驱动器分配给新卷组的顺序。此顺序可确保每个组的I/O在后端驱动器通道之间均匀分布。
+
+

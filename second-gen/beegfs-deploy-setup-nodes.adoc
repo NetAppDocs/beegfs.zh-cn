@@ -1,0 +1,75 @@
+---
+sidebar: sidebar 
+permalink: beegfs-deploy-setup-nodes.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: '在每个服务器的基板管理控制器(BMC)上配置网络连接、并在每个控制器上配置管理端口。' 
+---
+= 设置文件节点和块节点
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+虽然大多数软件配置任务都是使用NetApp提供的Ansible集合自动执行的、但您必须在每个服务器的基板管理控制器(Baseboard Management Controller、BMC)上配置网络、并在每个控制器上配置管理端口。
+
+
+
+== 设置文件节点
+
+. 在每个服务器的基板管理控制器(BMC)上配置网络连接。
++
+要了解如何为经过验证的联想SR665文件节点配置网络、请参见 https://thinksystem.lenovofiles.com/help/index.jsp?topic=%2F7D2W%2Fset_the_network_connection.html["联想ThinkSystem文档"^]。
+
++
+
+NOTE: 基板管理控制器(Baseboard Management Controller、BMC)有时也称为服务处理器、它是内置于各种服务器平台中的带外管理功能的通用名称、即使操作系统未安装或无法访问、也可以提供远程访问。供应商通常会使用自己的品牌推广此功能。例如、在联想SR665上、BMC称为_Lenovo Xicity1控制器(XCC)_。
+
+. 配置系统设置以实现最高性能。
++
+您可以使用UEFI设置(以前称为BIOS)或许多BMC提供的Redfish API配置系统设置。系统设置因用作文件节点的服务器型号而异。
+
++
+要了解如何为经过验证的联想SR665文件节点配置系统设置、请参见 link:beegfs-deploy-file-node-tuning.html["调整系统性能设置"]。
+
+. 安装Red Hat 8.4并配置用于管理操作系统的主机名和网络端口、包括来自Ansible控制节点的SSH连接。
++
+此时、请勿在任何InfiniBand端口上配置IP。
+
++
+
+NOTE: 尽管严格要求不高、但后续章节假定主机名按顺序编号(例如H1-HN)、并提及应在奇数主机上完成的任务、而不是偶数主机上完成的任务。
+
+. 使用RedHat订阅管理器注册并订阅系统、以便可以从Red Hat官方存储库安装所需的软件包、并将更新限制为受支持的Red Hat版本：`ssubscription-manager release -set=8.4`。有关说明，请参见 https://access.redhat.com/solutions/253273["如何注册和订阅RHEL系统"^] 和  https://access.redhat.com/solutions/2761031["如何限制更新"^]。
+. 启用包含高可用性所需软件包的Red Hat存储库。
++
+....
+subscription-manager repo-override --repo=rhel-8-for-x86_64-highavailability-rpms --add=enabled:1
+....
+. 将所有ConnectX-6 HCA固件更新为中建议的版本 link:beegfs-technology-requirements.html["技术要求"]。
++
+要完成此更新、可以下载并运行捆绑了建议固件的lxup工具版本。您可以从下载此工具 https://www.mellanox.com/support/firmware/mlxup-mft["lxup—更新和查询实用程序"^]。
+
+
+
+
+
+== 设置块节点
+
+通过在每个控制器上配置管理端口来设置EF600块节点。
+
+. 在每个EF600控制器上配置管理端口。
++
+有关配置端口的说明、请转至 https://docs.netapp.com/us-en/e-series/maintenance-ef600/hpp-overview-supertask-concept.html["E系列文档中心"^]。
+
+. (可选)设置每个系统的存储阵列名称。
++
+通过设置名称、可以更轻松地在后续章节中引用每个系统。有关设置阵列名称的说明、请转到 https://docs.netapp.com/us-en/e-series/maintenance-ef600/hpp-overview-supertask-concept.html["E系列文档中心"^]。
+
+
+
+
+NOTE: 尽管严格要求不严格、但后续主题假定存储阵列名称按顺序编号(例如C1 - CN)、并提及在奇数系统甚至编号系统上应完成的步骤。

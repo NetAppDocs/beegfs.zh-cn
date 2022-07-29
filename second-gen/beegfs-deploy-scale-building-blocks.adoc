@@ -1,0 +1,39 @@
+---
+sidebar: sidebar 
+permalink: beegfs-deploy-scale-building-blocks.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: 将Pacemaker和Corosync配置为扩展到五个组件以上。 
+---
+= 扩展到五个组件以上
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+您可以将Pacemaker和Corosync配置为扩展到五个组件(10个文件节点)以上。但是、较大的集群存在一些缺点、最终、Pacemaker和Corosync最多会占用32个节点。
+
+NetApp仅测试了最多10个节点的BeeGFS HA集群；不建议或不支持将单个集群扩展到超过此限制的范围。但是、BeeGFS文件系统仍需要扩展到10个以上的节点、而NetApp已在NetApp解决方案 上的BeeGFS中对此进行了说明。
+
+通过在每个文件系统中部署包含一个子块的多个HA集群、您可以扩展整个BeeGFS文件系统、而不受底层HA集群机制的任何建议限制或硬限制。在此情景中、请执行以下操作：
+
+* 创建一个新的Ansible清单以表示其他HA集群、然后省略配置另一个管理服务。请将每个附加集群`ha_cluster.yml`中的`beegfs_ha_mgmtd_floating_ip`变量指向第一个BeeGFS管理服务的IP。
+* 在向同一文件系统添加其他HA集群时、请确保满足以下要求：
++
+** BeeGFS节点ID是唯一的。
+** 与`group_vars`下的每个服务对应的文件名在所有集群中都是唯一的。
+** BeeGFS客户端和服务器IP地址在所有集群中都是唯一的。
+** 在尝试部署或更新其他集群之前、包含BeeGFS管理服务的第一个HA集群正在运行。
+
+
+* 在每个HA集群各自的目录树中单独维护清单。
++
+尝试在一个目录树中混用多个集群的清单文件可能会导致发生原因 对BeeGFS HA角色聚合应用于特定集群的配置的方式产生问题。
+
+
+
+
+NOTE: 无需在创建新的HA集群之前将每个HA集群扩展到五个组件。在许多情况下、每个集群使用较少的组件会更易于管理。一种方法是将每个机架中的组件配置为HA集群。

@@ -1,0 +1,54 @@
+---
+section: second-gen
+title: 使用第二代NVA
+entries:
+- title: 入门
+  entries:
+  - title: 解决方案概述
+    url: "/beegfs-solution-overview.html"
+  - title: 技术要求
+    url: "/beegfs-technology-requirements.html"
+- title: 设计
+  entries:
+  - title: 概述
+    url: "/beegfs-design-overview.html"
+  - title: 硬件设计
+    url: "/beegfs-design-hardware-architecture.html"
+  - title: 软件设计
+    url: "/beegfs-design-software-architecture.html"
+  - title: 验证
+    url: "/beegfs-design-solution-verification.html"
+  - title: 规模估算准则
+    url: "/beegfs-design-solution-sizing-guidelines.html"
+  - title: 性能调整
+    url: "/beegfs-design-performance-tuning.html"
+- title: 部署
+  entries:
+  - title: 概述
+    url: "/beegfs-deploy-overview.html"
+  - title: 了解Ansible
+    url: "/beegfs-deploy-learn-ansible.html"
+  - title: 最佳实践
+    url: "/beegfs-deploy-bestpractice.html"
+  - title: 部署硬件
+    url: "/beegfs-deploy-hardware.html"
+  - title: 部署软件
+    entries:
+    - title: 设置文件和块节点
+      url: "/beegfs-deploy-setup-nodes.html"
+    - title: 设置Ansible控制节点
+      url: "/beegfs-deploy-setting-up-an-ansible-control-node.html"
+    - title: 创建Ansible清单
+      url: "/beegfs-deploy-beegfs-general-config.html"
+    - title: 定义BeeGFS组件
+      url: "/beegfs-deploy-beegfs-build-inventory.html"
+    - title: 部署BeeGFS
+      url: "/beegfs-deploy-beegfs-playbook.html"
+    - title: 配置BeeGFS客户端
+      url: "/beegfs-deploy-beegfs-configure-clients.html"
+    - title: 调整系统性能设置
+      url: beegfs-deploy-file-node-tuning.html
+  - title: 扩展BeeGFS集群
+    url: "/beegfs-deploy-beegfs-scale.html"
+  - title: 建议的卷百分比
+    url: "/beegfs-deploy-recommended-volume-percentages.html"

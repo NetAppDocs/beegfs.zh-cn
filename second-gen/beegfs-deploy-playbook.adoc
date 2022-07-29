@@ -1,0 +1,111 @@
+---
+sidebar: sidebar 
+permalink: beegfs-deploy-playbook.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: 部署和管理配置涉及运行一个或多个攻略手册、其中包含Ansible需要执行的任务、并将整个系统置于所需状态。 
+---
+= 部署BeeGFS
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+部署和管理配置涉及运行一个或多个攻略手册、其中包含Ansible需要执行的任务、并将整个系统置于所需状态。
+
+虽然所有任务都可以包含在一本攻略手册中、但对于复杂的系统、这很快就会变得难以管理。Ansible可用于创建和分发角色、以便打包可重复使用的攻略手册和相关内容(例如：默认变量、任务和处理程序)。有关详细信息、请参见的Ansible文档 https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html["角色"^]。
+
+角色通常作为包含相关角色和模块的Ansible集合的一部分进行分布。因此、这些攻略手册主要仅导入分布在各种NetApp E系列Ansible资料集中的多个角色。
+
+
+NOTE: 目前、部署BeeGFS至少需要两个组件(四个文件节点)、除非将单独的仲裁设备配置为Tiebreaker、以缓解在双节点集群中建立仲裁时出现的任何问题。
+
+.步骤
+. 创建新的`playbook.yml`文件并包括以下内容：
++
+....
+# BeeGFS HA (High Availability) cluster playbook.
+- hosts: eseries_storage_systems
+  gather_facts: false
+  collections:
+    - netapp_eseries.santricity
+  tasks:
+    - name: Configure NetApp E-Series block nodes.
+      import_role:
+        name: nar_santricity_management
+- hosts: all
+  any_errors_fatal: true
+  gather_facts: false
+  collections:
+    - netapp_eseries.beegfs
+  pre_tasks:
+    - name: Ensure a supported version of Python is available on all file nodes.
+      block:
+        - name: Check if python is installed.
+          failed_when: false
+          changed_when: false
+          raw: python --version
+          register: python_version
+        - name: Check if python3 is installed.
+          raw: python3 --version
+          failed_when: false
+          changed_when: false
+          register: python3_version
+          when: 'python_version["rc"] != 0 or (python_version["stdout"] | regex_replace("Python ", "")) is not version("3.0", ">=")'
+        - name: Install python3 if needed.
+          raw: |
+            id=$(grep "^ID=" /etc/*release* | cut -d= -f 2 | tr -d '"')
+            case $id in
+              ubuntu) sudo apt install python3 ;;
+              rhel|centos) sudo yum -y install python3 ;;
+              sles) sudo zypper install python3 ;;
+            esac
+          args:
+            executable: /bin/bash
+          register: python3_install
+          when: python_version['rc'] != 0 and python3_version['rc'] != 0
+          become: true
+        - name: Create a symbolic link to python from python3.
+          raw: ln -s /usr/bin/python3 /usr/bin/python
+          become: true
+          when: python_version['rc'] != 0
+      when: inventory_hostname not in groups[beegfs_ha_ansible_storage_group]
+    - name: Verify any provided tags are supported.
+      fail:
+        msg: "{{ item }} tag is not a supported BeeGFS HA tag. Rerun your playbook command with --list-tags to see all valid playbook tags."
+      when: 'item not in ["all", "storage", "beegfs_ha", "beegfs_ha_package", "beegfs_ha_configure", "beegfs_ha_configure_resource", "beegfs_ha_performance_tuning", "beegfs_ha_backup", "beegfs_ha_client"]'
+      loop: "{{ ansible_run_tags }}"
+  tasks:
+    - name: Verify before proceeding.
+      pause:
+        prompt: "Are you ready to proceed with running the BeeGFS HA role? Depending on the size of the deployment and network performance between the Ansible control node and BeeGFS file and block nodes this can take awhile (10+ minutes) to complete."
+    - name: Verify the BeeGFS HA cluster is properly deployed.
+      import_role:
+        name: beegfs_ha_7_2
+....
++
+
+NOTE: 本攻略手册将运行几个`pre_tasks`、用于验证Python 3是否已安装在文件节点上、并检查所提供的Ansible标记是否受支持。
+
+. 准备好部署BeeGFS时、请使用`Ansible攻略手册`命令和清单和攻略手册文件。
++
+此部署将运行所有`pre_tasks`、然后提示用户确认、然后再继续实际的BeeGFS部署。
+
++
+运行以下命令、根据需要调整货叉数量(请参见以下注释)：
+
++
+....
+ansible-playbook -i inventory.yml playbook.yml --forks 20
+....
++
+
+NOTE: 特别是对于大型部署、建议使用`fork`参数覆盖默认的货叉数(5)、以增加Ansible并行配置的主机数。(有关详细信息、请参见  https://www.ansible.com/blog/ansible-performance-tuning["Ansible性能调整"^] 和 https://docs.ansible.com/ansible/latest/user_guide/playbooks_strategies.html["控制攻略手册执行"^]) 最大值设置取决于Ansible控制节点上可用的处理能力。以上示例20是在具有4个CPU (Intel (R) Xeon (R) Gold 6146 CPU @ 3.20GHz)的虚拟Ansible控制节点上运行的。
+
++
+根据Ansible控制节点与BeeGFS文件和块节点之间的部署规模和网络性能、部署时间可能会有所不同。
+
+

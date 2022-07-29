@@ -1,0 +1,17 @@
+---
+layout: astra 
+sidebar: sidebar 
+permalink: index.html 
+keywords: beegfs e-series 
+lead: BeeGFS on NetApp with E-Series storage is a proven, integrated solution with a simple, reliable, scalable, and cost-effective HPC infrastructure that keeps pace with your most extreme workloads. 
+summary: 解决方案 支持在高性能、低延迟NetApp E系列存储上运行的BeeGFS并行集群文件系统。一款经济高效、易于管理且高度可用的HPC解决方案 、并获得NetApp的支持。 
+---
+= NetApp上的BeeGFS与E系列存储
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+

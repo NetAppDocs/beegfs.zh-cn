@@ -1,0 +1,35 @@
+---
+indexpage:
+  lead: NetApp解决方案 上的BeeGFS是一种经过NetApp验证的架构(NVA)、它将BeeGFS并行文件系统与NetApp EF600存储系统相结合。此解决方案
+    是一个可靠、可扩展且经济高效的基础架构、可与最极端的工作负载保持同步。
+  tiles:
+  - title: 入门
+    links:
+    - title: 解决方案概述
+      url: "/beegfs-solution-overview.html"
+    - title: 架构概述
+      url: "/beegfs-architecture-overview.html"
+    - title: 博客—了解BeeGFS和E系列
+      url: https://www.netapp.com/blog/solution-support-for-beegfs-and-e-series/
+    - title: 博客—适合新手的BeeGFS
+      url: https://www.netapp.com/blog/beegfs-for-beginners/
+    - title: 博客—BeeGFS的HA
+      url: https://www.netapp.com/blog/high-availability-beegfs/
+    - title: 视频—利用NetApp上的BeeGFS加快人工智能工作负载的处理速度
+      url: https://www.netapp.tv/details/28905?mcid=04158305605030681010298851103052321172
+  - title: 其他文档
+    links:
+    - title: NetApp 产品文档
+      url: https://www.netapp.com/support-and-training/documentation/
+    - title: BeeGFS文档
+      url: https://doc.beegfs.io/
+  - title: 工具支持
+    links:
+    - title: Ansible GALAXY上的NetApp E系列集合
+      url: https://galaxy.ansible.com/netapp_eseries
+    - title: NetApp 互操作性表
+      url: http://mysupport.netapp.com/matrix/
+    - title: NetApp 知识库
+      url: https://kb.netapp.com/
+    - title: Active IQ （需要登录）
+      url: https://activeiq.netapp.com/?source=aiqnsspage

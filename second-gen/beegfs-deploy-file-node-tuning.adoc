@@ -1,0 +1,213 @@
+---
+sidebar: sidebar 
+permalink: beegfs-deploy-file-node-tuning.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: 为了最大限度地提高性能、我们建议在用作文件节点的服务器型号上配置系统设置。 
+---
+= 调整文件节点系统设置以提高性能
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+为了最大程度地提高性能、我们建议在用作文件节点的服务器型号上配置系统设置。
+
+系统设置因用作文件节点的服务器型号而异。本主题介绍如何为经过验证的联想ThinkSystem SR665服务器文件节点配置系统设置。
+
+
+
+== 使用UEFI界面调整系统设置
+
+联想SR665服务器的系统固件包含许多可通过UEFI界面设置的调整参数。这些调整参数可能会影响服务器的运行方式以及服务器的性能。
+
+在* UEFI设置>系统设置*下、调整以下系统设置：
+
+
+
+=== 操作模式菜单
+
+[cols=","]
+|===
+| *系统设置* | *更改为* 
+
+
+ a| 
+操作模式
+ a| 
+自定义
+
+
+
+ a| 
+cTDP
+ a| 
+手动
+
+
+
+ a| 
+cTDP手册
+ a| 
+350
+
+
+
+ a| 
+软件包电源限制
+ a| 
+手动
+
+
+
+ a| 
+效率模式
+ a| 
+禁用
+
+
+
+ a| 
+全局Cstate-Control
+ a| 
+禁用
+
+
+
+ a| 
+SOC P状态
+ a| 
+P0
+
+
+
+ a| 
+DF C状态
+ a| 
+禁用
+
+
+
+ a| 
+P状态1
+ a| 
+禁用
+
+
+
+ a| 
+启用内存关闭
+ a| 
+禁用
+
+
+
+ a| 
+每个插槽的NUMA节点数
+ a| 
+NPS1
+
+|===
+
+
+=== 设备和I/O端口菜单
+
+[cols=","]
+|===
+| *系统设置* | *更改为* 
+
+
+ a| 
+IOMMU
+ a| 
+禁用
+
+|===
+
+
+=== 电源菜单
+
+[cols=","]
+|===
+| *系统设置* | *更改为* 
+
+
+ a| 
+PCIe电源制动器
+ a| 
+禁用
+
+|===
+
+
+=== 处理器菜单
+
+[cols=","]
+|===
+| *系统设置* | *更改为* 
+
+
+ a| 
+全局C状态控制
+ a| 
+禁用
+
+
+
+ a| 
+DF C状态
+ a| 
+禁用
+
+
+
+ a| 
+SMT模式
+ a| 
+禁用
+
+
+
+ a| 
+CPPC
+ a| 
+禁用
+
+|===
+
+
+== 使用Redfish API调整系统设置
+
+除了使用UEFI设置之外、您还可以使用Redfish API更改系统设置。
+
+....
+curl --request PATCH \
+  --url https://<BMC_IP_ADDRESS>/redfish/v1/Systems/1/Bios/Pending \
+  --user <BMC_USER>:<BMC- PASSWORD> \
+  --header 'Content-Type: application/json' \
+  --data '{
+"Attributes": {
+"OperatingModes_ChooseOperatingMode": "CustomMode",
+"Processors_cTDP": "Manual",
+"Processors_PackagePowerLimit": "Manual",
+"Power_EfficiencyMode": "Disable",
+"Processors_GlobalC_stateControl": "Disable",
+"Processors_SOCP_states": "P0",
+"Processors_DFC_States": "Disable",
+"Processors_P_state1": "Disable",
+"Memory_MemoryPowerDownEnable": "Disable",
+"DevicesandIOPorts_IOMMU": "Disable",
+"Power_PCIePowerBrake": "Disable",
+"Processors_GlobalC_stateControl": "Disable",
+"Processors_DFC_States": "Disable",
+"Processors_SMTMode": "Disable",
+"Processors_CPPC": "Disable",
+"Memory_NUMANodesperSocket":"NPS1"
+}
+}
+'
+....
+有关Redfish模式的详细信息、请参见 https://redfish.dmtf.org/redfish/schema_index["DMTF网站"^]。
