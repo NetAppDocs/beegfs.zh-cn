@@ -1076,4 +1076,5 @@
   <block id="50802d3e5a25b93d471686a10da03dd8" category="sidebar">最佳实践</block>
   <block id="5d6f0f2ec8814a4c4e63b18ea908577b" category="sidebar">配置BeeGFS客户端</block>
   <block id="ba13e086fe19056a379b6240e05651a8" category="sidebar">TR-4915—使用E系列和BeeGFS进行数据移动以实现AI</block>
+  <block id="bc893b2686532fc683cb056beffd08aa" category="cell">驱动器大小(10+2 RAID 6)存储卷组</block>
 </blocks>

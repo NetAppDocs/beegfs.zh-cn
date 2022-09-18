@@ -52,7 +52,7 @@ summary: 要定义文件和块节点的配置、请创建一个Ansible清单、�
 
 . 在`host_vars/`下、为名为`<HOSTNAME>.yml`的每个BeeGFS文件节点创建一个文件、其中包含以下内容、请特别注意有关BeeGFS集群IP和以奇数与偶数结尾的主机名要填充的内容的注释。
 +
-最初、文件节点接口名称与此处列出的名称匹配(例如ib0或ibs1f0)。这些自定义名称在中进行配置 <<Step 4: Define configuration that should apply to all file nodes>>。
+最初、文件节点接口名称与此处列出的名称匹配(例如ib0或ibs1f0)。这些自定义名称在中进行配置  4: Define configuration that should apply to all file nodes。
 
 +
 ....
