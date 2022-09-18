@@ -53,11 +53,34 @@
   <link rel="stylesheet" href="/zh-cn/beegfs/css/tabbed-blocks.css" type="text/css">
   <!-- Canonical url -->
   <link rel='stylesheet' href='/zh-cn/beegfs/css/na-feature.css' type='text/css'><!-- Top level site integrations --><script>
-    if (document.location.hostname === "docs.netapp.com") {
+    function addAdobeLaunch(adobeId) {
+      var head = document.getElementsByTagName('head')[0];
+      var adobe = document.createElement("script");
+      adobe.type = "text/plain";
+      adobe.className = "optanon-category-C0002";
+      adobe.src = "//assets.adobedtm.com/60287eadf1ee/c284da483c83/"+adobeId+".min.js";
+      head.appendChild(adobe);
+    }
+
+    function addGoogleAnalytics(gtagId) {
+      var google = document.createElement("script");
+      google.type = "text/plain";
+      google.className = "optanon-category-C0002";
+      google.src = "https://www.googletagmanager.com/gtag/js?id="+gtagId;
+      var head = document.getElementsByTagName('head')[0];
+      head.appendChild(google);
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', gtagId);
+    }
+
+    function addConsent(consentId) {
       var head = document.getElementsByTagName('head')[0];
       var onetrustConsent = document.createElement("script");
       onetrustConsent.type = "text/javascript";
-      onetrustConsent.src = "https://cdn.cookielaw.org/consent/72570c5c-fe30-465f-b0e0-b77f7fb4ae34/OtAutoBlock.js";
+      onetrustConsent.src = "https://cdn.cookielaw.org/consent/"+consentId+"/OtAutoBlock.js";
       head.appendChild(onetrustConsent);
 
       var onetrustScript = document.createElement("script");
@@ -65,30 +88,11 @@
       onetrustScript.src = "https://cdn.cookielaw.org/scripttemplates/otSDKStub.js";
       onetrustScript.charset = "UTF-8";
       onetrustScript.dataset.documentLanguage = "true";
-      onetrustScript.dataset.domainScript = "72570c5c-fe30-465f-b0e0-b77f7fb4ae34";
+      onetrustScript.dataset.domainScript = consentId;
       head.appendChild(onetrustScript);
-    }
-
-    function OptanonWrapper() { }
-
-    if (document.location.hostname === "docs.netapp.com") {
-      var adobe = document.createElement("script");
-      adobe.type = "text/plain";
-      adobe.className = "optanon-category-C0002";
-      adobe.src = "//assets.adobedtm.com/60287eadf1ee/c284da483c83/launch-e9ff3acac59f.min.js";
-      head.appendChild(adobe);
-
-      var google = document.createElement("script");
-      google.type = "text/plain";
-      google.className = "optanon-category-C0002";
-      google.src = "https://www.googletagmanager.com/gtag/js?id=UA-81697994-3";
-      head.appendChild(google);
-
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-81697994-3');
-    }
+    }addConsent("72570c5c-fe30-465f-b0e0-b77f7fb4ae34");
+    addAdobeLaunch("launch-e9ff3acac59f");
+    addGoogleAnalytics("UA-81697994-3");function OptanonWrapper() { }
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
@@ -169,7 +173,7 @@
   
   <!-- Start Page Toolbar -->
   
-  <div class="page-nav-toolbar"><div class="page-nav-contribute"><a target="_blank" href="https://github.com/NetAppDocs/beegfs/issues/new?body=Page%3A%20[查看最佳实践](https://docs.netapp.com/zh-cn/beegfs/beegfs-deploy-bestpractice.html)" class="page-nav-contribute-link" role="button"><img src="/zh-cn/beegfs/images/discuss-sm.svg" alt="" class="github-icon" />请求文档变更</a><a target="_blank" href="https://github.com/NetAppDocs/beegfs/blob/main/second-gen/beegfs-deploy-bestpractice.adoc" class="page-nav-contribute-link" role="button"><img src="/zh-cn/beegfs/images/edit-sm.svg" alt="" class="github-icon" />在 GitHub 上编辑</a><a target="_blank" href="https://docs.netapp.com/us-en/contribute/" class="page-nav-contribute-link"  ><img src="/zh-cn/beegfs/images/article-sm.svg" alt="" class="github-icon" />提供者指南</a></div>
+  <div class="page-nav-toolbar"><div class="page-nav-contribute"><a target="_blank" href="https://github.com/NetAppDocs/beegfs/issues/new?body=Page%3A%20[查看最佳实践](https://docs.netapp.com/zh-cn/beegfs/beegfs-deploy-bestpractice.html)&template=public-issue-template.md" class="page-nav-contribute-link" role="button"><img src="/zh-cn/beegfs/images/discuss-sm.svg" alt="" class="github-icon" />请求文档变更</a><a target="_blank" href="https://github.com/NetAppDocs/beegfs/blob/main/second-gen/beegfs-deploy-bestpractice.adoc" class="page-nav-contribute-link" role="button"><img src="/zh-cn/beegfs/images/edit-sm.svg" alt="" class="github-icon" />在 GitHub 上编辑</a><a target="_blank" href="https://docs.netapp.com/us-en/contribute/" class="page-nav-contribute-link"  ><img src="/zh-cn/beegfs/images/article-sm.svg" alt="" class="github-icon" />提供者指南</a></div>
     <div class="page-nav-container">
       <nav class="page-nav-fixed">
         <div class="page-nav-title">在此页面上</div>
@@ -341,6 +345,7 @@
   <!-- Sidebar Column -->
   
   <div class="col-md-3" id="sidebar-height">
+      <button id="btn-sidebar-collapse" onclick="hideSidebar()"><img src="/zh-cn/beegfs/images/collapse.png" alt="折叠导航面板"></button>
       <div class="n-pdf-header">
   <a id="toggleButtonPdf" class="n-pdf-button" type="button">
     <img src="/zh-cn/beegfs/images/pdf.png" alt="" width="16" height="16"/>可用的 PDF<span>
@@ -538,71 +543,230 @@
     $(".n-pdf-body-container .zip-pdf-link-container").toggle('display');
   });
 </script><div class="sidebar-nav-container" id="mysidebardiv">
-  <ul id="mysidebar" class="nav"><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/index.html">
+  <ul id="mysidebar" class="nav"><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="BeeGFS on NetApp文档"
+      data-li-level="1#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/index.html">
         BeeGFS on NetApp文档
-      </a></li><li class="subfolders "><a href="#">
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="入门"
+      data-li-level="1" 
+      class="subfolders "
+    ><a href="#">
         <div class="na-navbar-padding"> 入门</div>
       </a>
-      <ul><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/whats-included.html">
+      <ul>
+        <li 
+      data-pdf-exists="true" 
+      data-pdf-filename="此站点包含的内容"
+      data-li-level="2#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/whats-included.html">
         此站点包含的内容
-      </a></li><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-terms.html">
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="术语和概念"
+      data-li-level="2#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-terms.html">
         术语和概念
-      </a></li><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-gens.html">
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="设计代数"
+      data-li-level="2#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-gens.html">
         设计代数
-      </a></li><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-solution-overview.html">
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="解决方案概述"
+      data-li-level="2#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-solution-overview.html">
         解决方案概述
-      </a></li><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-architecture-overview.html">
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="架构概述"
+      data-li-level="2#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-architecture-overview.html">
         架构概述
-      </a></li><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-technology-requirements.html">
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="技术要求"
+      data-li-level="2#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-technology-requirements.html">
         技术要求
-      </a></li></ul></li><li class="subfolders "><a href="#">
+      </a></li></ul></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="查看解决方案 设计"
+      data-li-level="1" 
+      class="subfolders "
+    ><a href="#">
         <div class="na-navbar-padding"> 查看解决方案 设计</div>
       </a>
-      <ul><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-design-overview.html">
+      <ul>
+        <li 
+      data-pdf-exists="true" 
+      data-pdf-filename="设计概述"
+      data-li-level="2#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-design-overview.html">
         设计概述
-      </a></li><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-design-hardware-architecture.html">
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="硬件配置"
+      data-li-level="2#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-design-hardware-architecture.html">
         硬件配置
-      </a></li><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-design-software-architecture.html">
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="软件配置"
+      data-li-level="2#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-design-software-architecture.html">
         软件配置
-      </a></li><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-design-solution-verification.html">
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="设计验证"
+      data-li-level="2#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-design-solution-verification.html">
         设计验证
-      </a></li><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-design-solution-sizing-guidelines.html">
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="规模估算准则"
+      data-li-level="2#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-design-solution-sizing-guidelines.html">
         规模估算准则
-      </a></li><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-design-performance-tuning.html">
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="性能调整"
+      data-li-level="2#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-design-performance-tuning.html">
         性能调整
-      </a></li></ul></li><li class="subfolders "><a href="#">
+      </a></li></ul></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="部署解决方案"
+      data-li-level="1" 
+      class="subfolders "
+    ><a href="#">
         <div class="na-navbar-padding"> 部署解决方案</div>
       </a>
-      <ul><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-overview.html">
+      <ul>
+        <li 
+      data-pdf-exists="true" 
+      data-pdf-filename="部署概述"
+      data-li-level="2#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-overview.html">
         部署概述
-      </a></li><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-learn-ansible.html">
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="了解Ansible清单"
+      data-li-level="2#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-learn-ansible.html">
         了解Ansible清单
-      </a></li><li class="  active "><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-bestpractice.html">
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="查看最佳实践"
+      data-li-level="2#" 
+      class="  active "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-bestpractice.html">
         查看最佳实践
-      </a></li><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-hardware.html">
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="部署硬件"
+      data-li-level="2#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-hardware.html">
         部署硬件
-      </a></li><li class="subfolders "><a href="#">
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="部署软件"
+      data-li-level="2" 
+      class="subfolders "
+    ><a href="#">
         <div class="na-navbar-padding"> 部署软件</div>
       </a>
-      <ul><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-setup-nodes.html">
+      <ul>
+        <li 
+      data-pdf-exists="true" 
+      data-pdf-filename="设置文件和块节点"
+      data-li-level="3#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-setup-nodes.html">
         设置文件和块节点
-      </a></li><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-file-node-tuning.html">
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="调整系统性能设置"
+      data-li-level="3#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-file-node-tuning.html">
         调整系统性能设置
-      </a></li><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-setting-up-an-ansible-control-node.html">
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="设置Ansible控制节点"
+      data-li-level="3#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-setting-up-an-ansible-control-node.html">
         设置Ansible控制节点
-      </a></li><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-create-inventory.html">
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="创建Ansible清单"
+      data-li-level="3#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-create-inventory.html">
         创建Ansible清单
-      </a></li><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-define-inventory.html">
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="定义BeeGFS组件"
+      data-li-level="3#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-define-inventory.html">
         定义BeeGFS组件
-      </a></li><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-playbook.html">
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="部署BeeGFS"
+      data-li-level="3#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-playbook.html">
         部署BeeGFS
-      </a></li><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-configure-clients.html">
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="配置BeeGFS客户端"
+      data-li-level="3#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-configure-clients.html">
         配置BeeGFS客户端
-      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-scale-building-blocks.html">
+      </a></li></ul></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="扩展BeeGFS集群"
+      data-li-level="2#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-scale-building-blocks.html">
         扩展BeeGFS集群
-      </a></li><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-recommended-volume-percentages.html">
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="建议的卷百分比"
+      data-li-level="2#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/beegfs-deploy-recommended-volume-percentages.html">
         建议的卷百分比
-      </a></li></ul></li><li class=" "><a class="na-navbar-padding" href="/zh-cn/beegfs/legal-notices.html">
+      </a></li></ul></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="法律声明"
+      data-li-level="1#" 
+      class=" "
+    ><a class="na-navbar-padding" href="/zh-cn/beegfs/legal-notices.html">
         法律声明
       </a></li></ul>
 </div>
@@ -621,8 +785,9 @@
   
 
   <div class="ie-content-pane n-doc__component-detail-content n-doc__component-detail-content--show-code">
-    <!-- Begin of page container --><article class="page-content">
+    <!-- Begin of page container --><article class="page-content" id="main">
       <div class="ie-utility">
+  <button id="btn-sidebar-expand" onclick="showSidebar()"><img src="/zh-cn/beegfs/images/expand.png" alt="展开导航面板"></button>
   <div class="ie-menu">
     <div class="n-breadcrumb">
       <ul class="n-breadcrumb__list">
