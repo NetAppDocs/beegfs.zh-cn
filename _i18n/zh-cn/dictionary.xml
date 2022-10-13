@@ -233,9 +233,7 @@
   <block id="51c16b7415d506b9bbcedd7241c7c1c0" category="paragraph">第一代和第二代均采用一种基础架构、其中整合了BeeGFS文件系统和NVMe EF600存储系统。但是、第二代基于第一代产品构建、其中包括以下附加优势：</block>
   <block id="20667306535e51f69f34371b95abfd0b" category="list-text">将性能和容量提高一倍、同时仅添加2U机架空间</block>
   <block id="edcc56d654a1a9362699f309c738a185" category="list-text">高可用性(High Availability、HA)基于共享磁盘的两层硬件设计</block>
-  <block id="14b187f2e331b627a7a2be108645bcfa" category="list-text">NVIDIA DGX A100 SuperPOD的外部资格认证</block>
   <block id="189fdda096d5b994e140eac128f464e1" category="section-title">第二代设计</block>
-  <block id="cf323deb1f1b75ff42840ee50d9ac94f" category="paragraph">基于NetApp的第二代BeeGFS经过优化、可满足高性能计算(HPC)和HPC模式机器学习(ML)、深度学习(DL)以及类似人工智能(AI)技术等苛刻工作负载的性能要求。通过整合共享磁盘高可用性(HA)架构、NetApp解决方案 上的BeeGFS还可以满足企业和其他组织在寻找可扩展的存储以适应其工作负载和使用情形时无法承受停机或数据丢失的需求。此解决方案 不仅已通过NetApp的验证、还通过了外部认证、作为NVIDIA DGX SuperPOD的存储选项。</block>
   <block id="145c927b5996411105e8a05381bfab75" category="section-title">第一代设计</block>
   <block id="41ae1cb2edd9d144116e252e5f5c4e54" category="paragraph">第一代基于NetApp的BeeGFS专为使用NetApp EF600 NVMe存储系统、BeeGFS并行文件系统、NVIDIA DGX®A100系统和NVIDIA®Mellanox®Quantum®QM8700 200 Gbps IB交换机的机器学习(ML)和人工智能(AI)工作负载而设计。此设计还为存储和计算集群互连网络结构提供了200 Gbps InfiniBand (IB)、可为高性能工作负载提供完全基于IB的架构。</block>
   <block id="8c2de6dc6972aa428c25b73867ee0c6c" category="inline-link-macro">采用NVIDIA DGX A100系统和BeeGFS的NetApp EF系列AI</block>
@@ -527,10 +525,7 @@
   <block id="908463015e2671e9d90b06353dabae03" category="list-text">使用PDU关闭其中一个InfiniBand交换机。所有测试均在压力测试期间执行、并在BeeGFS客户端上设置了`ssysSessionChecksEnabled：false`参数。未发现I/O错误或中断。</block>
   <block id="c49182dc0c7a70b9cd2e10853d9ec6c7" category="inline-link">ChangeLog</block>
   <block id="788a9659515e495b379621cac9040872" category="admonition">存在一个已知的问题描述 (请参见<block ref="9892b1a82a523d642c4ee2c76b765b8b" category="inline-link-rx"></block>)当BeeGFS客户端/服务器RDMA连接因主接口丢失(如`connInterfacesFile`中所定义)或BeeGFS服务器发生故障而意外中断时、活动客户端I/O可能会挂起多达十分钟、然后才能恢复。如果BeeGFS节点已妥善置于待机状态和待机状态并处于待机状态以进行计划内维护、或者正在使用TCP、则不会发生此问题描述。</block>
-  <block id="ef29a84d0e122a31e14cc52355c22e38" category="section-title">NVIDIA DGX A100 SuperPOD验证</block>
-  <block id="58fa2cee68a993e221880ffe97da71f2" category="paragraph">NetApp使用一个类似的BeeGFS文件系统验证了用于NVIDIA DGX A100 SuperPOD的存储解决方案 、该文件系统由三个组件组成、并应用了元数据和存储配置文件。资格认定工作涉及使用20台DGX A100 GPU服务器测试此NVA所述的解决方案 、这些服务器运行各种存储、机器学习和深度学习基准。</block>
   <block id="7c6326491c77a63417df94790ba07083" category="inline-link">采用NetApp技术的NVIDIA DGX SuperPOD</block>
-  <block id="a052609b770f866df8a166dd868a3fd3" category="paragraph">有关详细信息，请参见<block ref="917e0b817a1bc5579c3d00c8de7a0790" category="inline-link-rx"></block>。</block>
   <block id="2bf773d42bef6909b232e854a16b3ec1" category="summary">将Pacemaker和Corosync配置为扩展到五个组件以上。</block>
   <block id="22892d2f5bfdfba001a02572258cca62" category="doc">扩展到五个组件以上</block>
   <block id="cfd24c157d6cd9f200eb8c3cf68ee7ed" category="paragraph">您可以将Pacemaker和Corosync配置为扩展到五个组件(10个文件节点)以上。但是、较大的集群存在一些缺点、最终、Pacemaker和Corosync最多会占用32个节点。</block>
@@ -1077,4 +1072,10 @@
   <block id="5d6f0f2ec8814a4c4e63b18ea908577b" category="sidebar">配置BeeGFS客户端</block>
   <block id="ba13e086fe19056a379b6240e05651a8" category="sidebar">TR-4915—使用E系列和BeeGFS进行数据移动以实现AI</block>
   <block id="bc893b2686532fc683cb056beffd08aa" category="cell">驱动器大小(10+2 RAID 6)存储卷组</block>
+  <block id="132789d9474eae064aef2cd5266138d8" category="section-title">NVIDIA DGX A100 SuperPOD和BasePOD验证</block>
+  <block id="d88f3188efb434f39b922170592443b5" category="paragraph">NetApp使用一个类似的BeeGFS文件系统验证了用于NVIDIA DGX A100 SuperPOD的存储解决方案 、该文件系统由三个组件组成、并应用了元数据和存储配置文件。资格认定工作涉及使用20台DGX A100 GPU服务器测试此NVA所述的解决方案 、这些服务器运行各种存储、机器学习和深度学习基准。经认证可在NVIDIA DGX A100 SuperPOD中使用的所有存储也会自动通过认证、可在NVIDIA BasePOD架构中使用。</block>
+  <block id="64dc43320ec1a44c390fafb5e2408f4b" category="inline-link">NVIDIA DGX基本POD</block>
+  <block id="33d753992c8525a016e60650889ef7a9" category="paragraph">有关详细信息，请参见<block ref="917e0b817a1bc5579c3d00c8de7a0790" category="inline-link-rx"></block> 和<block ref="d4d49ddfca3de3daecdc231399362db8" category="inline-link-rx"></block>。</block>
+  <block id="e79ef600cb60c3e821f1cef23dcb17c1" category="list-text">NVIDIA DGX A100 SuperPOD和NVIDIA BasePOD架构的外部认证</block>
+  <block id="1e5b7e91f7684d1e82eca499bd3e9f00" category="paragraph">基于NetApp的第二代BeeGFS经过优化、可满足高性能计算(HPC)和HPC模式机器学习(ML)、深度学习(DL)以及类似人工智能(AI)技术等苛刻工作负载的性能要求。通过整合共享磁盘高可用性(HA)架构、NetApp解决方案 上的BeeGFS还可以满足企业和其他组织在寻找可扩展的存储以适应其工作负载和使用情形时无法承受停机或数据丢失的需求。此解决方案 不仅已通过NetApp的验证、还通过了外部认证、作为NVIDIA DGX SuperPOD和DGX BasePOD的存储选项。</block>
 </blocks>

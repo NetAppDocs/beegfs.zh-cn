@@ -131,8 +131,8 @@ NOTE: 存在一个已知的问题描述 (请参见 https://github.com/netappeser
 
 
 
-== NVIDIA DGX A100 SuperPOD验证
+== NVIDIA DGX A100 SuperPOD和BasePOD验证
 
-NetApp使用一个类似的BeeGFS文件系统验证了用于NVIDIA DGX A100 SuperPOD的存储解决方案 、该文件系统由三个组件组成、并应用了元数据和存储配置文件。资格认定工作涉及使用20台DGX A100 GPU服务器测试此NVA所述的解决方案 、这些服务器运行各种存储、机器学习和深度学习基准。
+NetApp使用一个类似的BeeGFS文件系统验证了用于NVIDIA DGX A100 SuperPOD的存储解决方案 、该文件系统由三个组件组成、并应用了元数据和存储配置文件。资格认定工作涉及使用20台DGX A100 GPU服务器测试此NVA所述的解决方案 、这些服务器运行各种存储、机器学习和深度学习基准。经认证可在NVIDIA DGX A100 SuperPOD中使用的所有存储也会自动通过认证、可在NVIDIA BasePOD架构中使用。
 
-有关详细信息，请参见 https://www.netapp.com/pdf.html?item=/media/72718-nva-1167-DESIGN.pdf["采用NetApp技术的NVIDIA DGX SuperPOD"^]。
+有关详细信息，请参见 https://www.netapp.com/pdf.html?item=/media/72718-nva-1167-DESIGN.pdf["采用NetApp技术的NVIDIA DGX SuperPOD"^] 和 https://www.nvidia.com/en-us/data-center/dgx-basepod/["NVIDIA DGX基本POD"^]。

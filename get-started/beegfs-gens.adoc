@@ -20,14 +20,14 @@ NetApp解决方案 上的BeeGFS目前正处于第二代设计阶段。
 
 * 将性能和容量提高一倍、同时仅添加2U机架空间
 * 高可用性(High Availability、HA)基于共享磁盘的两层硬件设计
-* NVIDIA DGX A100 SuperPOD的外部资格认证
+* NVIDIA DGX A100 SuperPOD和NVIDIA BasePOD架构的外部认证
 
 
 
 
 == 第二代设计
 
-基于NetApp的第二代BeeGFS经过优化、可满足高性能计算(HPC)和HPC模式机器学习(ML)、深度学习(DL)以及类似人工智能(AI)技术等苛刻工作负载的性能要求。通过整合共享磁盘高可用性(HA)架构、NetApp解决方案 上的BeeGFS还可以满足企业和其他组织在寻找可扩展的存储以适应其工作负载和使用情形时无法承受停机或数据丢失的需求。此解决方案 不仅已通过NetApp的验证、还通过了外部认证、作为NVIDIA DGX SuperPOD的存储选项。
+基于NetApp的第二代BeeGFS经过优化、可满足高性能计算(HPC)和HPC模式机器学习(ML)、深度学习(DL)以及类似人工智能(AI)技术等苛刻工作负载的性能要求。通过整合共享磁盘高可用性(HA)架构、NetApp解决方案 上的BeeGFS还可以满足企业和其他组织在寻找可扩展的存储以适应其工作负载和使用情形时无法承受停机或数据丢失的需求。此解决方案 不仅已通过NetApp的验证、还通过了外部认证、作为NVIDIA DGX SuperPOD和DGX BasePOD的存储选项。
 
 
 
