@@ -52,7 +52,7 @@ summary: 要定义文件和块节点的配置、请创建一个Ansible清单、�
 
 . 在`host_vars/`下、为名为`<HOSTNAME>.yml`的每个BeeGFS文件节点创建一个文件、其中包含以下内容、请特别注意有关BeeGFS集群IP和以奇数与偶数结尾的主机名要填充的内容的注释。
 +
-最初、文件节点接口名称与此处列出的名称匹配(例如ib0或ibs1f0)。这些自定义名称在中进行配置  4: Define configuration that should apply to all file nodes。
+最初、文件节点接口名称与此处列出的名称匹配(例如ib0或ibs1f0)。这些自定义名称在中进行配置 <<第4步：定义应应用于所有文件节点的配置>>。
 
 +
 ....
@@ -146,10 +146,12 @@ eseries_controller_nvme_ib_port:
 
 您可以使用与组对应的文件名在`group_vars`下定义一组主机的通用配置。这样可以防止在多个位置重复使用共享配置。
 
+.关于此任务
 主机可以位于多个组中、运行时、Ansible会根据特定主机的可变优先级规则选择哪些变量适用于该主机。(有关这些规则的详细信息、请参见的Ansible文档 https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html["使用变量"^]）
 
 主机到组分配在实际可Ansible清单文件中进行定义、该文件在该操作步骤 接近末尾时创建。
 
+.步骤
 在Ansible中、可以在名为`All`的组中定义要应用于所有主机的任何配置。使用以下内容创建文件`group_vars/all.yml`：
 
 ....

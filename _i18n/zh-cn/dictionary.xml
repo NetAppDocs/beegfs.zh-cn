@@ -1078,4 +1078,15 @@
   <block id="33d753992c8525a016e60650889ef7a9" category="paragraph">有关详细信息，请参见<block ref="917e0b817a1bc5579c3d00c8de7a0790" category="inline-link-rx"></block> 和<block ref="d4d49ddfca3de3daecdc231399362db8" category="inline-link-rx"></block>。</block>
   <block id="e79ef600cb60c3e821f1cef23dcb17c1" category="list-text">NVIDIA DGX A100 SuperPOD和NVIDIA BasePOD架构的外部认证</block>
   <block id="1e5b7e91f7684d1e82eca499bd3e9f00" category="paragraph">基于NetApp的第二代BeeGFS经过优化、可满足高性能计算(HPC)和HPC模式机器学习(ML)、深度学习(DL)以及类似人工智能(AI)技术等苛刻工作负载的性能要求。通过整合共享磁盘高可用性(HA)架构、NetApp解决方案 上的BeeGFS还可以满足企业和其他组织在寻找可扩展的存储以适应其工作负载和使用情形时无法承受停机或数据丢失的需求。此解决方案 不仅已通过NetApp的验证、还通过了外部认证、作为NVIDIA DGX SuperPOD和DGX BasePOD的存储选项。</block>
+  <block id="53c31a8ba69af9d096629948d271d34d" category="paragraph-title">布线以利用带宽</block>
+  <block id="bbe48fb854ea022537208eeeff822f91" category="paragraph-title">关于此任务</block>
+  <block id="48c7c41b72e1d678923ce3571aa65b2d" category="paragraph-title">步骤</block>
+  <block id="015dd422187100bd2a53cae756db5bcd" category="paragraph-title">一个BeeGFS基础(管理、元数据和存储)组件</block>
+  <block id="2eb32f267ab2864aa50a3171522c1574" category="paragraph-title">BeeGFS元数据+存储组件</block>
+  <block id="2cf619569e1d3422599fa7ba3fff04f2" category="paragraph-title">BeeGFS纯存储组件</block>
+  <block id="9443a11095bad63a50d95ece24842fb2" category="paragraph-title">三个BeeGFS组件</block>
+  <block id="3c793d71f0d81892f28ab10f661381c8" category="paragraph-title">一个BeeGFS元数据+存储组件</block>
+  <block id="94c5de0e8c5b79f8b061a00a2d638234" category="paragraph-title">两个BeeGFS元数据+存储组件</block>
+  <block id="aa00436c66c8456a1c9ef0a12178a4ab" category="paragraph-title">子网A：100.127.0.0/16</block>
+  <block id="079e5887eeb92f6f17c9fa25fd464e2a" category="paragraph-title">子网B：100.128.0.0/16</block>
 </blocks>

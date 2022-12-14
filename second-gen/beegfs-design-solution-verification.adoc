@@ -54,18 +54,22 @@ IOR带宽测试使用OpenMPI运行合成I/O生成器工具IOR的并行作业(可
 ....
 mpirun --allow-run-as-root --mca btl tcp -np 48 -map-by node -hostfile 10xnodes ior -b 1024k --posix.odirect -e -t 1024k -s 54613 -z -C -F -E -k
 ....
+.一个BeeGFS基础(管理、元数据和存储)组件
 下图显示了一个BeeGFS基础(管理、元数据和存储)组件的IOR测试结果。
 
 image:beegfs-design-image13.png[""]
 
+.BeeGFS元数据+存储组件
 下图显示了一个BeeGFS元数据+存储组件的IOR测试结果。
 
 image:beegfs-design-image14.png[""]
 
+.BeeGFS纯存储组件
 下图显示了一个BeeGFS纯存储组件的IOR测试结果。
 
 image:beegfs-design-image15.png[""]
 
+.三个BeeGFS组件
 下图显示了三个BeeGFS组件的IOR测试结果。
 
 image:beegfs-design-image16.png[""]
@@ -104,10 +108,12 @@ mpirun -h 10xnodes –map-by node np $processes mdtest -e 4k -w 4k -i 3 -I 16 -z
 ....
 元数据性能首先使用一到两个元数据+存储组件进行衡量、以显示性能如何通过添加更多组件进行扩展。
 
+.一个BeeGFS元数据+存储组件
 下图显示了一个BeeGFS元数据+存储组件的MDTest结果。
 
 image:beegfs-design-image18.png[""]
 
+.两个BeeGFS元数据+存储组件
 下图显示了包含两个BeeGFS元数据+存储组件的MDTest结果。
 
 image:beegfs-design-image19.png[""]
