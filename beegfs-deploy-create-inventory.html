@@ -828,7 +828,7 @@
 <p class="page-details">
   
     
-    <time datetime="2022-09-18 20:17:38 +0000">09/18/2022</time>
+    <time datetime="2022-12-14 18:21:32 +0000">12/14/2022</time>
     
   
 
@@ -898,7 +898,7 @@
 <li>
 <p>在`host_vars/<code>下、为名为</code>&lt;HOSTNAME&gt;.yml`的每个BeeGFS文件节点创建一个文件、其中包含以下内容、请特别注意有关BeeGFS集群IP和以奇数与偶数结尾的主机名要填充的内容的注释。</p>
 <div class="paragraph">
-<p>最初、文件节点接口名称与此处列出的名称匹配(例如ib0或ibs1f0)。这些自定义名称在中进行配置  4: Define configuration that should apply to all file nodes。</p>
+<p>最初、文件节点接口名称与此处列出的名称匹配(例如ib0或ibs1f0)。这些自定义名称在中进行配置 <a href="#第4步：定义应应用于所有文件节点的配置">[第4步：定义应应用于所有文件节点的配置]</a>。</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -1008,12 +1008,14 @@ eseries_controller_nvme_ib_port:
 <p>您可以使用与组对应的文件名在`group_vars`下定义一组主机的通用配置。这样可以防止在多个位置重复使用共享配置。</p>
 </div>
 <div class="paragraph">
+<div class="title">关于此任务</div>
 <p>主机可以位于多个组中、运行时、Ansible会根据特定主机的可变优先级规则选择哪些变量适用于该主机。(有关这些规则的详细信息、请参见的Ansible文档 <a href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html" target="_blank" rel="noopener">"使用变量"</a>）</p>
 </div>
 <div class="paragraph">
 <p>主机到组分配在实际可Ansible清单文件中进行定义、该文件在该操作步骤 接近末尾时创建。</p>
 </div>
 <div class="paragraph">
+<div class="title">步骤</div>
 <p>在Ansible中、可以在名为`All`的组中定义要应用于所有主机的任何配置。使用以下内容创建文件`group_vars/all.yml`：</p>
 </div>
 <div class="literalblock">
