@@ -1,0 +1,55 @@
+---
+sidebar: sidebar 
+permalink: beegfs-design-high-capacity-building-block.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600, EF300, HDD, Expansion 
+summary: 高容量组件的设计变体。 
+---
+= 高容量组件
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+标准BeeGFS解决方案 设计充分考虑了高性能工作负载。寻求高容量使用情形的客户应观察此处所述的设计和性能特征的差异。
+
+
+
+== 硬件和软件配置
+
+高容量组件的硬件和软件配置是标准配置、但EF600控制器应更换为EF300控制器、并可选择在1到7个IOM扩展托盘之间连接、每个存储阵列使用60个驱动器。每个组件总共有2到14个扩展托盘。
+
+部署高容量构建块设计的客户可能仅使用基础构建块模式配置、该配置包含每个节点的BeeGFS管理、元数据和存储服务。为了节省成本、高容量存储节点应在EF300控制器机箱中的NVMe驱动器上配置元数据卷、并为扩展托盘中的NL-SAS驱动器配置存储卷。
+
+image:high-capacity-rack-diagram.png[""]
+
+
+
+== 规模估算准则
+
+这些规模估算准则假定高容量组件在基础EF300机箱中配置了一个2+2 NVMe SSD卷组用于元数据、并在每个IOM扩展托盘中配置了6个8+2 NL-SAS卷组用于存储。
+
+|===
+| 驱动器大小(容量HDD) | 每个BB的容量(1个托盘) | 每个BB的容量(2个托盘) | 每个BB的容量(3个托盘) | 每个BB的容量(4个托盘) 
+
+
+| 4 TB | 439 TB | 878 TB | 1317 TB | 1756 TB 
+
+
+| 8 TB | 878 TB | 1756 TB | 2634 TB | 3512 TB 
+
+
+| 10 TB | 1097 TB | 2195 TB | 3292 TB | 4390 TB 
+
+
+| 12 TB | 1317 TB | 2634 TB | 3951 TB | 5268 TB 
+
+
+| 16 TB | 1756 TB | 3512 TB | 5268 TB | 7024 TB 
+
+
+| 18 TB | 1975-TB | 3951 TB | 5927 TB | 7902 TB 
+|===

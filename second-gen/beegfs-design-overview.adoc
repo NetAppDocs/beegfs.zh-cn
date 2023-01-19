@@ -24,3 +24,8 @@ summary: 要支持NetApp解决方案 上的BeeGFS、需要使用特定的设备�
 * link:beegfs-design-solution-sizing-guidelines.html["规模估算准则"]
 * link:beegfs-design-performance-tuning.html["性能调整"]
 
+
+设计和性能各不相同的衍生架构：
+
+* link:beegfs-design-high-capacity-building-block.html["高容量组件"]
+

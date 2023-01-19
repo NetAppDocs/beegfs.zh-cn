@@ -71,3 +71,8 @@ NOTE: 由于在NetApp解决方案 上部署BeeGFS涉及许多步骤、因此NetA
 
 
 NOTE: 部署过程包括几个示例、其中需要将文本复制到文件。请密切注意对于任何应针对特定部署进行修改或可修改的内容、任何以"#"或"/"字符表示的实时注释。例如：`beegfs_ha_ntp_server_pools：# This is an example of a comment！-"pool 0.pool.ntp.org iBurst maxsources 3"-"pool 1.pool.ntp.org iBurst maxsources 3"`
+
+部署建议各不相同的衍生架构：
+
+* link:beegfs-design-high-capacity-building-block.html["高容量组件"]
+

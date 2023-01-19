@@ -1,0 +1,43 @@
+---
+sidebar: sidebar 
+permalink: beegfs-deploy-high-capacity-building-block.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600, EF300, HDD, Expansion 
+summary: 高容量组件的部署变体。 
+---
+= 高容量组件
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+标准BeeGFS解决方案 部署指南概述了满足高性能工作负载要求的过程和建议。希望满足高容量要求的客户应观察此处所述的不同部署和建议。
+
+image:high-capacity-rack-diagram.png[""]
+
+
+
+== 控制器
+
+对于高容量组件、EF600控制器应更换为EF300控制器、每个控制器都安装有一个级联HIC、用于SAS扩展。每个块节点将在阵列机箱中为BeeGFS元数据存储填充最少数量的NVMe SSD、并将其连接到为BeeGFS存储卷填充NL-SAS HDD的扩展架。
+
+文件节点到块节点的配置保持不变。
+
+
+
+== 驱动器放置
+
+每个块节点至少需要4个NVMe SSD才能存储BeeGFS元数据。这些驱动器应放置在机箱最外侧的插槽中。
+
+image:high-capacity-drive-slots-diagram.png[""]
+
+
+
+== 扩展托盘
+
+高容量组件的大小可以为每个存储阵列配备1到7个60个驱动器扩展托盘。
+
+有关为每个扩展托盘布线的说明、 link:https://docs.netapp.com/us-en/e-series/install-hw-cabling/driveshelf-cable-task.html#cabling-ef300^["有关驱动器架的信息、请参见EF300布线"]。
