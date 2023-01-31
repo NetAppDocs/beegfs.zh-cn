@@ -1,0 +1,83 @@
+---
+sidebar: sidebar 
+permalink: custom-architectures-plan-file-system.html 
+keywords: BeeGFS on NetApp, NetApp Custom Architectures, EF600 
+summary: 在构建Ansible清单之前规划文件系统部署。 
+---
+= 规划文件系统
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+在构建Ansible清单之前规划文件系统部署。
+
+
+
+== 概述
+
+在部署文件系统之前、您应定义集群中运行的所有文件节点、块节点和BeeGFS服务需要哪些IP地址、端口和其他配置。虽然具体配置会因集群架构而异、但本节定义了一般适用的最佳实践和应遵循的步骤。
+
+
+
+== 步骤
+
+. 如果您使用基于IP的存储协议(例如iSER、iSCSI、NVMe/IB或NVMe/RoCE)将文件节点连接到块节点、请为每个组件填写以下工作表。一个构建块中的每个直接连接都应具有一个唯一的子网、并且不应与用于客户端-服务器连接的子网重叠。
++
+|===
+
+
+| 文件节点 | IB端口 | IP 地址 | 块节点 | IB端口 | 物理IP | 虚拟IP (仅适用于具有HDR IB的EF600) 
+
+
+| <HOSTNAME> | <PORT> | <IP/SUBNET> | <HOSTNAME> | <PORT> | <IP/SUBNET> | <IP/SUBNET> 
+|===
++
+
+NOTE: 如果每个构建块中的文件和块节点直接连接、您通常可以对多个构建块重复使用相同的IP/方案。
+
+. 无论您是在存储网络中使用InfiniBand还是基于融合以太网的RDMA (RoCE)、请填写以下工作表以确定将用于HA集群服务、BeeGFS文件服务和客户端进行通信的IP范围：
++
+|===
+| 目的 | InfiniBand端口 | IP地址或范围 
+
+
+| BeeGFS集群IP | <INTERFACE(s)> | <RANGE> 
+
+
+| BeeGFS管理 | <INTERFACE(s)> | <IP(s)> 
+
+
+| BeeGFS元数据 | <INTERFACE(s)> | <RANGE> 
+
+
+| BeeGFS存储 | <INTERFACE(s)> | <RANGE> 
+
+
+| BeeGFS客户端 | <INTERFACE(s)> | <RANGE> 
+|===
++
+.. 如果您使用的是一个IP子网、则只需要一个工作表、否则还需要填写第二个子网的工作表。
+
+
+. 根据上述内容、为集群中的每个组件填写以下工作表、以定义要运行的BeeGFS服务。对于每个服务、请指定首选/二级文件节点、网络端口、浮动IP、NUMA分区分配(如果需要)以及要用于其目标的块节点。填写工作表时、请参见以下准则：
++
+.. 将BeeGFS服务指定为 `mgmt.yml`， `meta_<ID>.yml`或 `storage_<ID>.yml` 其中ID表示此文件系统中此类型的所有BeeGFS服务的唯一编号。此约定将简化在创建用于配置每个服务的文件时在后续章节中引用此工作表的过程。
+.. 用于BeeGFS服务的端口只需在特定组件中是唯一的。确保具有相同端口号的服务不能在同一文件节点上运行、以避免端口冲突。
+.. 如果需要、服务可以使用多个块节点和/或存储池中的卷(并非所有卷都需要归同一控制器所有)。多个服务也可以共享同一个块节点和/或存储池配置(各个卷将在后面的章节中进行定义)。
++
+|===
+| BeeGFS服务(文件名) | 文件节点 | Port | 浮动IP | NUMA区域 | 块节点 | 存储池 | 所属控制器 
+
+
+| <SERVICE TYPE> <ID> | <PREFERRED FILE NODE> <SECONDARY FILE NODE(s)> | <PORT> | <INTERFACE> ：<IP/SUBNET> <INTERFACE> ：<IP/SUBNET> | <NUMA NODE/ZONE> | <BLOCK NODE> | <STORAGE POOL/VOLUME GROUP> | <A OR B> 
+|===
+
+
+
+
+有关标准约定、最佳实践以及填写的示例工作表的详细信息、请参见 link:beegfs-deploy-bestpractice.html["最佳实践"^] 和 link:beegfs-deploy-define-inventory.html["定义BeeGFS组件"^] BeeGFS中有关NetApp经验证的架构的章节。

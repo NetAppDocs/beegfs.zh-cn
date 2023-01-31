@@ -1,0 +1,108 @@
+---
+sidebar: sidebar 
+permalink: custom-architectures-inventory-common-block-node-configuration.html 
+keywords: BeeGFS on NetApp, NetApp Custom Architectures, EF600 
+summary: '使用组变量(group_vars)指定通用块节点配置。' 
+---
+= 指定通用块节点配置
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+使用组变量(group_vars)指定通用块节点配置。
+
+
+
+== 概述
+
+应通过定义适用于所有块节点的配置 `group_vars/eseries_storage_systems.yml`。通常包括：
+
+* 有关Ansible控制节点应如何连接到用作块节点的E系列存储系统的详细信息。
+* 节点应运行的固件、NVSRAM和驱动器固件版本。
+* 全局配置、包括缓存设置、主机配置以及应如何配置卷的设置。
+
+
+
+NOTE: 此外、还可以在各个块节点上定义此文件中设置的选项、例如、如果使用的是混合硬件型号、或者每个节点的密码不同。单个块节点上的配置将优先于此文件中的配置。
+
+
+
+== 步骤
+
+创建文件 `group_vars/eseries_storage_systems.yml` 并按如下所示进行填充：
+
+. Ansible不使用SSH连接到块节点、而是使用REST API。为此、我们必须设置：
++
+[source, yaml]
+----
+ansible_connection: local
+----
+. 指定用于管理每个节点的用户名和密码。用户名可以选择省略(并默认为admin)、否则您可以指定具有管理员权限的任何帐户。此外、还应指定是验证SSL证书还是忽略SSL证书：
++
+[source, yaml]
+----
+eseries_system_username: admin
+eseries_system_password: <PASSWORD>
+eseries_validate_certs: false
+----
++
+
+WARNING: 不建议以纯文本格式列出任何密码。使用Ansible存储或提供 `eseries_system_password` 使用-extra vars运行Ansible时。
+
+. 也可以指定应在节点上安装的控制器固件、NVSRAM和驱动器固件。需要将这些文件下载到 `packages/` 目录、然后运行Ansible。可以下载E系列控制器固件和NVSRAM link:https://mysupport.netapp.com/site/products/all/details/eseries-santricityos/downloads-tab/["此处"^] 和驱动器固件 link:https://mysupport.netapp.com/site/downloads/firmware/e-series-disk-firmware["此处"^]：
++
+[source, yaml]
+----
+eseries_firmware_firmware: "packages/<FILENAME>.dlp" # Ex. "packages/RCB_11.70.2_6000_61b1131d.dlp"
+eseries_firmware_nvsram: "packages/<FILENAME>.dlp" # Ex. "packages/N6000-872834-D06.dlp"
+eseries_drive_firmware_firmware_list:
+  - "packages/<FILENAME>.dlp"
+  # Additional firmware versions as needed.
+eseries_drive_firmware_upgrade_drives_online: true # Recommended unless BeeGFS hasn't been deployed yet, as it will disrupt host access if set to "false".
+----
++
+
+WARNING: 如果指定了此配置、Ansible将自动更新所有固件、包括重新启动控制器(如有必要)、而不会出现其他提示。这对BeeGFS/主机I/O预期不会造成中断、但发生原因 性能可能会暂时下降。
+
+. 调整全局系统配置默认值。此处列出的选项和值通常建议用于NetApp上的BeeGFS、但可以根据需要进行调整：
++
+[source, yaml]
+----
+eseries_system_cache_block_size: 32768
+eseries_system_cache_flush_threshold: 80
+eseries_system_default_host_type: linux dm-mp
+eseries_system_autoload_balance: disabled
+eseries_system_host_connectivity_reporting: disabled
+eseries_system_controller_shelf_id: 99 # Required by default.
+----
+. 配置全局卷配置默认值。此处列出的选项和值通常建议用于NetApp上的BeeGFS、但可以根据需要进行调整：
++
+[source, yaml]
+----
+eseries_volume_size_unit: pct # Required by default. This allows volume capacities to be specified as a percentage, simplifying putting together the inventory.
+eseries_volume_read_cache_enable: true
+eseries_volume_read_ahead_enable: false
+eseries_volume_write_cache_enable: true
+eseries_volume_write_cache_mirror_enable: true
+eseries_volume_cache_without_batteries: false
+----
+. 如果需要、请根据以下最佳实践调整Ansible为存储池和卷组选择驱动器的顺序：
++
+.. 列出应首先用于管理和/或元数据卷、最后用于存储卷的任何(可能较小)驱动器。
+.. 确保根据磁盘架/驱动器机箱型号在可用驱动器通道之间平衡驱动器选择顺序。例如、如果使用EF600且不进行扩展、则驱动器0-11位于驱动器通道1上、驱动器12-23位于驱动器通道上。因此、要选择一种平衡驱动器选择的策略 `disk shelf:drive` 99：0、99：23、99：1、99：22等如果存在多个机箱、则第一个数字表示驱动器架ID。
++
+[source, yaml]
+----
+# Optimal/recommended order for the EF600 (no expansion):
+eseries_storage_pool_usable_drives: "99:0,99:23,99:1,99:22,99:2,99:21,99:3,99:20,99:4,99:19,99:5,99:18,99:6,99:17,99:7,99:16,99:8,99:15,99:9,99:14,99:10,99:13,99:11,99:12"
+----
+
+
+
+
+单击 link:https://github.com/netappeseries/beegfs/blob/master/getting_started/beegfs_on_netapp/gen2/group_vars/eseries_storage_systems.yml["此处"^] 有关表示通用块节点配置的完整清单文件的示例。

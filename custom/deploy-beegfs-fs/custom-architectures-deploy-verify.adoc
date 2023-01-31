@@ -1,0 +1,58 @@
+---
+sidebar: sidebar 
+permalink: custom-architectures-deploy-verify.html 
+keywords: BeeGFS on NetApp, NetApp Custom Architectures, EF600 
+summary: 在将系统投入生产之前、请验证文件系统部署。 
+---
+= 验证BeeGFS部署
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+在将系统投入生产之前、请验证文件系统部署。
+
+
+
+== 概述
+
+在将BeeGFS文件系统投入生产之前、请执行一些验证检查。
+
+
+
+=== 步骤
+
+. 登录到任何客户端并运行以下命令、以确保所有预期节点均存在/可访问、并且未报告任何不一致或其他问题：
++
+[source, bash]
+----
+beegfs-fsck --checkfs
+----
+. 关闭整个集群、然后重新启动它。从任何文件节点运行以下命令：
++
+[source, bash]
+----
+pcs cluster stop --all # Stop the cluster on all file nodes.
+pcs cluster start --all  # Start the cluster on all file nodes.
+pcs status # Verify all nodes and services are started and no failures are reported (the command may need to be reran a few times to allow time for all services to start).
+----
+. 将每个节点置于备用状态、并验证BeeGFS服务是否能够故障转移到二级节点。要登录到任何文件节点并运行以下命令：
++
+[source, bash]
+----
+pcs status # Verify the cluster is healthy at the start.
+pcs node standby <FILE NODE HOSTNAME> # Place the node under test in standby.
+pcs status # Verify services are started on a secondary node and no failures are reported.
+pcs node unstandby <FILE NODE HOSTNAME> # Take the node under test out of standby.
+pcs status # Verify the file node is back online and no failures are reported.
+pcs resource relocate run # Move all services back to their preferred nodes.
+pcs status # Verify services have moved back to the preferred node.
+----
+. 使用IOR和MDTest等性能基准测试工具验证文件系统性能是否满足预期。有关BeeGFS使用的常见测试和参数的示例、请参见 link:/beegfs-design-solution-verification.html["设计验证"^] BeeGFS中有关NetApp经验证的架构的章节。
+
+
+应根据为特定站点/安装定义的验收标准执行其他测试。

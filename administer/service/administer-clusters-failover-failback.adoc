@@ -1,0 +1,145 @@
+---
+sidebar: sidebar 
+permalink: administer-clusters-failover-failback.html 
+keywords: BeeGFS on NetApp, HA, Cluster, Administration, failover, failback, recovery 
+summary: 在集群节点之间移动BeeGFS服务。 
+---
+= 故障转移和故障恢复服务
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+在集群节点之间移动BeeGFS服务。
+
+
+
+== 概述
+
+BeeGFS服务可以在集群中的节点之间进行故障转移、以确保客户端能够在节点发生故障或您需要执行计划内维护时继续访问文件系统。本节介绍管理员在从故障中恢复后修复集群或在节点之间手动移动服务的各种方法。
+
+
+
+== 步骤
+
+
+
+=== 故障转移和故障恢复
+
+
+
+==== 故障转移(计划内)
+
+通常、当您需要使单个文件节点脱机进行维护时、您需要从该节点移动(或消耗)所有BeeGFS服务。要实现此目的、可以先将节点置于备用状态：
+
+`pcs node standby <HOSTNAME>`
+
+验证后使用 `pcs status` 已在备用文件节点上重新启动所有资源、您可以根据需要关闭此节点或对其进行其他更改。
+
+
+
+==== 故障恢复(计划内故障转移之后)
+
+准备好先将BeeGFS服务还原到首选节点时、请先运行 `pcs status` 并在"节点列表"中验证状态是否为备用。如果节点已重新启动、它将显示脱机、直到您使集群服务联机为止：
+
+[source, console]
+----
+pcs cluster start <HOSTNAME>
+----
+节点联机后、使用以下命令将其置于备用状态：
+
+[source, console]
+----
+pcs cluster node unstandby <HOSTNAME>
+----
+最后、使用以下命令将所有BeeGFS服务重新定位回其首选节点：
+
+[source, console]
+----
+pcs resource relocate run
+----
+
+
+==== 故障恢复(计划外故障转移之后)
+
+如果节点发生硬件或其他故障、HA集群应自动做出响应并将其服务移动到运行正常的节点、以便管理员有时间采取更正操作。在继续操作之前、请参考 link:administer-clusters-troubleshoot.html["故障排除"^] 第节确定故障转移的发生原因 并解决任何未解决的问题。在节点重新启动并运行正常后、您可以继续执行故障恢复。
+
+如果节点在计划外(或计划内)重新启动后启动、则集群服务不会设置为自动启动、因此您首先需要使用以下命令使节点联机：
+
+[source, console]
+----
+pcs cluster start <HOSTNAME>
+----
+接下来、清理任何资源故障并重置节点的隔离历史记录：
+
+[source, console]
+----
+pcs resource cleanup node=<HOSTNAME>
+pcs stonith history cleanup <HOSTNAME>
+----
+在中验证 `pcs status` 节点已联机且运行状况良好。默认情况下、BeeGFS服务不会自动进行故障恢复、以避免意外将资源移回运行状况不正常的节点。准备好后、使用以下命令将集群中的所有资源返回到其首选节点：
+
+[source, console]
+----
+pcs resource relocate run
+----
+
+
+=== 将单个BeeGFS服务移动到备用文件节点
+
+
+
+==== 将BeeGFS服务永久移动到新文件节点
+
+如果要永久更改单个BeeGFS服务的首选文件节点、请调整Ansible清单、以便首先列出首选节点、然后重新运行Ansible攻略手册。
+
+例如、在此示例中 `inventory.yml` file、ictad22h01是运行BeeGFS管理服务的首选文件节点：
+
+[source, yaml]
+----
+        mgmt:
+          hosts:
+            ictad22h01:
+            ictad22h02:
+----
+反转顺序将使ictad22h02上的管理服务成为首选发生原因 ：
+
+[source, yaml]
+----
+        mgmt:
+          hosts:
+            ictad22h02:
+            ictad22h01:
+----
+
+
+==== 临时将BeeGFS服务移动到备用文件节点
+
+通常、如果某个节点正在进行维护、您需要使用[故障转移和故障恢复步骤](#故障转移和故障恢复)将所有服务从该节点移出。
+
+如果出于某种原因需要将单个服务移动到其他文件节点、请运行：
+
+[source, console]
+----
+pcs resource move <SERVICE>-monitor <HOSTNAME>
+----
+
+WARNING: 请勿指定单个资源或资源组。请始终为要重新定位的BeeGFS服务指定监控器的名称。例如、要将BeeGFS管理服务移动到ictad22h02、请运行： `pcs resource move mgmt-monitor ictad22h02`。可以重复执行此过程、将一个或多个服务从其首选节点移出。使用进行验证 `pcs status` 服务已在新节点上重新定位/启动。
+
+要将BeeGFS服务移回其首选节点、请先清除临时资源限制(根据需要对多个服务重复此步骤)：
+
+[source, yaml]
+----
+pcs resource clear <SERVICE>-monitor
+----
+然后、在准备好将服务实际移回其首选节点时、运行：
+
+[source, yaml]
+----
+pcs resource relocate run
+----
+注意：此命令将重新定位不再具有临时资源限制的任何服务、而这些服务不位于其首选节点上。

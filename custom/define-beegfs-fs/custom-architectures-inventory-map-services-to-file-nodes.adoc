@@ -1,0 +1,70 @@
+---
+sidebar: sidebar 
+permalink: custom-architectures-inventory-map-services-to-file-nodes.html 
+keywords: BeeGFS on NetApp, NetApp Custom Architectures, EF600 
+summary: 使用inventory.yml文件指定哪些文件节点可以运行每个BeeGFS服务。 
+---
+= 将BeeGFS服务映射到文件节点
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+使用指定可以运行每个BeeGFS服务的文件节点 `inventory.yml` 文件
+
+
+
+== 概述
+
+本节将介绍如何创建 `inventory.yml` 文件其中包括列出所有块节点并指定可以运行每个BeeGFS服务的文件节点。
+
+
+
+== 步骤
+
+创建文件 `inventory.yml` 并按如下所示进行填充：
+
+. 从文件顶部、创建标准Ansible清单结构：
++
+[source, yaml]
+----
+# BeeGFS HA (High_Availability) cluster inventory.
+all:
+  children:
+----
+. 创建一个包含参与此HA集群的所有块节点的组：
++
+[source, yaml]
+----
+    # Ansible group representing all block nodes:
+    eseries_storage_systems:
+      hosts:
+        <BLOCK NODE HOSTNAME>:
+        <BLOCK NODE HOSTNAME>:
+        # Additional block nodes as needed.
+----
+. 创建一个组、其中包含集群中的所有BeeGFS服务以及要运行这些服务的文件节点：
++
+[source, yaml]
+----
+    # Ansible group representing all file nodes:
+    ha_cluster:
+      children:
+----
+. 对于集群中的每个BeeGFS服务、定义应运行该服务的首选文件节点和任何二级文件节点：
++
+[source, yaml]
+----
+        <SERVICE>: # Ex. "mgmt", "meta_01", or "stor_01".
+          hosts:
+            <FILE NODE HOSTNAME>:
+            <FILE NODE HOSTNAME>:
+            # Additional file nodes as needed.
+----
+
+
+单击 link:https://github.com/netappeseries/beegfs/blob/master/getting_started/beegfs_on_netapp/gen2/inventory.yml["此处"^] 有关完整清单文件的示例。

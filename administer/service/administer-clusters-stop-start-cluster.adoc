@@ -1,0 +1,56 @@
+---
+sidebar: sidebar 
+permalink: administer-clusters-stop-start-cluster.html 
+keywords: BeeGFS on NetApp, HA, Cluster, Administration, stop, start 
+summary: 正常停止和启动HA集群。 
+---
+= 停止并启动集群
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+正常停止和启动HA集群。
+
+
+
+== 概述
+
+本节介绍如何正常关闭和重新启动BeeGFS集群。可能需要执行此操作的示例场景包括电气维护或在数据中心或机架之间迁移。
+
+
+
+== 步骤
+
+如果出于任何原因需要停止整个BeeGFS集群并关闭、则会运行所有服务：
+
+[source, console]
+----
+pcs cluster stop --all
+----
+也可以在单个节点上停止集群(这将自动将服务故障转移到另一个节点)、但建议先将该节点置于备用状态(请参见 link:administer-clusters-failover-failback.html["故障转移"^] 部分)：
+
+[source, console]
+----
+pcs cluster stop <HOSTNAME>
+----
+要在所有节点上启动集群服务和资源、请运行：
+
+[source, console]
+----
+pcs cluster start --all
+----
+或使用以下命令在特定节点上启动服务：
+
+[source, console]
+----
+pcs cluster start <HOSTNAME>
+----
+此时、请运行 `pcs status` 并验证集群和BeeGFS服务是否已在所有节点上启动、以及服务是否正在预期节点上运行。
+
+
+TIP: 根据集群的大小、整个集群可能需要一段时间(秒到分钟)才能停止、或者显示已在中启动 `pcs status`。条件 `pcs cluster <COMMAND>` 挂起超过五分钟、然后运行Ctrl+C以取消命令、登录到集群中的每个节点并使用 `pcs status` 查看集群服务(CorosynC/Pacemaker)是否仍在该节点上运行。您可以从集群仍处于活动状态的任何节点上检查阻止集群的资源。手动输入问题描述 地址、然后命令应完成或可以重新运行以停止任何剩余服务。

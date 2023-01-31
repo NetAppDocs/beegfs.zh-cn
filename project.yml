@@ -17,62 +17,142 @@ sidebar:
       url: "/whats-included.html"
     - title: 术语和概念
       url: "/beegfs-terms.html"
-    - title: 设计代数
-      url: "/beegfs-gens.html"
-    - title: 解决方案概述
-      url: "/beegfs-solution-overview.html"
-    - title: 架构概述
-      url: "/beegfs-architecture-overview.html"
-    - title: 技术要求
-      url: "/beegfs-technology-requirements.html"
-  - title: 查看解决方案 设计
+  - title: 使用经验证的架构
     entries:
-    - title: 设计概述
-      url: "/beegfs-design-overview.html"
-    - title: 硬件配置
-      url: "/beegfs-design-hardware-architecture.html"
-    - title: 软件配置
-      url: "/beegfs-design-software-architecture.html"
-    - title: 设计验证
-      url: "/beegfs-design-solution-verification.html"
-    - title: 规模估算准则
-      url: "/beegfs-design-solution-sizing-guidelines.html"
-    - title: 性能调整
-      url: "/beegfs-design-performance-tuning.html"
-    - title: 高容量选项
-      url: "/beegfs-design-high-capacity-building-block.html"
-  - title: 部署解决方案
-    entries:
-    - title: 部署概述
-      url: "/beegfs-deploy-overview.html"
-    - title: 了解Ansible清单
-      url: "/beegfs-deploy-learn-ansible.html"
-    - title: 查看最佳实践
-      url: "/beegfs-deploy-bestpractice.html"
-    - title: 部署硬件
-      url: "/beegfs-deploy-hardware.html"
-    - title: 部署软件
+    - title: 概述和要求
       entries:
+      - title: 解决方案概述
+        url: "/beegfs-solution-overview.html"
+      - title: 设计代数
+        url: "/beegfs-gens.html"
+      - title: 架构概述
+        url: "/beegfs-architecture-overview.html"
+      - title: 技术要求
+        url: "/beegfs-technology-requirements.html"
+    - title: 查看解决方案 设计
+      entries:
+      - title: 设计概述
+        url: "/beegfs-design-overview.html"
+      - title: 硬件配置
+        url: "/beegfs-design-hardware-architecture.html"
+      - title: 软件配置
+        url: "/beegfs-design-software-architecture.html"
+      - title: 设计验证
+        url: "/beegfs-design-solution-verification.html"
+      - title: 规模估算准则
+        url: "/beegfs-design-solution-sizing-guidelines.html"
+      - title: 性能调整
+        url: "/beegfs-design-performance-tuning.html"
+      - title: 高容量选项
+        url: "/beegfs-design-high-capacity-building-block.html"
+    - title: 部署解决方案
+      entries:
+      - title: 部署概述
+        url: "/beegfs-deploy-overview.html"
+      - title: 了解Ansible清单
+        url: "/beegfs-deploy-learn-ansible.html"
+      - title: 查看最佳实践
+        url: "/beegfs-deploy-bestpractice.html"
+      - title: 部署硬件
+        url: "/beegfs-deploy-hardware.html"
+      - title: 部署软件
+        entries:
+        - title: 设置文件和块节点
+          url: "/beegfs-deploy-setup-nodes.html"
+        - title: 调整系统性能设置
+          url: beegfs-deploy-file-node-tuning.html
+        - title: 设置Ansible控制节点
+          url: "/beegfs-deploy-setting-up-an-ansible-control-node.html"
+        - title: 创建Ansible清单
+          url: "/beegfs-deploy-create-inventory.html"
+        - title: 定义BeeGFS组件
+          url: "/beegfs-deploy-define-inventory.html"
+        - title: 部署BeeGFS
+          url: "/beegfs-deploy-playbook.html"
+        - title: 配置BeeGFS客户端
+          url: "/beegfs-deploy-configure-clients.html"
+      - title: 扩展BeeGFS集群
+        url: "/beegfs-deploy-scale-building-blocks.html"
+      - title: 建议的卷百分比
+        url: "/beegfs-deploy-recommended-volume-percentages.html"
+      - title: 高容量选项
+        url: "/beegfs-deploy-high-capacity-building-block.html"
+  - title: 使用自定义架构
+    entries:
+    - title: 概述和要求
+      url: "/custom-architectures-overview.html"
+    - title: 初始设置
+      entries:
+      - title: 安装硬件并为其布线
+        url: "/custom-architectures-setup-cable-hw.html"
       - title: 设置文件和块节点
-        url: "/beegfs-deploy-setup-nodes.html"
-      - title: 调整系统性能设置
-        url: beegfs-deploy-file-node-tuning.html
+        url: "/custom-architectures-setup-nodes.html"
       - title: 设置Ansible控制节点
-        url: "/beegfs-deploy-setting-up-an-ansible-control-node.html"
-      - title: 创建Ansible清单
-        url: "/beegfs-deploy-create-inventory.html"
-      - title: 定义BeeGFS组件
-        url: "/beegfs-deploy-define-inventory.html"
-      - title: 部署BeeGFS
-        url: "/beegfs-deploy-playbook.html"
-      - title: 配置BeeGFS客户端
-        url: "/beegfs-deploy-configure-clients.html"
-    - title: 扩展BeeGFS集群
-      url: "/beegfs-deploy-scale-building-blocks.html"
-    - title: 建议的卷百分比
-      url: "/beegfs-deploy-recommended-volume-percentages.html"
-    - title: 高容量选项
-      url: "/beegfs-deploy-high-capacity-building-block.html"
+        url: "/custom-architectures-setup-ansible-control-node.html"
+    - title: 定义BeeGFS文件系统
+      entries:
+      - title: Ansible清单概述
+        url: "/custom-architectures-inventory-overview.html"
+      - title: 规划文件系统
+        url: "/custom-architectures-plan-file-system.html"
+      - title: 定义文件和块节点
+        entries:
+        - title: 配置单个文件节点
+          url: "/custom-architectures-inventory-configure-file-nodes.html"
+        - title: 配置单个块节点
+          url: "/custom-architectures-inventory-configure-block-nodes.html"
+        - title: 指定通用文件节点配置
+          url: "/custom-architectures-inventory-common-file-node-configuration.html"
+        - title: 指定通用块节点配置
+          url: "/custom-architectures-inventory-common-block-node-configuration.html"
+      - title: 定义BeeGFS服务
+        entries:
+        - title: BeeGFS管理服务
+          url: "/custom-architectures-inventory-beegfs-management.html"
+        - title: BeeGFS元数据服务
+          url: "/custom-architectures-inventory-beegfs-metadata.html"
+        - title: BeeGFS存储服务
+          url: "/custom-architectures-inventory-beegfs-storage.html"
+      - title: 将BeeGFS服务映射到文件节点
+        url: "/custom-architectures-inventory-map-services-to-file-nodes.html"
+    - title: 部署BeeGFS文件系统
+      entries:
+      - title: Ansible攻略手册概述
+        url: "/custom-architectures-deploy-playbook-overview.html"
+      - title: 部署BeeGFS HA集群
+        url: "/custom-architectures-deploy-ha-cluster.html"
+      - title: 部署BeeGFS客户端
+        url: "/custom-architectures-deploy-beegfs-clients.html"
+      - title: 验证BeeGFS部署
+        url: "/custom-architectures-deploy-verify.html"
+  - title: 管理BeeGFS集群
+    entries:
+    - title: 概述、关键概念和术语
+      url: "/administer-clusters-overview.html"
+    - title: 何时使用Ansible与pcs
+      url: "/administer-clusters-ansible-pcs.html"
+    - title: 检查集群的状态
+      url: "/administer-clusters-examine-state.html"
+    - title: 重新配置和更新
+      entries:
+      - title: 重新配置HA集群和BeeGFS
+        url: "/administer-clusters-reconfigure.html"
+      - title: 更新HA集群和BeeGFS
+        url: "/administer-clusters-update.html"
+    - title: 维护和维护
+      entries:
+      - title: 故障转移和故障恢复服务
+        url: "/administer-clusters-failover-failback.html"
+      - title: 将集群置于维护模式
+        url: "/administer-clusters-maintenance-mode.html"
+      - title: 停止并启动集群
+        url: "/administer-clusters-stop-start-cluster.html"
+      - title: 替换文件节点
+        url: "/administer-clusters-replace-file-nodes.html"
+      - title: 扩展或缩减集群
+        url: "/administer-clusters-expand-shrink-cluster.html"
+    - title: 故障排除
+      url: "/administer-clusters-troubleshoot.html"
   - title: 法律声明
     url: "/legal-notices.html"
 product-family:

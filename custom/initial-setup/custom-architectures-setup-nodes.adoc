@@ -1,0 +1,79 @@
+---
+sidebar: sidebar 
+permalink: custom-architectures-setup-nodes.html 
+keywords: BeeGFS on NetApp, NetApp Custom Architectures, EF600 
+summary: 在运行Ansible之前设置文件和块节点所需的手动步骤。 
+---
+= 设置文件和块节点
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+在运行Ansible之前设置文件和块节点所需的手动步骤。
+
+
+
+== 文件节点
+
+
+
+=== 配置基板管理控制器(BMC)
+
+基板管理控制器(Baseboard Management Controller、BMC)有时也称为服务处理器、它是内置于各种服务器平台中的带外管理功能的通用名称、即使操作系统未安装或无法访问、也可以提供远程访问。供应商通常会使用自己的品牌推广此功能。例如、在联想SR665上、BMC称为联想XicLityController (XCC)。
+
+按照服务器供应商的文档启用访问此功能所需的任何许可证、并确保BMC已连接到网络并已正确配置用于远程访问。
+
+
+NOTE: 如果需要使用Redfish进行基于BMC的隔离、请确保已启用Redfish、并且可以从文件节点上安装的操作系统访问BMC界面。如果BMC和操作系统共享同一物理网络接口、则可能需要对网络交换机进行特殊配置。
+
+
+
+=== 调整系统设置
+
+使用系统设置(BIOS/UEFI)界面、确保设置为最大程度地提高性能。确切设置和最佳值将因所使用的服务器型号而异。提供了相关指导 link:beegfs-deploy-file-node-tuning.html["已验证文件节点型号"^]、否则、请根据您的型号参考服务器供应商的文档和最佳实践。
+
+
+
+=== 安装操作系统
+
+根据列出的文件节点要求安装受支持的操作系统 link:beegfs-technology-requirements.html#file-node-requirements["此处"^]。根据您的Linux版本、请参见以下任何其他步骤。
+
+
+
+==== RedHat
+
+使用RedHat订阅管理器注册并订阅系统、以便可以从官方Red Hat存储库安装所需的软件包、并将更新限制为受支持的Red Hat版本： `subscription-manager release --set=<MAJOR_VERSION>.<MINOR_VERSION>`。有关说明，请参见 https://access.redhat.com/solutions/253273["如何注册和订阅RHEL系统"^] 和  https://access.redhat.com/solutions/2761031["如何限制更新"^]。
+
+启用包含高可用性所需软件包的Red Hat存储库：
+
+....
+subscription-manager repo-override --repo=rhel-8-for-x86_64-highavailability-rpms --add=enabled:1
+....
+
+
+=== 配置管理网络
+
+配置所需的任何网络接口、以便对操作系统进行带内管理。具体步骤取决于所使用的特定Linux版本。
+
+
+NOTE: 确保已启用SSH、并且可从Ansible控制节点访问所有管理接口。
+
+
+
+=== 更新HCA和HBA固件
+
+确保所有HBA和HCA均运行上列出的受支持固件版本 link:https://imt.netapp.com/matrix/["NetApp 互操作性表"^] 并根据需要进行升级。有关NVIDIA ConnectX适配器的其他建议、请参见 link:beegfs-technology-requirements.html#file-node-requirements["此处"^]。
+
+
+
+== 块节点
+
+按照步骤执行操作 link:https://docs.netapp.com/us-en/e-series/getting-started/getup-run-concept.html["启动并运行E系列"^] 在每个块节点控制器上配置管理端口、并可选择为每个系统设置存储阵列名称。
+
+
+NOTE: 除了确保可从Ansible控制节点访问所有块节点之外、无需进行其他配置。其余系统配置将使用Ansible进行应用/维护。

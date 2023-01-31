@@ -1,0 +1,237 @@
+---
+sidebar: sidebar 
+permalink: custom-architectures-deploy-beegfs-clients.html 
+keywords: BeeGFS on NetApp, NetApp Custom Architectures, EF600 
+summary: 也可以使用Ansible配置BeeGFS客户端并挂载文件系统。 
+---
+= 部署BeeGFS客户端
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+也可以使用Ansible配置BeeGFS客户端并挂载文件系统。
+
+
+
+== 概述
+
+要访问BeeGFS文件系统、需要在需要挂载文件系统的每个节点上安装和配置BeeGFS客户端。本节介绍如何使用可用执行这些任务 link:https://github.com/netappeseries/beegfs/tree/master/roles/beegfs_client["Ansible角色"^]。
+
+
+
+== 步骤
+
+
+
+=== 创建客户端清单文件
+
+. 如果需要、请从Ansible控制节点向要配置为BeeGFS客户端的每个主机设置无密码SSH：
++
+[source, bash]
+----
+ssh-copy-id <user>@<HOSTNAME_OR_IP>
+----
+. 下 `host_vars/`下、为名为的每个BeeGFS客户端创建一个文件 `<HOSTNAME>.yml` 使用以下内容、在占位符文本中填写适用于您环境的正确信息：
++
+[source, yaml]
+----
+# BeeGFS Client
+ansible_host: <MANAGEMENT_IP>
+----
+. 如果要使用NetApp E系列主机集合的角色配置InfiniBand或以太网接口、以便客户端连接到BeeGFS文件节点、也可以包括以下选项之一：
++
+.. 网络类型为 link:https://github.com/netappeseries/host/tree/release-1.2.0/roles/ipoib["InfiniBand (使用IPoIB)"^]：
++
+[source, yaml]
+----
+eseries_ipoib_interfaces:
+- name: <INTERFACE>  # Example: ib0 or i1b
+  address: <IP/SUBNET> # Example: 100.127.100.1/16
+- name: <INTERFACE>  # Additional interfaces as needed.
+  address: <IP/SUBNET>
+----
+.. 网络类型为 link:https://github.com/netappeseries/host/tree/release-1.2.0/roles/roce["基于融合以太网的RDMA (RoCE)"^]：
++
+[source, yaml]
+----
+eseries_roce_interfaces:
+- name: <INTERFACE>  # Example: eth0.
+  address: <IP/SUBNET> # Example: 100.127.100.1/16
+- name: <INTERFACE>  # Additional interfaces as needed.
+  address: <IP/SUBNET>
+----
+.. 网络类型为 link:https://github.com/netappeseries/host/tree/release-1.2.0/roles/ip["以太网(仅限TCP、无RDMA)"^]：
++
+[source, yaml]
+----
+eseries_ip_interfaces:
+- name: <INTERFACE>  # Example: eth0.
+  address: <IP/SUBNET> # Example: 100.127.100.1/16
+- name: <INTERFACE>  # Additional interfaces as needed.
+  address: <IP/SUBNET>
+----
+
+
+. 创建新文件 `client_inventory.yml` 并指定Ansible应用于连接到每个客户端的用户、Ansible应用于权限升级的密码(这需要 `ansible_ssh_user` 为root用户或具有sudo权限)：
++
+[source, yaml]
+----
+# BeeGFS client inventory.
+all:
+  vars:
+    ansible_ssh_user: <USER>
+    ansible_become_password: <PASSWORD>
+----
++
+
+IMPORTANT: 请勿以纯文本格式存储密码。请改用Ansible Vault (请参见) link:https://docs.ansible.com/ansible/latest/user_guide/vault.html["Ansible文档"^] 使用Ansible Vault对内容进行加密)或使用 `--ask-become-pass` 运行攻略手册时的选项。
+
+. 在中 `client_inventory.yml` 文件中、列出应在下配置为BeeGFS客户端的所有主机 `beegfs_clients` 组、然后参考实时注释、取消注释在系统上构建BeeGFS客户端内核模块所需的任何其他配置：
++
+[source, yaml]
+----
+children:
+    # Ansible group representing all BeeGFS clients:
+    beegfs_clients:
+      hosts:
+        <CLIENT HOSTNAME>:
+        # Additional clients as needed.
+
+      vars:
+        # OPTION 1: If you’re using the Mellanox OFED drivers and they are already installed:
+        #eseries_ib_skip: True # Skip installing inbox drivers when using the IPoIB role.
+        #beegfs_client_ofed_enable: True
+        #beegfs_client_ofed_include_path: "/usr/src/ofa_kernel/default/include"
+
+        # OPTION 2: If you’re using inbox IB/RDMA drivers and they are already installed:
+        #eseries_ib_skip: True # Skip installing inbox drivers when using the IPoIB role.
+
+        # OPTION 3: If you want to use inbox IB/RDMA drivers and need them installed/configured.
+        #eseries_ib_skip: False # Default value.
+        #beegfs_client_ofed_enable: False # Default value.
+----
++
+
+NOTE: 使用Mellanox OFED驱动程序时、请确保beegfs_client_OFED_include_path指向适用于Linux安装的正确"header include path"。有关详细信息、请参见的BeeGFS文档 link:https://doc.beegfs.io/latest/advanced_topics/rdma_support.html["RDMA支持"^]。
+
+. 在中 `client_inventory.yml` 文件中、列出要在先前定义的任何下挂载的BeeGFS文件系统 `vars`：
++
+[source, yaml]
+----
+        beegfs_client_mounts:
+          - sysMgmtdHost: <IP ADDRESS>  # Primary IP of the BeeGFS management service.
+            mount_point: /mnt/beegfs    # Path to mount BeeGFS on the client.
+            connInterfaces:
+              - <INTERFACE> # Example: ibs4f1
+              - <INTERFACE>
+            beegfs_client_config:
+              # Maximum number of simultaneous connections to the same node.
+              connMaxInternodeNum: 128 # BeeGFS Client Default: 12
+              # Allocates the number of buffers for transferring IO.
+              connRDMABufNum: 36 # BeeGFS Client Default: 70
+              # Size of each allocated RDMA buffer
+              connRDMABufSize: 65536 # BeeGFS Client Default: 8192
+              # Required when using the BeeGFS client with the shared-disk HA solution.
+              # This does require BeeGFS targets be mounted in the default “sync” mode.
+              # See the documentation included with the BeeGFS client role for full details.
+              sysSessionChecksEnabled: false
+        # Specify additional file system mounts for this or other file systems.
+----
+. 截至BeeGFS 7.2.7和7.3.1 link:https://doc.beegfs.io/latest/advanced_topics/authentication.html["连接身份验证"^] 必须配置或显式禁用。根据指定时选择的配置基于连接的身份验证的方式 link:custom-architectures-inventory-common-file-node-configuration.html["通用文件节点配置"^]、您可能需要调整客户端配置：
++
+.. 默认情况下、HA集群部署将自动配置连接身份验证并生成 `connauthfile` 该位置将放置/维护在位于的Ansible控制节点上 `<INVENTORY>/files/beegfs/<sysMgmtdHost>_connAuthFile`。默认情况下、BeeGFS客户端角色设置为读取此文件或将其分发到中定义的客户端 `client_inventory.yml`、不需要执行其他操作。
++
+... 有关高级选项、请参阅随附的默认值完整列表 link:https://github.com/netappeseries/beegfs/blob/release-3.1.0/roles/beegfs_client/defaults/main.yml#L32["BeeGFS客户端角色"^]。
+
+
+.. 如果选择使用指定自定义密钥 `beegfs_ha_conn_auth_secret` 在中指定 `client_inventory.yml` 文件：
++
+[source, yaml]
+----
+beegfs_ha_conn_auth_secret: <SECRET>
+----
+.. 如果选择完全禁用基于连接的身份验证 `beegfs_ha_conn_auth_enabled`、在中指定 `client_inventory.yml` 文件：
++
+[source, yaml]
+----
+beegfs_ha_conn_auth_enabled: false
+----
+
+
+
+
+有关支持的参数的完整列表和其他详细信息、请参见 link:https://github.com/netappeseries/beegfs/tree/master/roles/beegfs_client["完整的BeeGFS客户端文档"^]。有关客户端清单的完整示例、请单击 link:https://github.com/netappeseries/beegfs/blob/master/getting_started/beegfs_on_netapp/gen2/client_inventory.yml["此处"^]。
+
+
+
+=== 创建BeeGFS客户端攻略手册文件
+
+. 创建新文件 `client_playbook.yml`
++
+[source, yaml]
+----
+# BeeGFS client playbook.
+- hosts: beegfs_clients
+  any_errors_fatal: true
+  gather_facts: true
+  collections:
+    - netapp_eseries.beegfs
+    - netapp_eseries.host
+  tasks:
+----
+. 可选：如果要使用NetApp E系列主机集合的角色配置客户端连接到BeeGFS文件系统的接口、请导入与要配置的接口类型对应的角色：
++
+.. 如果您使用的是使用InfiniBand (IPoIB)：
++
+[source, yaml]
+----
+    - name: Ensure IPoIB is configured
+      import_role:
+        name: ipoib
+----
+.. 如果您使用的是基于融合以太网的RDMA (RoCE)：
++
+[source, yaml]
+----
+    - name: Ensure IPoIB is configured
+      import_role:
+        name: roce
+----
+.. 如果您使用的是以太网(仅限TCP、无RDMA)：
++
+[source, yaml]
+----
+    - name: Ensure IPoIB is configured
+      import_role:
+        name: ip
+----
+
+
+. 最后、导入BeeGFS客户端角色以安装客户端软件并设置文件系统挂载：
++
+[source, yaml]
+----
+    # REQUIRED: Install the BeeGFS client and mount the BeeGFS file system.
+    - name: Verify the BeeGFS clients are configured.
+      import_role:
+        name: beegfs_client
+----
+
+
+有关客户端攻略手册的完整示例、请单击 link:https://github.com/netappeseries/beegfs/blob/master/getting_started/beegfs_on_netapp/gen2/client_playbook.yml["此处"^]。
+
+
+
+=== 运行BeeGFS客户端攻略手册
+
+要安装/构建客户端并挂载BeeGFS、请运行以下命令：
+
+[source, bash]
+----
+ansible-playbook -i client_inventory.yml client_playbook.yml
+----
