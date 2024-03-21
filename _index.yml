@@ -1,7 +1,10 @@
 ---
 indexpage:
-  lead: NetApp解决方案 上的BeeGFS是一种经过NetApp验证的架构(NVA)、它将BeeGFS并行文件系统与NetApp EF600存储系统相结合。此解决方案
-    是一个可靠、可扩展且经济高效的基础架构、可与最极端的工作负载保持同步。
+  title: NetApp上的BeeGFS与E系列存储
+  summary: 解决方案 支持在高性能、低延迟NetApp E系列存储上运行的BeeGFS并行集群文件系统。一款经济高效、易于管理且高度可用的HPC解决方案
+    、并获得NetApp的支持。
+  keywords: beegfs e-series
+  lead: 采用E系列存储的NetApp上的BeeGFS是一款经验证的集成解决方案、具有简单、可靠、可扩展且经济高效的HPC基础架构、可满足最极端工作负载的需求。
   tiles:
   - title: 入门
     links:
