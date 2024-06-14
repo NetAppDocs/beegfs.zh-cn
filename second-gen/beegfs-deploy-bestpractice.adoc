@@ -20,7 +20,7 @@ summary: 在NetApp解决方案 上部署BeeGFS时、请遵循最佳实践准则�
 
 == 标准约定
 
-在物理组装和创建Ansible清单文件时、请遵循以下标准约定(有关详细信息、请参见 link:beegfs-deploy-beegfs-general-config.html["创建Ansible清单"]）。
+在物理组装和创建Ansible清单文件时、请遵循以下标准约定(有关详细信息、请参见 link:beegfs-deploy-create-inventory.html["创建Ansible清单"]）。
 
 * 文件节点主机名按顺序编号(h01-HN)、机架顶部的数字较低、底部的数字较高。
 +

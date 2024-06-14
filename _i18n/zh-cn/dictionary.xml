@@ -527,7 +527,6 @@
   <block id="d1da0cd6852302b521f35aeee065f5ea" category="summary">在NetApp解决方案 上部署BeeGFS时、请遵循最佳实践准则。</block>
   <block id="38b622e4d5c9d918330c81663f61a4e3" category="doc">查看最佳实践</block>
   <block id="d780de93793370946b2449b88a29b5ea" category="section-title">标准约定</block>
-  <block id="2028bcc5ed7fdc8ba437b0150866ff2c" category="paragraph">在物理组装和创建Ansible清单文件时、请遵循以下标准约定(有关详细信息、请参见 <block ref="ecd3f3fdba3715697adf284eecd1c932" category="inline-link-macro-rx"></block>）。</block>
   <block id="b4d19c971bd6ad93985147c0ce9477c8" category="list-text">文件节点主机名按顺序编号(h01-HN)、机架顶部的数字较低、底部的数字较高。</block>
   <block id="0a4e8ee6eb2b3c9ae6b2864c18db1a80" category="paragraph">例如、命名约定`[location][row][rack]HN`的外观如下：`ictad22h01`。</block>
   <block id="7bf4bcec78c083e165c31432234ebef8" category="list-text">每个块节点由两个存储控制器组成、每个控制器都有自己的主机名。</block>
@@ -1862,4 +1861,5 @@
   <block id="8acb58cbd50ef1b468a020ee0bd351d3" category="inline-link-macro"><block ref="8acb58cbd50ef1b468a020ee0bd351d3" category="inline-link-rx"></block></block>
   <block id="2352c4e1f4d0024ade0869e00e6243f4" category="paragraph"><block ref="2352c4e1f4d0024ade0869e00e6243f4" category="inline-link-macro-rx"></block></block>
   <block id="e8afe31a21b6aae9717484d865743dae" category="sidebar">采用E系列存储的NetApp上的BeeGFS是一款经验证的集成解决方案、具有简单、可靠、可扩展且经济高效的HPC基础架构、可满足最极端工作负载的需求。</block>
+  <block id="3a9aabbbb8c331319a41788bf5d1786a" category="paragraph">在物理组装和创建Ansible清单文件时、请遵循以下标准约定(有关详细信息、请参见 <block ref="dbbcb9482f49ee969cddb7f10864cbd0" category="inline-link-macro-rx"></block>）。</block>
 </blocks>
