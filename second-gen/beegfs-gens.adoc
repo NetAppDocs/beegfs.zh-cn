@@ -20,19 +20,19 @@ NetApp解决方案 上的BeeGFS目前正处于第二代设计阶段。
 
 * 将性能和容量提高一倍、同时仅添加2U机架空间
 * 高可用性(High Availability、HA)基于共享磁盘的两层硬件设计
-* NVIDIA DGX A100 SuperPOD和NVIDIA BasePOD架构的外部认证
+* 该架构专为NVIDIA DGX SuperPOD A100、H100、H200和B200系统设计、之前已在NVIDIA的专用验收集群上进行过验证。有关采用NetApp的NVIDIA DGX SuperPOD的更多信息，请参见 link:https://docs.netapp.com/us-en/netapp-solutions/ai/ai-dgx-superpod.html["设计指南"]。
 
 
 
 
 == 第二代设计
 
-基于NetApp的第二代BeeGFS经过优化、可满足高性能计算(HPC)和HPC模式机器学习(ML)、深度学习(DL)以及类似人工智能(AI)技术等苛刻工作负载的性能要求。通过整合共享磁盘高可用性(HA)架构、NetApp解决方案 上的BeeGFS还可以满足企业和其他组织在寻找可扩展的存储以适应其工作负载和使用情形时无法承受停机或数据丢失的需求。此解决方案 不仅已通过NetApp的验证、还通过了外部认证、作为NVIDIA DGX SuperPOD和DGX BasePOD的存储选项。
+基于NetApp的第二代BeeGFS经过优化、可满足高性能计算(HPC)、机器学习(ML)、深度学习(DL)和其他人工智能(AI)技术等苛刻工作负载的性能要求。通过整合共享磁盘高可用性(HA)架构、此设计可确保数据持久性和可用性、使其成为无法承受停机或数据丢失的企业和其他组织的理想选择。第二代设计包括PCIe Gen5服务器等组件，并支持NVIDIA®QuutM9700 400Gb/s InfiniBand交换机。该解决方案不仅经过NetApp的验证，还通过了NVIDIA DGX™A100 SuperPOD存储选项的外部认证，并获得了DGX SuperPOD H100、H200和B200系统的扩展认证。
 
 
 
 == 第一代设计
 
-第一代基于NetApp的BeeGFS专为使用NetApp EF600 NVMe存储系统、BeeGFS并行文件系统、NVIDIA DGX®A100系统和NVIDIA®Mellanox®Quantum®QM8700 200 Gbps IB交换机的机器学习(ML)和人工智能(AI)工作负载而设计。此设计还为存储和计算集群互连网络结构提供了200 Gbps InfiniBand (IB)、可为高性能工作负载提供完全基于IB的架构。
+基于NetApp的第一代BeeGFS专为使用NetApp EF600 NVMe存储系统、BeeGFS并行文件系统、NVIDIA DGX™A100系统和NVIDIA®Mellanox®定量分析TM QM8700Gb/s IB交换机的机器学习(ML)和人工智能(AI)工作负载而设计。此设计还为存储和计算集群互连网络结构提供了200 Gb/秒InfiniBand (IB)、以便为高性能工作负载提供完全基于IB的架构。
 
 有关第一代产品的详细信息、请参见 link:https://www.netapp.com/pdf.html?item=/media/25445-nva-1156-design.pdf["采用NVIDIA DGX A100系统和BeeGFS的NetApp EF系列AI"^]。

@@ -97,23 +97,23 @@ pcs resource relocate run
 
 如果要永久更改单个BeeGFS服务的首选文件节点、请调整Ansible清单、以便首先列出首选节点、然后重新运行Ansible攻略手册。
 
-例如、在此示例中 `inventory.yml` file、ictad22h01是运行BeeGFS管理服务的首选文件节点：
+例如、在此示例文件中 `inventory.yml` 、beegfs_01是运行BeeGFS管理服务的首选文件节点：
 
 [source, yaml]
 ----
         mgmt:
           hosts:
-            ictad22h01:
-            ictad22h02:
+            beegfs_01:
+            beegfs_02:
 ----
-反转顺序将使ictad22h02上的管理服务成为首选发生原因 ：
+反转顺序将使beegfs_02上的管理服务成为首选发生原因 ：
 
 [source, yaml]
 ----
         mgmt:
           hosts:
-            ictad22h02:
-            ictad22h01:
+            beegfs_02:
+            beegfs_01:
 ----
 
 
@@ -128,7 +128,7 @@ pcs resource relocate run
 pcs resource move <SERVICE>-monitor <HOSTNAME>
 ----
 
-WARNING: 请勿指定单个资源或资源组。请始终为要重新定位的BeeGFS服务指定监控器的名称。例如、要将BeeGFS管理服务移动到ictad22h02、请运行： `pcs resource move mgmt-monitor ictad22h02`。可以重复执行此过程、将一个或多个服务从其首选节点移出。使用进行验证 `pcs status` 服务已在新节点上重新定位/启动。
+WARNING: 请勿指定单个资源或资源组。请始终为要重新定位的BeeGFS服务指定监控器的名称。例如，要将BeeGFS管理服务移至beegfs_02，请运行： `pcs resource move mgmt-monitor beegfs_02`。可以重复执行此过程、将一个或多个服务从其首选节点移出。使用服务验证 `pcs status` 是否已在新节点上重新定位/启动。
 
 要将BeeGFS服务移回其首选节点、请先清除临时资源限制(根据需要对多个服务重复此步骤)：
 

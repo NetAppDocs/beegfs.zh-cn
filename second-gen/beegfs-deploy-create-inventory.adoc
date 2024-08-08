@@ -23,8 +23,7 @@ summary: 要定义文件和块节点的配置、请创建一个Ansible清单、�
 定义适用场景 所有组件的配置、无论您可以单独应用于这些组件的配置文件如何。
 
 .开始之前
-* 使用BitBucket或Git等源控制系统存储包含Ansible清单和攻略手册文件的目录的内容。
-* 创建一个`.gitignore`文件、用于指定Git应忽略的文件。这有助于避免在Git中存储大型文件。
+* 为您的部署选择子网编址方案。由于中列出的优势 link:beegfs-design-software-architecture.html#beegfs-network-configuration["软件架构"]，建议使用单个子网编址方案。
 
 
 .步骤
@@ -61,7 +60,7 @@ eseries_ipoib_interfaces:  # Used to configure BeeGFS cluster IP addresses.
   - name: i1b
     address: 100.127.100. <NUMBER_FROM_HOSTNAME>/16
   - name: i4b
-    address: 100.128.100. <NUMBER_FROM_HOSTNAME>/16
+    address: 100.127.100. <NUMBER_FROM_HOSTNAME>/16
 beegfs_ha_cluster_node_ips:
   - <MANAGEMENT_IP>
   - <i1b_BEEGFS_CLUSTER_IP>
@@ -176,10 +175,13 @@ beegfs_ha_ntp_server_pools:  # Modify the NTP server addressess if desired.
 ansible_ssh_user: root
 ansible_become_password: <PASSWORD>
 eseries_ipoib_default_hook_templates:
-  - 99-multihoming.j2 # This is required when configuring additional static IPs (for example cluster IPs) when multiple IB ports are in the same IPoIB subnet.
+  - 99-multihoming.j2   # This is required for single subnet deployments, where static IPs containing multiple IB ports are in the same IPoIB subnet. i.e: cluster IPs, multirail, single subnet, etc.
 # If the following options are specified, then Ansible will automatically reboot nodes when necessary for changes to take effect:
 eseries_common_allow_host_reboot: true
-eseries_common_reboot_test_command: "systemctl --state=active,exited | grep eseries_nvme_ib.service"
+eseries_common_reboot_test_command: "! systemctl status eseries_nvme_ib.service || systemctl --state=exited | grep eseries_nvme_ib.service"
+eseries_ib_opensm_options:
+  virt_enabled: "2"
+  virt_max_ports_in_process: "0"
 ....
 +
 
@@ -221,7 +223,7 @@ beegfs_ha_alert_verbosity: 3
 
 NOTE: 虽然`冗余、但当您将BeeGFS文件系统扩展到单个HA集群之外时、`beegfs_ha_mgmtd_floating_ip非常重要。部署后续HA集群时无需额外的BeeGFS管理服务、并指向第一个集群提供的管理服务。
 
-. 配置隔离代理。(有关详细信息、请参见 https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_and_managing_high_availability_clusters/assembly_configuring-fencing-configuring-and-managing-high-availability-clusters["在Red Hat High Availability集群中配置隔离"^]) 以下输出显示了配置通用隔离代理的示例。选择以下选项之一。
+. 配置隔离代理。(有关详细信息，请参见 https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/configuring_and_managing_high_availability_clusters/assembly_configuring-fencing-configuring-and-managing-high-availability-clusters["在Red Hat High Availability集群中配置隔离"^]。)以下输出显示了配置常见隔离代理的示例。选择以下选项之一。
 +
 在此步骤中、请注意：
 
@@ -253,7 +255,7 @@ beegfs_ha_fencing_agents:
     - pcmk_host_list: <HOSTNAME>
       ip: <BMC_IP>
       <<: *redfish
-# For details on configuring other fencing agents see https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_and_managing_high_availability_clusters/assembly_configuring-fencing-configuring-and-managing-high-availability-clusters.
+# For details on configuring other fencing agents see https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/configuring_and_managing_high_availability_clusters/assembly_configuring-fencing-configuring-and-managing-high-availability-clusters.
 ....
 
 
@@ -271,45 +273,17 @@ beegfs_ha_enable_performance_tuning: True
 ....
 . (可选)您可以根据需要调整Linux操作系统中的性能调整参数。
 +
-有关可调整的可用调整参数的完整列表、请参见中BeeGFS HA角色的"性能调整默认值"部分 https://github.com/netappeseries/beegfs/tree/master/roles/beegfs_ha_7_2/defaults/main.yml["E系列BeeGFS GitHub站点"^]。可以覆盖此文件或单个节点的`host_vars`文件中集群中所有节点的默认值。
+有关可调整的可用调整参数的完整列表，请参见中BeeGFS HA角色的“性能调整默认值”部分 https://github.com/netappeseries/beegfs/tree/master/roles/beegfs_ha_7_4/defaults/main.yml["E系列BeeGFS GitHub站点"^]。 可以覆盖此文件或单个节点的文件中集群中所有节点的默认值 `host_vars` 。
 
-. 要在块节点和文件节点之间实现完整的200 GB/HDR连接、请使用Mellanox Open Fabrics Enterprise Distribution (MLNx_OFED)中的Open Subnet Manager (OpenSM)软件包。(收件箱`opensm`软件包不支持所需的虚拟化功能。) 尽管支持使用Ansible进行部署、但您必须先将所需的软件包下载到用于运行BeeGFS角色的Ansible控制节点。
+. 要在块节点和文件节点之间实现完整的200GB/HDR连接、请使用NVIDIA开放式网络结构企业分发版(MLNR_OFED)中的开放式子网管理器(OpenSM)软件包。中列出的MLNR_OFED版本 link:beegfs-technology-requirements.html#file-node-requirements["文件节点要求"] 与建议的OpenSM软件包捆绑在一起。虽然支持使用Ansimply进行部署、但您必须先在所有文件节点上安装MLNR_OFED驱动程序。
 +
-.. 使用`cURL`或您所需的工具、将技术要求部分所列OpenSM版本的软件包从Mellanox的网站下载到`packages/`目录。例如：
-+
-....
-curl -o packages/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm https://linux.mellanox.com/public/repo/mlnx_ofed/5.4-1.0.3.0/rhel8.4/x86_64/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
-
-curl -o packages/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm https://linux.mellanox.com/public/repo/mlnx_ofed/5.4-1.0.3.0/rhel8.4/x86_64/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
-....
 .. 在`group_vars/ha_cluster.yml`中填充以下参数(根据需要调整软件包)：
 +
 ....
 ### OpenSM package and configuration information
-eseries_ib_opensm_allow_upgrades: true
-eseries_ib_opensm_skip_package_validation: true
-eseries_ib_opensm_rhel_packages: []
-eseries_ib_opensm_custom_packages:
-  install:
-    - files:
-        add:
-          "packages/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm": "/tmp/"
-          "packages/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm": "/tmp/"
-    - packages:
-        add:
-          - /tmp/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
-          - /tmp/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
-  uninstall:
-    - packages:
-        remove:
-          - opensm
-          - opensm-libs
-      files:
-        remove:
-          - /tmp/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
-          - /tmp/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
 eseries_ib_opensm_options:
   virt_enabled: "2"
+  virt_max_ports_in_process: "0"
 ....
 
 
@@ -323,7 +297,18 @@ eseries_ib_opensm_options:
 +
 ....
 ### Ensure Consistent Logical IB Port Numbering
-# OPTION 1: Lenovo SR665 PCIe address-to-logical IB port mapping:
+# OPTION 1: Lenovo SR665 V3 PCIe address-to-logical IB port mapping:
+eseries_ipoib_udev_rules:
+  "0000:01:00.0": i1a
+  "0000:01:00.1": i1b
+  "0000:41:00.0": i2a
+  "0000:41:00.1": i2b
+  "0000:81:00.0": i3a
+  "0000:81:00.1": i3b
+  "0000:a1:00.0": i4a
+  "0000:a1:00.1": i4b
+
+# OPTION 2: Lenovo SR665 PCIe address-to-logical IB port mapping:
 eseries_ipoib_udev_rules:
   "0000:41:00.0": i1a
   "0000:41:00.1": i1b
@@ -333,8 +318,6 @@ eseries_ipoib_udev_rules:
   "0000:a1:00.1": i3b
   "0000:81:00.0": i4a
   "0000:81:00.1": i4b
-
-# Note: At this time no other x86 servers have been qualified. Configuration for future qualified file nodes will be added here.
 ....
 . (可选)更新元数据目标选择算法。
 +
@@ -375,10 +358,10 @@ NOTE: 不建议以纯文本格式列出任何密码。使用`-ext-vars`运行Ans
 +
 ....
 # Firmware, NVSRAM, and Drive Firmware (modify the filenames as needed):
-eseries_firmware_firmware: "packages/RCB_11.70.2_6000_61b1131d.dlp"
-eseries_firmware_nvsram: "packages/N6000-872834-D06.dlp"
+eseries_firmware_firmware: "packages/RCB_11.80GA_6000_64cc0ee3.dlp"
+eseries_firmware_nvsram: "packages/N6000-880834-D08.dlp"
 ....
-. 从下载并安装可用于块节点中安装的驱动器的最新驱动器固件 https://mysupport.netapp.com/NOW/download/tools/diskfw_eseries/["NetApp 支持站点"^]。您可以手动升级它们、也可以将其包含在Ansible控制节点的`packages/`目录中、然后在`Esery_storage_systems.yml`中填充以下参数以使用Ansible进行升级：
+. 从下载并安装可用于块节点中安装的驱动器的最新驱动器固件 https://mysupport.netapp.com/site/downloads/firmware/e-series-disk-firmware["NetApp 支持站点"^]。您可以手动升级它们、也可以将其包含在Ansul任 `packages/` 控制节点的目录中、然后在中填充以下参数 `eseries_storage_systems.yml` 以使用Ansul任 升级：
 +
 ....
 eseries_drive_firmware_firmware_list:

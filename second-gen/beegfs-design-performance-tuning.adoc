@@ -32,20 +32,20 @@ BeeGFS解决方案 提供了基于验证测试的性能调整建议。
 +
 ** BeeGFS服务配置参数
 +
-您可以根据需要覆盖配置参数的默认设置。有关可根据特定工作负载或用例调整的参数、请参见 https://github.com/netappeseries/beegfs/blob/135d9a04ae96f4d202300bae870c6404b77b6865/roles/beegfs_ha_7_2/defaults/main.yml#L155["BeeGFS服务配置参数"^]。
+您可以根据需要覆盖配置参数的默认设置。有关可针对特定工作负载或用例调整的参数，请参见 https://github.com/NetApp/beegfs/blob/master/roles/beegfs_ha_7_4/defaults/main.yml#L237["BeeGFS服务配置参数"^]。
 
 ** 卷格式化和挂载参数设置为建议的默认值、只能针对高级使用情形进行调整。默认值将执行以下操作：
 +
 *** 根据目标类型(例如管理、元数据或存储)以及底层卷的RAID配置和分段大小优化初始卷格式化。
 *** 调整Pacemaker挂载每个卷的方式、以确保所做的更改立即刷新到E系列块节点。这样可以防止在文件节点发生故障且正在进行活动写入时丢失数据。
 +
-有关可根据特定工作负载或用例调整的参数、请参见 https://github.com/netappeseries/beegfs/blob/135d9a04ae96f4d202300bae870c6404b77b6865/roles/beegfs_ha_7_2/defaults/main.yml#L258["卷格式化和挂载配置参数"^]。
+有关可针对特定工作负载或用例调整的参数，请参见 https://github.com/NetApp/beegfs/blob/master/roles/beegfs_ha_7_4/defaults/main.yml#L279["卷格式化和挂载配置参数"^]。
 
 
 
 
 
-. * Linux操作系统中安装在文件节点上的系统设置。*在的步骤4中创建Ansible清单时、您可以覆盖默认Linux操作系统设置 link:beegfs-deploy-beegfs-general-config.html["创建Ansible清单"]。
+. *安装在文件节点上的Linux操作系统中的系统设置。*您可以在的步骤4中创建Ands恢复 清单时覆盖默认的Linux操作系统系统设置 link:beegfs-deploy-create-inventory.html["创建Ansible清单"]。
 +
 默认设置用于验证NetApp解决方案 上的BeeGFS、但您可以对其进行更改、以便根据您的特定工作负载或使用情形进行调整。您可以更改的Linux操作系统设置示例包括：
 
@@ -71,7 +71,7 @@ BeeGFS解决方案 提供了基于验证测试的性能调整建议。
 
 ** 读取请求大小。
 +
-您可以增加Mellanox HCA的最大读取请求大小。
+您可以增加NVIDIA HCA的最大读取请求大小。
 
 
 

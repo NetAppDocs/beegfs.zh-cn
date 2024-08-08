@@ -86,11 +86,11 @@ BeeGFS本身采用<major> <major>。<minor>。<patch> 版本控制方案进行�
 
 === BeeGFS文件节点
 
-文件节点必须运行RedHat 8.4、并有权访问包含所需软件包(pacemaker、corosync、fence-agents-all、resource-agents.)的HA存储库。例如、可以执行以下命令在RedHat 8上启用相应的存储库：
+文件节点必须运行RedHat 9.3、并有权访问包含所需软件包(pacemaker、corosync、fence-agents-all、resource-agents.)的HA存储库。例如、可以执行以下命令在RedHat 9上启用相应的存储库：
 
 [source, bash]
 ----
-subscription-manager repo-override repo=rhel-8-for-x86_64-highavailability-rpms --add=enabled:1
+subscription-manager repo-override repo=rhel-9-for-x86_64-highavailability-rpms --add=enabled:1
 ----
 
 

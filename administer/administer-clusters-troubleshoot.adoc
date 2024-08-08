@@ -54,9 +54,9 @@ journalctl --since "<YYYY-MM-DD HH:MM:SS>"
 ----
 journalctl --since "<YYYY-MM-DD HH:MM:SS>" | grep -i unexpected
 [...]
-Jul 01 15:51:03 ictad22h01 pacemaker-schedulerd[9246]:  warning: Unexpected result (error: BeeGFS service is not active!) was recorded for monitor of meta_08-monitor on ictad22h02 at Jul  1 15:51:03 2022
+Jul 01 15:51:03 beegfs_01 pacemaker-schedulerd[9246]:  warning: Unexpected result (error: BeeGFS service is not active!) was recorded for monitor of meta_08-monitor on beegfs_02 at Jul  1 15:51:03 2022
 ----
-在本示例中、BeeGFS服务meta_08因某种原因停止。要继续进行故障排除、我们应启动ictad22h02并查看服务的日志、网址为 `/var/log/beegfs-meta-meta_08_tgt_0801.log`。例如、BeeGFS服务可能由于内部问题描述 或节点问题而遇到应用程序错误。
+在本示例中、BeeGFS服务meta_08因某种原因停止。要继续进行故障排除，我们应启动beegfs_02并查看位于的服务日志 `/var/log/beegfs-meta-meta_08_tgt_0801.log`。例如、BeeGFS服务可能由于内部问题描述 或节点问题而遇到应用程序错误。
 
 
 TIP: 与Pacemaker中的日志不同、BeeGFS服务的日志不会分发到集群中的所有节点。要调查这些类型的故障、需要原始节点中发生故障的日志。
@@ -108,8 +108,8 @@ TIP: 与Pacemaker中的日志不同、BeeGFS服务的日志不会分发到集群
 ----
 journalctl --since "<YYYY-MM-DD HH:MM:SS>" | grep -i <HOSTNAME>
 [...]
-Jul 01 16:18:01 ictad22h01 pacemaker-attrd[9245]:  notice: Node ictad22h02 state is now lost
-Jul 01 16:18:01 ictad22h01 pacemaker-controld[9247]:  warning: Stonith/shutdown of node ictad22h02 was not expected
+Jul 01 16:18:01 beegfs_01 pacemaker-attrd[9245]:  notice: Node beegfs_02 state is now lost
+Jul 01 16:18:01 beegfs_01 pacemaker-controld[9247]:  warning: Stonith/shutdown of node beegfs_02 was not expected
 ----
 
 
@@ -119,17 +119,17 @@ Jul 01 16:18:01 ictad22h01 pacemaker-controld[9247]:  warning: Stonith/shutdown 
 
 [source, console]
 ----
-Jul 01 16:18:02 ictad22h01 pacemaker-schedulerd[9246]:  warning: Cluster node ictad22h02 will be fenced: peer is no longer part of the cluster
-Jul 01 16:18:02 ictad22h01 pacemaker-schedulerd[9246]:  warning: Node ictad22h02 is unclean
-Jul 01 16:18:02 ictad22h01 pacemaker-schedulerd[9246]:  warning: Scheduling Node ictad22h02 for STONITH
+Jul 01 16:18:02 beegfs_01 pacemaker-schedulerd[9246]:  warning: Cluster node beegfs_02 will be fenced: peer is no longer part of the cluster
+Jul 01 16:18:02 beegfs_01 pacemaker-schedulerd[9246]:  warning: Node beegfs_02 is unclean
+Jul 01 16:18:02 beegfs_01 pacemaker-schedulerd[9246]:  warning: Scheduling Node beegfs_02 for STONITH
 ----
 如果隔离操作成功完成、您将看到如下消息：
 
 [source, console]
 ----
-Jul 01 16:18:14 ictad22h01 pacemaker-fenced[9243]:  notice: Operation 'off' [2214070] (call 27 from pacemaker-controld.9247) for host 'ictad22h02' with device 'fence_redfish_2' returned: 0 (OK)
-Jul 01 16:18:14 ictad22h01 pacemaker-fenced[9243]:  notice: Operation 'off' targeting ictad22h02 on ictad22h01 for pacemaker-controld.9247@ictad22h01.786df3a1: OK
-Jul 01 16:18:14 ictad22h01 pacemaker-controld[9247]:  notice: Peer ictad22h02 was terminated (off) by ictad22h01 on behalf of pacemaker-controld.9247: OK
+Jul 01 16:18:14 beegfs_01 pacemaker-fenced[9243]:  notice: Operation 'off' [2214070] (call 27 from pacemaker-controld.9247) for host 'beegfs_02' with device 'fence_redfish_2' returned: 0 (OK)
+Jul 01 16:18:14 beegfs_01 pacemaker-fenced[9243]:  notice: Operation 'off' targeting beegfs_02 on beegfs_01 for pacemaker-controld.9247@beegfs_01.786df3a1: OK
+Jul 01 16:18:14 beegfs_01 pacemaker-controld[9247]:  notice: Peer beegfs_02 was terminated (off) by beegfs_01 on behalf of pacemaker-controld.9247: OK
 ----
 如果隔离操作因某种原因失败、则BeeGFS服务将无法在另一个节点上重新启动、以避免出现数据损坏的风险。如果隔离设备(PDU或BMC)不可访问或配置不当、则该问题描述 将单独进行调查。
 
@@ -153,7 +153,7 @@ Jul 01 16:18:14 ictad22h01 pacemaker-controld[9247]:  notice: Peer ictad22h02 wa
 
 [source, console]
 ----
-  * fence_redfish_2_monitor_60000 on ictad22h01 'not running' (7): call=2248, status='complete', exitreason='', last-rc-change='2022-07-26 08:12:59 -05:00', queued=0ms, exec=0ms
+  * fence_redfish_2_monitor_60000 on beegfs_01 'not running' (7): call=2248, status='complete', exitreason='', last-rc-change='2022-07-26 08:12:59 -05:00', queued=0ms, exec=0ms
 ----
 如果隔离代理报告某个特定节点上的资源操作失败、则不会触发该节点上运行的BeeGFS服务的故障转移。只需在同一节点或不同节点上自动重新启动即可。
 

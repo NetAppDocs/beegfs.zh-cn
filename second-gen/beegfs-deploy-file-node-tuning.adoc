@@ -92,7 +92,7 @@ DF C状态
 
 
  a| 
-P状态1
+P状态
  a| 
 禁用
 
@@ -197,7 +197,7 @@ curl --request PATCH \
 "Processors_GlobalC_stateControl": "Disable",
 "Processors_SOCP_states": "P0",
 "Processors_DFC_States": "Disable",
-"Processors_P_state1": "Disable",
+"Processors_P_State": "Disable",
 "Memory_MemoryPowerDownEnable": "Disable",
 "DevicesandIOPorts_IOMMU": "Disable",
 "Power_PCIePowerBrake": "Disable",

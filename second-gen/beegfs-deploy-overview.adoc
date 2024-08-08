@@ -22,7 +22,7 @@ summary: 您可以使用NetApp的第二代BeeGFS组件设计将NetApp上的BeeGF
 
 您可以使用Ansible在NetApp解决方案 上部署BeeGFS、Ansible是一种常用的IT自动化引擎、用于自动执行应用程序部署。Ansible使用一系列文件、统称为清单、用于为要部署的BeeGFS文件系统建立模型。
 
-Ansible允许NetApp等公司使用Ansible Galax星 上的集合扩展内置功能(请参见 https://galaxy.ansible.com/netapp_eseries["NetApp E系列BeeGFS集合"^]）。集合包括执行某些特定功能或任务(例如创建E系列卷)的模块、以及可以调用多个模块和其他角色的角色。这种自动化方法可减少部署BeeGFS文件系统和底层HA集群所需的时间。此外、它还简化了添加组件以扩展现有文件系统的过程。
+利用NetApp等公司可以在利用Ansilt Galaxy上的集合扩展内置功能(请参见 https://galaxy.ansible.com/netapp_eseries/santricity["NetApp E系列BeeGFS集合"^])。集合包括执行某些特定功能或任务(例如创建E系列卷)的模块、以及可以调用多个模块和其他角色的角色。这种自动化方法可减少部署BeeGFS文件系统和底层HA集群所需的时间。此外、它还简化了添加组件以扩展现有文件系统的过程。
 
 有关其他详细信息，请参见 link:beegfs-deploy-learn-ansible.html["了解Ansible清单"]。
 

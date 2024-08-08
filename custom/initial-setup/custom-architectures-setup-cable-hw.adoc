@@ -37,7 +37,7 @@ CAUTION: 在继续安装之前、请确保已充分了解特定BeeGFS部署所�
 
 单个组件示例：
 
-image:../media/buildingblock.png["构建块示例"]
+image:../media/buildingblock-sr665v3.png["构建块示例"]
 
 大型BeeGFS安装示例、其中每个HA集群中有多个组件、文件系统中有多个HA集群：
 

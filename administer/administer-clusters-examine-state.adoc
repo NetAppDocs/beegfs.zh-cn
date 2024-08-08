@@ -30,13 +30,13 @@ summary: 使用pcs查看集群的状态。
 
 [source, console]
 ----
-[root@ictad22h01 ~]# pcs status
+[root@beegfs_01 ~]# pcs status
 Cluster name: hacluster
 Cluster Summary:
   * Stack: corosync
-  * Current DC: ictad22h01 (version 2.0.5-9.el8_4.3-ba59be7122) - partition with quorum
+  * Current DC: beegfs_01 (version 2.0.5-9.el8_4.3-ba59be7122) - partition with quorum
   * Last updated: Fri Jul  1 13:37:18 2022
-  * Last change:  Fri Jul  1 13:23:34 2022 by root via cibadmin on ictad22h01
+  * Last change:  Fri Jul  1 13:23:34 2022 by root via cibadmin on beegfs_01
   * 6 nodes configured
   * 235 resource instances configured
 ----
@@ -45,9 +45,9 @@ Cluster Summary:
 [source, console]
 ----
 Node List:
-  * Node ictad22h06: standby
-  * Online: [ ictad22h01 ictad22h02 ictad22h04 ictad22h05 ]
-  * OFFLINE: [ ictad22h03 ]
+  * Node beegfs_06: standby
+  * Online: [ beegfs_01 beegfs_02 beegfs_04 beegfs_05 ]
+  * OFFLINE: [ beegfs_03 ]
 ----
 这主要表示处于备用或脱机状态的任何节点。处于备用状态的节点仍在参与集群、但被标记为不符合运行资源的条件。处于脱机状态的节点表示该节点上未运行集群服务、原因可能是已手动停止或节点已重新启动/关闭。
 
@@ -61,12 +61,12 @@ NOTE: 节点首次启动时、集群服务将停止、需要手动启动、以�
 [source, console]
 ----
 Full List of Resources:
-  * mgmt-monitor	(ocf::eseries:beegfs-monitor):	 Started ictad22h01
+  * mgmt-monitor	(ocf::eseries:beegfs-monitor):	 Started beegfs_01
   * Resource Group: mgmt-group:
-    * mgmt-FS1	(ocf::eseries:beegfs-target):	 Started ictad22h01
-    * mgmt-IP1	(ocf::eseries:beegfs-ipaddr2):	 Started ictad22h01
-    * mgmt-IP2	(ocf::eseries:beegfs-ipaddr2):	 Started ictad22h01
-    * mgmt-service	(systemd:beegfs-mgmtd):	 Started ictad22h01
+    * mgmt-FS1	(ocf::eseries:beegfs-target):	 Started beegfs_01
+    * mgmt-IP1	(ocf::eseries:beegfs-ipaddr2):	 Started beegfs_01
+    * mgmt-IP2	(ocf::eseries:beegfs-ipaddr2):	 Started beegfs_01
+    * mgmt-service	(systemd:beegfs-mgmtd):	 Started beegfs_01
 [...]
 ----
 与节点类似、如果资源存在任何问题、则会在资源状态旁边用圆括号显示其他文本。例如、如果Pacemaker请求停止资源、但此操作无法在分配的时间内完成、则Pacemaker将尝试隔离此节点。如果禁用了隔离或隔离操作失败、则资源状态将为 `FAILED <HOSTNAME> (blocked)` Pacemaker将无法在其他节点上启动它。

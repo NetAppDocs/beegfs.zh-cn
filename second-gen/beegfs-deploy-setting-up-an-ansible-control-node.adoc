@@ -16,19 +16,19 @@ summary: 要设置Ansible控制节点、请确定可以通过网络访问可用�
 [role="lead"]
 要设置Ansible控制节点、您必须确定能够通过网络访问可用于配置解决方案 的所有文件和块节点的管理端口的虚拟机或物理机。
 
-以下步骤已在CentOS 8.4上进行了测试。有关首选Linux分发版的特定步骤、请参见 https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html["Ansible文档"^]。
+以下步骤已在Ubuntu 22.04上进行了测试。有关首选Linux发行版的特定步骤，请参见 https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html["Ansible文档"^]。
 
-. 安装Python 3.9并确保安装了正确版本的`pip`。
+. 安装Python 3.10并确保已安装正确版本的 `pip` 。
 +
 ....
-sudo dnf install python3.9 -y
-sudo dnf install python39-pip
-sudo dnf install sshpass
+sudo apt install python3.10 -y
+sudo apt install python3-pip
+sudo apt install sshpass
 ....
-. 创建符号链接、确保每当调用`python3`或`python`时使用Python 3.9二进制文件。
+. 创建符号链接、确保调用或时使用Python 3.10二进制文件 `python3` `python` 。
 +
 ....
-sudo ln -sf /usr/bin/python3.9 /usr/bin/python3
+sudo ln -sf /usr/bin/python3.10 /usr/bin/python3
 sudo ln -sf /usr/bin/python3 /usr/bin/python
 ....
 . 安装NetApp BeeGFS集合所需的Python软件包。
@@ -44,20 +44,20 @@ NOTE: 要确保您安装的是受支持的Ansible版本以及所有必需的Pyth
 +
 ....
 ansible --version
-ansible [core 2.11.6]
+ansible [core 2.17.2]
   config file = None
   configured module search path = ['/root/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
-  ansible python module location = /usr/local/lib/python3.9/site-packages/ansible
+  ansible python module location = /usr/local/lib/python3.10/dist-packages/ansible
   ansible collection location = /root/.ansible/collections:/usr/share/ansible/collections
   executable location = /usr/local/bin/ansible
-  python version = 3.9.2 (default, Mar 10 2021, 17:29:56) [GCC 8.4.1 20200928 (Red Hat 8.4.1-1)]
-  jinja version = 3.0.2
+  python version = 3.10.12 (main, Jul 29 2024, 16:56:48) [GCC 11.4.0] (/usr/bin/python3)
+  jinja version = 3.1.4
   libyaml = True
 ....
 . 将用于描述BeeGFS部署的Ansible清单存储在Git或BitBucket等源控制系统中、然后安装Git以与这些系统进行交互。
 +
 ....
-sudo dnf install git -y
+sudo apt install git -y
 ....
 . 设置无密码SSH。这是允许Ansible从Ansible控制节点访问远程BeeGFS文件节点的最简单方法。
 +
@@ -74,6 +74,6 @@ Do * not* set up passworwless SSH to the block nodes.这既不受支持、也不
 
 +
 ....
-ansible-galaxy collection install netapp_eseries.beegfs:==3.0.1
+ansible-galaxy collection install netapp_eseries.beegfs:==3.2.0
 ....
 

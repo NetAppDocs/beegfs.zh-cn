@@ -18,8 +18,6 @@ indexpage:
       url: https://www.netapp.com/blog/beegfs-for-beginners/
     - title: 博客—BeeGFS的HA
       url: https://www.netapp.com/blog/high-availability-beegfs/
-    - title: 视频—利用NetApp上的BeeGFS加快人工智能工作负载的处理速度
-      url: https://www.netapp.tv/details/28905?mcid=04158305605030681010298851103052321172
   - title: 其他文档
     links:
     - title: NetApp 产品文档

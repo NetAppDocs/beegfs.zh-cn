@@ -25,7 +25,7 @@ summary: '使用主机变量(host_vars)指定各个文件节点的配置。'
 * 定义Ansible连接到节点时应使用的IP或主机名。
 * 配置用于HA集群服务(Pacemaker和Corosync)的其他接口和集群IP、以便与其他文件节点进行通信。默认情况下、这些服务与管理接口使用相同的网络、但应提供更多接口以实现冗余。通常的做法是、在存储网络上定义其他IP、从而避免需要额外的集群或管理网络。
 +
-** 用于集群通信的任何网络的性能对于文件系统性能并不重要。对于默认集群配置、通常至少1 Gbps的网络将为集群操作提供足够的性能、例如同步节点状态和协调集群资源状态更改。慢速/繁忙网络可能会使发生原因 资源状态发生变化、所需时间比平常要长、在极端情况下、如果节点无法在合理的时间范围内发送检测信号、可能会导致节点被逐出集群。
+** 用于集群通信的任何网络的性能对于文件系统性能并不重要。使用默认集群配置时、通常至少1 Gb/秒的网络可为集群操作(例如同步节点状态和协调集群资源状态更改)提供足够的性能。慢速/繁忙网络可能会使发生原因 资源状态发生变化、所需时间比平常要长、在极端情况下、如果节点无法在合理的时间范围内发送检测信号、可能会导致节点被逐出集群。
 
 
 * 配置用于通过所需协议连接到块节点的接口(例如：iSCSI/iSER、NVMe/IB、NVMe/RoCE、FCP等)
@@ -143,7 +143,7 @@ eseries_nvme_roce_interfaces:
 
 === 高级：在以太网模式和InfiniBand模式之间切换NVIDIA ConnectX VPI适配器
 
-NVIDIA ConnectX-Virtual Protocol Interconnect & reg；(VPI)适配器既支持InfiniBand、也支持以太网作为传输层。在模式之间切换不会自动协商、必须使用进行配置 `mstconfig` 中包含的工具 `mstflint`是中的一个开源软件包 link:https://docs.nvidia.com/networking/display/MFTV4133/MFT+Supported+Configurations+and+Parameters["Mellanox Firmare工具(MFT)"^]。只需更改一次适配器的模式即可。此操作可以手动完成、也可以作为使用配置的任何接口的一部分包含在Ansible清单中 `eseries-[ib|ib_iser|ipoib|nvme_ib|nvme_roce|roce]_interfaces:` 部分、以使其自动检查/应用。
+NVIDIA ConnectX-Virtual Protocol Interconnect & reg；(VPI)适配器既支持InfiniBand、也支持以太网作为传输层。不会自动协商模式之间的切换，必须使用中包含的工具进行配置 `mstconfig` ，该工具 `mstflint`是的一个开放源代码软件包 link:https://docs.nvidia.com/networking/display/mftv4270/mft+supported+configurations+and+parameters["NVIDIA软件工具(MFT)"^]。只需更改一次适配器的模式即可。这可以手动完成、也可以作为使用清单部分配置的任何接口的一部分包含在Ands得以 自动检查/应用的清单中 `eseries-[ib|ib_iser|ipoib|nvme_ib|nvme_roce|roce]_interfaces:` 。
 
 例如、要将InfiniBand模式下的接口电流更改为以太网、以便用于RoCE：
 

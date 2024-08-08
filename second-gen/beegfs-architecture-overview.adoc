@@ -55,47 +55,59 @@ image:../media/beegfs-components.png[""]
 
 
 
+== HA架构
+
+NetApp上的BeeGFS通过创建与NetApp硬件完全集成的解决方案 来扩展BeeGFS企业版的功能、从而实现共享磁盘高可用性(HA)架构。
+
+
+NOTE: 虽然BeeGFS社区版可以免费使用、但企业版要求从NetApp等合作伙伴购买专业支持订阅合同。企业版支持使用多项附加功能、包括故障恢复能力、配额强制实施和存储池。
+
+下图对无共享和共享磁盘HA架构进行了比较。
+
+image:../media/beegfs-design-image1.png[""]
+
+有关详细信息，请参见 https://www.netapp.com/blog/high-availability-beegfs/["宣布NetApp支持的BeeGFS高可用性"^]。
+
+
+
 == 已验证节点
 
-NetApp解决方案 上的BeeGFS包括以下经验证的节点：NetApp EF600存储系统(块节点)和联想ThinkSystem SR665服务器(文件节点)。
+NetApp上的BeeGFS解决方案已验证以下节点。
+
+[cols="10%,20%,70%"]
+|===
+| 节点 | 硬件 | 详细信息 
 
 
-
-=== 块节点：EF600存储系统
-
-NetApp EF600全闪存阵列可提供一致、近乎实时的数据访问、同时支持任意数量的工作负载。为了快速、持续地向AI和HPC应用程序馈送数据、EF600存储系统在一个机箱中提供高达200万个缓存读取IOPS、低于100微秒的响应时间以及42 GBps顺序读取带宽。
+| 块 | NetApp EF600存储系统 | 一款高性能全NVMe 2U存储阵列、专为要求苛刻的工作负载而设计。 
 
 
+.2+| 文件 | Lenovo ThinkSystem SR6SR V3服务器 | 双插槽2U服务器、采用PCIe 5.0、双AMD EPYC 9124处理器。有关Lenovo SR更 多功能的详细信息，请参阅 https://lenovopress.lenovo.com/lp1608-thinksystem-sr665-v3-server["联想的网站"^]。 
 
-=== 文件节点：Lenovo ThinkSystem SR665服务器
 
-SR665是一款采用PCIe 4.0的双插槽2U服务器。如果配置为满足此解决方案 的要求、则它可以提供充足的性能、以便在与直连E系列节点提供的吞吐量和IOPS相当的配置中运行BeeGFS文件服务。
-
-有关联想SR665的详细信息、请参见 https://lenovopress.com/lp1269-thinksystem-sr665-server["联想的网站"^]。
-
+| Lenovo ThinkSystem SR6SR服务器 | 双插槽2U服务器、采用PCIe 4.0和双AMD EPYC 7003处理器。有关联想SR想 使用的详细信息，请参阅 https://lenovopress.lenovo.com/lp1269-thinksystem-sr665-server["联想的网站"^]。 
+|===
 
 
 == 经验证的硬件设计
 
-该解决方案的组件(如下图所示)使用两个双插槽PCIe 4.0服务器作为BeeGFS文件层、并使用两个EF600存储系统作为块层。
+该解决方案的组件(如下图所示)使用经过验证的文件节点服务器作为BeeGFS文件层、并使用两个EF600存储系统作为块层。
 
 image:../media/beegfs-design-image2-small.png[""]
 
+NetApp解决方案 上的BeeGFS可跨部署中的所有组件运行。部署的第一个组件必须运行BeeGFS管理、元数据和存储服务(称为基础组件)。所有后续组件均可通过软件进行配置、以扩展元数据和存储服务、或者专门提供存储服务。通过这种模块化方法、可以根据工作负载的需求扩展文件系统、同时使用相同的底层硬件平台和组件设计。
 
-NOTE: 由于每个组件都包含两个BeeGFS文件节点、因此要在故障转移集群中建立仲裁、至少需要两个组件。虽然您可以配置双节点集群、但此配置具有一些限制、可能会阻止成功进行故障转移。如果您需要双节点集群、则可以将第三个设备作为Tiebreaker (但是、此站点不会介绍此设计)。
+最多可以部署五个组件、以构成一个独立的Linux HA集群。这样可以优化PacMaker的资源管理、并保持与Corosync的高效同步。将一个或多个独立BeeGFS HA集群组合在一起、以创建一个BeeGFS文件系统、此文件系统可作为一个存储命名空间供客户端访问。在硬件方面、一个42U机架最多可容纳五个组件、并可为存储/数据网络配备两个1U InfiniBand交换机。有关可视化表示、请参见下图。
 
-每个组件都通过两层硬件设计提供高可用性、这种设计可分隔文件层和块层的故障域。每个层都可以独立进行故障转移、从而提高故障恢复能力并降低级联故障的风险。将HDR InfiniBand与NVMeOF结合使用可在文件和块节点之间提供高吞吐量和最低延迟、并提供完全冗余和足够的链路超额预订、以避免分散设计成为瓶颈、即使系统部分降级也是如此。
 
-NetApp解决方案 上的BeeGFS可跨部署中的所有组件运行。部署的第一个组件必须运行BeeGFS管理、元数据和存储服务(称为基础组件)。所有后续组件均通过软件配置为运行BeeGFS元数据和存储服务、或者仅运行存储服务。由于每个组件都具有不同的配置配置文件、因此可以使用相同的底层硬件平台和组件设计扩展文件系统元数据或存储容量和性能。
-
-一个独立的Linux HA集群最多可组合五个组件、从而确保每个集群资源管理器(Pacemaker)有合理数量的资源、并降低保持集群成员同步所需的消息传送开销(Corosync)。建议每个集群至少有两个组件、以便有足够的成员建立仲裁。将这些独立BeeGFS HA集群中的一个或多个组合在一起、以创建一个BeeGFS文件系统(如下图所示)、此文件系统可作为一个存储命名空间供客户端访问。
+NOTE: 要在故障转移集群中建立仲裁、至少需要两个组件。双节点集群存在一些限制、可能会阻止成功进行故障转移。您可以通过将第三个设备整合为Tieb破碎 机来配置双节点集群；但是、本文档不会介绍这种设计。
 
 image:../media/beegfs-design-image3.png[""]
 
-尽管每个机架的组件数量最终取决于给定站点的电源和散热要求、 解决方案 经过专门设计、可在一个42U机架中部署多达五个组件、同时仍可为用于存储/数据网络的两个1U InfiniBand交换机提供空间。每个构建块需要八个IB端口(每个交换机四个用于实现冗余)、因此五个构建块会在一个40端口HDR InfiniBand交换机(如NVIDIA QM8700)上保留一半的端口、以便实施ft-tree或类似的非阻塞拓扑。此配置可确保存储或计算/GPU机架的数量可以纵向扩展、而不会出现网络瓶颈。或者、可以根据存储网络结构供应商的建议使用超额预订的存储网络结构。
 
-下图显示了一个80节点的ft-tree拓扑。
 
-image:../media/beegfs-design-image4.png[""]
+== Ansible
 
-通过使用Ansible作为部署引擎在NetApp上部署BeeGFS、管理员可以使用现代基础架构作为代码实践来维护整个环境。这样可以极大地简化原本复杂的系统、使管理员可以在一个位置定义和调整所有配置、然后确保无论环境扩展多大、都能始终如一地应用。可从获取BeeGFS集合 https://galaxy.ansible.com/netapp_eseries/beegfs["Ansible Galax河"^] 和 https://github.com/netappeseries/beegfs/["NetApp的E系列GitHub"^]。
+NetApp上的BeeGFS是使用Ansible自动化交付和部署的、Ansible自动化托管在GitHub和Ansible GALAXY上(BeeGFS集合可从获取 https://galaxy.ansible.com/netapp_eseries/beegfs["Ansible Galax河"^] 和 https://github.com/netappeseries/beegfs/["NetApp的E系列GitHub"^]）。虽然Ansible主要是使用用于组装BeeGFS组件的硬件进行测试的、但您可以将其配置为使用受支持的Linux版本在几乎任何基于x86的服务器上运行。
+
+有关详细信息，请参见 https://www.netapp.com/blog/deploying-beegfs-eseries/["使用E系列存储部署BeeGFS"^]。
