@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-deploy-playbook.html 
+permalink: second-gen/beegfs-deploy-playbook.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: 部署和管理配置涉及运行一个或多个攻略手册、其中包含Ansible需要执行的任务、并将整个系统置于所需状态。 
 ---
@@ -10,7 +10,7 @@ summary: 部署和管理配置涉及运行一个或多个攻略手册、其中�
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]
@@ -103,7 +103,7 @@ ansible-playbook -i inventory.yml playbook.yml --forks 20
 ....
 +
 
-NOTE: 特别是对于大型部署、建议使用`fork`参数覆盖默认的货叉数(5)、以增加Ansible并行配置的主机数。(有关详细信息、请参见  https://www.ansible.com/blog/ansible-performance-tuning["Ansible性能调整"^] 和 https://docs.ansible.com/ansible/latest/user_guide/playbooks_strategies.html["控制攻略手册执行"^]) 最大值设置取决于Ansible控制节点上可用的处理能力。以上示例20是在具有4个CPU (Intel (R) Xeon (R) Gold 6146 CPU @ 3.20GHz)的虚拟Ansible控制节点上运行的。
+NOTE: 尤其是对于大型部署、 `forks`建议使用参数覆盖默认的分叉数(5)、以增加Ans可 并行配置的主机数量。(有关详细信息，请参阅 https://docs.ansible.com/ansible/latest/user_guide/playbooks_strategies.html["控制攻略手册执行"^]。)最大值设置取决于可变控制节点上可用的处理功率。以上示例20是在具有4个CPU (Intel (R) Xeon (R) Gold 6146 CPU @ 3.20GHz)的虚拟Ansible控制节点上运行的。
 
 +
 根据Ansible控制节点与BeeGFS文件和块节点之间的部署规模和网络性能、部署时间可能会有所不同。

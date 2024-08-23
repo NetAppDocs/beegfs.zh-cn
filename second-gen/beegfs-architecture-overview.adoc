@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-architecture-overview.html 
+permalink: second-gen/beegfs-architecture-overview.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: NetApp解决方案 上的BeeGFS包括用于确定支持经验证的工作负载所需的特定设备、布线和配置的架构设计注意事项。 
 ---
@@ -10,7 +10,7 @@ summary: NetApp解决方案 上的BeeGFS包括用于确定支持经验证的工�
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]
@@ -47,7 +47,7 @@ BeeGFS文件系统包括以下主要服务：
 
 下图显示了NetApp E系列系统中使用的BeeGFS解决方案 组件和关系。
 
-image:../media/beegfs-components.png[""]
+image:beegfs-components.png["BeeGFS组件"]
 
 作为一个并行文件系统、BeeGFS会将其文件条带化到多个服务器节点上、以最大限度地提高读/写性能和可扩展性。服务器节点协同工作、可提供一个文件系统、其他服务器节点(通常称为_clients_）可以同时挂载和访问该文件系统。这些客户端可以查看和使用分布式文件系统、类似于NTFS、XFS或ext4等本地文件系统。
 
@@ -64,7 +64,7 @@ NOTE: 虽然BeeGFS社区版可以免费使用、但企业版要求从NetApp等�
 
 下图对无共享和共享磁盘HA架构进行了比较。
 
-image:../media/beegfs-design-image1.png[""]
+image:beegfs-design-image1.png["HA架构比较"]
 
 有关详细信息，请参见 https://www.netapp.com/blog/high-availability-beegfs/["宣布NetApp支持的BeeGFS高可用性"^]。
 
@@ -93,7 +93,7 @@ NetApp上的BeeGFS解决方案已验证以下节点。
 
 该解决方案的组件(如下图所示)使用经过验证的文件节点服务器作为BeeGFS文件层、并使用两个EF600存储系统作为块层。
 
-image:../media/beegfs-design-image2-small.png[""]
+image:beegfs-design-image2-small.png["组件"]
 
 NetApp解决方案 上的BeeGFS可跨部署中的所有组件运行。部署的第一个组件必须运行BeeGFS管理、元数据和存储服务(称为基础组件)。所有后续组件均可通过软件进行配置、以扩展元数据和存储服务、或者专门提供存储服务。通过这种模块化方法、可以根据工作负载的需求扩展文件系统、同时使用相同的底层硬件平台和组件设计。
 
@@ -102,7 +102,7 @@ NetApp解决方案 上的BeeGFS可跨部署中的所有组件运行。部署的�
 
 NOTE: 要在故障转移集群中建立仲裁、至少需要两个组件。双节点集群存在一些限制、可能会阻止成功进行故障转移。您可以通过将第三个设备整合为Tieb破碎 机来配置双节点集群；但是、本文档不会介绍这种设计。
 
-image:../media/beegfs-design-image3.png[""]
+image:beegfs-design-image3.png["BeeGFS HA集群扩展"]
 
 
 

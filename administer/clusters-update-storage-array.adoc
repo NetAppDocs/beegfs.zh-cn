@@ -1,0 +1,98 @@
+---
+sidebar: sidebar 
+permalink: administer/clusters-update-storage-array.html 
+keywords: BeeGFS on NetApp, HA, Cluster, Administration, update, upgrade, SANtricityOS, firmware, drive 
+summary: 升级HA集群的E-Series存储阵列的步骤。 
+---
+= 升级E-Series存储阵列
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+按照以下步骤升级HA集群的E-Series存储阵列(块节点)。
+
+
+
+== 概述
+
+确保HA集群的NetApp E-Series存储阵列始终使用最新固件、以确保最佳性能和更高的安全性。存储阵列的固件更新可通过SANtricity操作系统、NVS而且 驱动器固件文件来应用。
+
+
+IMPORTANT: 虽然可以在HA集群联机的情况下升级存储阵列、但建议在进行所有升级时将集群置于维护模式。
+
+
+
+== 块节点升级步骤
+
+以下步骤概述了如何使用 `Netapp_Eseries.Santricity`Ands得以 收集来更新存储阵列的固件。在继续操作之前、请查看link:https://docs.netapp.com/us-en/e-series/upgrade-santricity/overview-upgrade-consider-task.html["升级注意事项"^]以更新E-Series系统。
+
+
+NOTE: 只能从11.70.5P1升级到SANtricity OS 11.80或更高版本。在应用进一步升级之前、必须先将存储阵列升级到11.70.5P1。
+
+. 验证您的SANtricity控制节点是否正在使用最新的Ants解决 方案集合。
++
+** 用于升级可访问的集合 link:https://galaxy.ansible.com/netapp_eseries/beegfs["Ansible Galax河"^]下，运行以下命令：
++
+[source, console]
+----
+ansible-galaxy collection install netapp_eseries.santricity --upgrade
+----
+** 对于脱机升级，请从下载收集tarballlink:https://galaxy.ansible.com/ui/repo/published/netapp_eseries/santricity/["Ansible Galax河"^]，将其传输到控制节点，然后执行：
++
+[source, console]
+----
+ansible-galaxy collection install netapp_eseries-santricity-<VERSION>.tar.gz --upgrade
+----
++
+请参见 link:https://docs.ansible.com/ansible/latest/collections_guide/collections_installing.html["正在安装收集"^] 有关详细信息 ...
+
+
+
+. 为存储阵列和驱动器获取最新固件。
++
+.. 下载固件文件。
++
+*** * SANtricity OS和NVSRAM:*导航到link:https://mysupport.netapp.com/site/products/all/details/eseries-santricityos/downloads-tab["NetApp 支持站点"^]并下载适用于您的存储阵列型号的SANtricity OS和NVSRAM:的最新版本。
+*** *驱动器固件：*导航到link:https://mysupport.netapp.com/site/downloads/firmware/e-series-disk-firmware["E-Series磁盘固件站点"^]并下载每个存储阵列驱动器型号的最新固件。
+
+
+.. 将SANtricity操作系统、NVSRAID和驱动器固件文件存储在您的Ans负责人 控制节点的 `<inventory_directory>/packages`目录中。
+
+
+. 如有必要、请更新集群的"Andsess"清单文件、以包括所有需要更新的存储阵列(块节点)。有关指导、请参见link:../custom/architectures-inventory-overview.html["Ansible清单概述"^]一节。
+. 确保集群处于最佳状态、并且每个BeeGFS服务都位于其首选节点上。有关详细信息、请参见 link:clusters-examine-state.html["检查集群的状态"^] 。
+. 按照中的说明将集群置于维护模式link:clusters-maintenance-mode.html["将集群置于维护模式"^]。
+. 创建一个名为的新的Ands要 用手册 `update_block_node_playbook.yml`。使用以下内容填充此操作手册、将SANtricity操作系统、NVSAN并 将驱动器固件版本更换为所需的升级路径：
++
+....
+- hosts: eseries_storage_systems
+  gather_facts: false
+  any_errors_fatal: true
+  collections:
+    - netapp_eseries.santricity
+  vars:
+    eseries_firmware_firmware: "packages/<SantricityOS>.dlp"
+    eseries_firmware_nvsram: "packages/<NVSRAM>.dlp"
+    eseries_drive_firmware_firmware_list:
+      - "packages/<drive_firmware>.dlp"
+    eseries_drive_firmware_upgrade_drives_online: true
+
+  tasks:
+    - name: Configure NetApp E-Series block nodes.
+      import_role:
+        name: nar_santricity_management
+....
+. 要启动更新、请从您的Andsute控制节点执行以下命令：
++
+[listing]
+----
+ansible-playbook -i inventory.yml update_block_node_playbook.yml
+----
+. 完成该操作手册后、验证每个存储阵列是否处于最佳状态。
+. 将集群移出维护模式、并验证集群是否处于最佳状态、并且每个BeeGFS服务都位于其首选节点上。
+

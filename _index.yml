@@ -9,9 +9,9 @@ indexpage:
   - title: 入门
     links:
     - title: 解决方案概述
-      url: "/beegfs-solution-overview.html"
+      url: "/second-gen/beegfs-solution-overview.html"
     - title: 架构概述
-      url: "/beegfs-architecture-overview.html"
+      url: "/second-gen/beegfs-architecture-overview.html"
     - title: 博客—了解BeeGFS和E系列
       url: https://www.netapp.com/blog/solution-support-for-beegfs-and-e-series/
     - title: 博客—适合新手的BeeGFS

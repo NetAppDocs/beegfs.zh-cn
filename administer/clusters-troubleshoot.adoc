@@ -1,0 +1,297 @@
+---
+sidebar: sidebar 
+permalink: administer/clusters-troubleshoot.html 
+keywords: BeeGFS on NetApp, HA, Cluster, Administration, troubleshooting 
+summary: 对BeeGFS HA集群进行故障排除。 
+---
+= 故障排除
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+对BeeGFS HA集群进行故障排除。
+
+
+
+== 概述
+
+本节将介绍如何调查各种故障以及在运行BeeGFS HA集群时可能出现的其他情形并对其进行故障排除。
+
+
+
+== 故障排除指南
+
+
+
+=== 正在调查意外故障转移
+
+当节点意外隔离并将其服务移至另一个节点时、第一步应是查看集群是否在底部指示任何资源故障 `pcs status`。如果成功完成隔离且资源已在另一节点上重新启动、则通常不会显示任何内容。
+
+通常、下一步是使用搜索整个systemd日志 `journalctl` 在其余任何一个文件节点上(所有节点上的Pacemaker日志均会同步)。如果您知道发生故障的时间、则可以在发生故障之前开始搜索(通常建议至少提前十分钟)：
+
+[source, console]
+----
+journalctl --since "<YYYY-MM-DD HH:MM:SS>"
+----
+以下各节显示了您可以在日志中查看的常见文本、以进一步缩小调查范围。
+
+
+
+==== 调查/解决步骤
+
+
+
+===== 第1步：检查BeeGFS监控器是否检测到故障：
+
+如果故障转移是由BeeGFS监控器触发的、则应看到错误(如果不是、请继续执行下一步)。
+
+[source, console]
+----
+journalctl --since "<YYYY-MM-DD HH:MM:SS>" | grep -i unexpected
+[...]
+Jul 01 15:51:03 beegfs_01 pacemaker-schedulerd[9246]:  warning: Unexpected result (error: BeeGFS service is not active!) was recorded for monitor of meta_08-monitor on beegfs_02 at Jul  1 15:51:03 2022
+----
+在本示例中、BeeGFS服务meta_08因某种原因停止。要继续进行故障排除，我们应启动beegfs_02并查看位于的服务日志 `/var/log/beegfs-meta-meta_08_tgt_0801.log`。例如、BeeGFS服务可能由于内部问题描述 或节点问题而遇到应用程序错误。
+
+
+TIP: 与Pacemaker中的日志不同、BeeGFS服务的日志不会分发到集群中的所有节点。要调查这些类型的故障、需要原始节点中发生故障的日志。
+
+监控器可能报告的问题包括：
+
+* 无法访问目标！
++
+** 问题描述 ：表示无法访问块卷。
+** 故障排除：
++
+*** 如果此服务也无法在备用文件节点上启动、请确认块节点运行状况良好。
+*** 检查是否存在任何可能阻止从此文件节点访问块节点的物理问题、例如、InfiniBand适配器或缆线出现故障。
+
+
+
+
+* 无法访问网络！
++
+** 问题描述 ：客户端用于连接到此BeeGFS服务的适配器均未联机。
+** 故障排除：
++
+*** 如果多个/所有文件节点受到影响、请检查用于连接BeeGFS客户端和文件系统的网络是否存在故障。
+*** 检查是否存在任何可能阻止从此文件节点访问客户端的物理问题、例如InfiniBand适配器或缆线出现故障。
+
+
+
+
+* BeeGFS服务未处于活动状态！
++
+** 问题描述 ：BeeGFS服务意外停止。
+** 故障排除：
++
+*** 在报告错误的文件节点上、检查受影响的BeeGFS服务的日志以查看它是否报告崩溃。如果发生这种情况、请向NetApp支持部门创建一个案例、以便可以调查崩溃情况。
+*** 如果BeeGFS日志中未报告任何错误、请检查日志日志以查看systemd是否记录了服务停止的原因。在某些情况下、BeeGFS服务可能没有机会在进程终止之前记录任何消息(例如、有人运行时) `kill -9 <PID>`）。
+
+
+
+
+
+
+
+
+===== 第2步：检查节点是否意外离开集群
+
+如果节点发生了一些灾难性硬件故障(例如、系统主板已损坏)或发生内核崩溃或类似的软件问题描述 、BeeGFS监控器将不会报告错误。而是查找主机名、此时您应看到Pacemaker发出的消息、指出节点意外丢失：
+
+[source, console]
+----
+journalctl --since "<YYYY-MM-DD HH:MM:SS>" | grep -i <HOSTNAME>
+[...]
+Jul 01 16:18:01 beegfs_01 pacemaker-attrd[9245]:  notice: Node beegfs_02 state is now lost
+Jul 01 16:18:01 beegfs_01 pacemaker-controld[9247]:  warning: Stonith/shutdown of node beegfs_02 was not expected
+----
+
+
+===== 第3步：验证Pacemaker是否能够隔离节点
+
+在所有情况下、您都应看到Pacemaker尝试隔离节点、以验证其是否实际脱机(确切消息可能因隔离的发生原因 而异)：
+
+[source, console]
+----
+Jul 01 16:18:02 beegfs_01 pacemaker-schedulerd[9246]:  warning: Cluster node beegfs_02 will be fenced: peer is no longer part of the cluster
+Jul 01 16:18:02 beegfs_01 pacemaker-schedulerd[9246]:  warning: Node beegfs_02 is unclean
+Jul 01 16:18:02 beegfs_01 pacemaker-schedulerd[9246]:  warning: Scheduling Node beegfs_02 for STONITH
+----
+如果隔离操作成功完成、您将看到如下消息：
+
+[source, console]
+----
+Jul 01 16:18:14 beegfs_01 pacemaker-fenced[9243]:  notice: Operation 'off' [2214070] (call 27 from pacemaker-controld.9247) for host 'beegfs_02' with device 'fence_redfish_2' returned: 0 (OK)
+Jul 01 16:18:14 beegfs_01 pacemaker-fenced[9243]:  notice: Operation 'off' targeting beegfs_02 on beegfs_01 for pacemaker-controld.9247@beegfs_01.786df3a1: OK
+Jul 01 16:18:14 beegfs_01 pacemaker-controld[9247]:  notice: Peer beegfs_02 was terminated (off) by beegfs_01 on behalf of pacemaker-controld.9247: OK
+----
+如果隔离操作因某种原因失败、则BeeGFS服务将无法在另一个节点上重新启动、以避免出现数据损坏的风险。如果隔离设备(PDU或BMC)不可访问或配置不当、则该问题描述 将单独进行调查。
+
+
+
+=== 解决失败的资源操作(位于pcs状态的底部)
+
+如果运行BeeGFS服务所需的资源发生故障、BeeGFS监控器将触发故障转移。如果发生这种情况，底部可能不会列出“失败的资源操作” `pcs status`，您应参阅有关如何操作的步骤link:clusters-failover-failback.html["计划外故障转移后的故障恢复"^]。
+
+否则、通常只能在两种情况下看到"资源操作失败"。
+
+
+
+==== 调查/解决步骤
+
+
+
+===== 场景1：检测到使用隔离代理的临时或永久问题描述 、并且已重新启动或将其移动到其他节点。
+
+某些隔离代理比其他隔离代理更可靠、每个隔离代理都将实施自己的监控方法、以确保隔离设备已准备就绪。特别是、我们发现Redffish隔离代理报告的资源操作失败、即使它仍显示为已启动：
+
+[source, console]
+----
+  * fence_redfish_2_monitor_60000 on beegfs_01 'not running' (7): call=2248, status='complete', exitreason='', last-rc-change='2022-07-26 08:12:59 -05:00', queued=0ms, exec=0ms
+----
+如果隔离代理报告某个特定节点上的资源操作失败、则不会触发该节点上运行的BeeGFS服务的故障转移。只需在同一节点或不同节点上自动重新启动即可。
+
+解决步骤：
+
+. 如果隔离代理始终拒绝在全部或部分节点上运行、请检查这些节点是否能够连接到隔离代理、并验证是否已在Ansible清单中正确配置隔离代理。
++
+.. 例如、如果Redsfish (BMC)隔离代理与它负责隔离的节点运行在同一个节点上、而操作系统管理和BMC IP位于同一个物理接口上、则某些网络交换机配置将不允许这两个接口之间进行通信(以防止网络环路)。默认情况下、HA集群会尝试避免在其负责隔离的节点上放置隔离代理、但在某些情形/配置中可能会发生这种情况。
+
+
+. 解决所有问题后(或者如果问题描述 似乎是临时的)、请运行 `pcs resource cleanup` 重置失败的资源操作。
+
+
+
+
+===== 场景2：BeeGFS监控器检测到问题描述 并触发故障转移、但出于某种原因、资源无法在二级节点上启动。
+
+如果已启用隔离且未阻止资源在原始节点上停止(请参见"备用(故障)"故障排除部分)、则最可能的原因包括在二级节点上启动资源时出现问题、因为：
+
+* 二级节点已脱机。
+* 物理或逻辑配置问题描述 会阻止二级系统访问用作BeeGFS目标的块卷。
+
+
+解决步骤：
+
+. 对于失败的资源操作中的每个条目：
++
+.. 确认失败的资源操作为启动操作。
+.. 根据出现故障的资源操作中指示的资源和指定的节点：
++
+... 查找并更正可能会阻止节点启动指定资源的任何外部问题。例如、如果BeeGFS IP地址(浮动IP)无法启动、请确认至少有一个所需接口已连接/联机并已连接到正确的网络交换机。如果BeeGFS目标(块设备/E系列卷)发生故障、请验证与后端块节点的物理连接是否按预期连接、并验证块节点是否运行正常。
+
+
+.. 如果没有明显的外部问题、并且您希望在此事件中使用根发生原因 、建议您先与NetApp支持部门一起创建案例进行调查、然后再继续操作、因为以下步骤可能会使根发生原因 分析(Root Analysis、RCA)变得极具挑战性/不可能。
+
+
+. 解决任何外部问题后：
++
+.. 从Ansible inventory.yml文件中注释掉所有无法正常工作的节点、然后重新运行完整的Ansible攻略手册、以确保在二级节点上正确设置所有逻辑配置。
++
+... 注意：在节点运行状况良好且您准备好进行故障恢复后、请勿忘记取消对这些节点的注释并重新运行攻略手册。
+
+
+.. 或者、您也可以尝试手动恢复集群：
++
+... 使用以下命令将所有脱机节点重新联机： `pcs cluster start <HOSTNAME>`
+... 使用以下命令清除所有失败的资源操作： `pcs resource cleanup`
+... 运行pcs状态并验证所有服务是否按预期启动。
+... 如果需要、请运行 `pcs resource relocate run` 将资源移回其首选节点(如果有)。
+
+
+
+
+
+
+
+
+== 常见问题
+
+
+
+=== BeeGFS服务在请求时不会进行故障转移或故障恢复
+
+*可能的问题描述 ：* `pcs resource relocate` 运行命令已执行、但从未成功完成。
+
+*如何检查：*运行 `pcs constraint --full` 并检查ID为的任何位置约束 `pcs-relocate-<RESOURCE>`。
+
+*如何解决：*运行 `pcs resource relocate clear` 然后重新运行 `pcs constraint --full` 以验证是否已删除额外的约束。
+
+
+
+=== 禁用隔离后、处于pcs状态的一个节点将显示"standby (on-fail)"
+
+*可能的问题描述 ：* Pacemaker无法成功确认故障节点上的所有资源均已停止。
+
+*如何解决：*
+
+. 运行 `pcs status` 并检查输出底部是否存在未"启动"或显示错误的任何资源、并解决任何问题。
+. 要使节点恢复联机、请运行 `pcs resource cleanup --node=<HOSTNAME>`。
+
+
+
+
+=== 在发生意外故障转移后、如果启用了隔离、则资源将以pcs状态显示"started (on-fail)"
+
+*可能的问题描述 ：*发生了一个问题、触发了故障转移、但Pacemaker无法验证节点是否已隔离。发生这种情况的原因可能是隔离配置不当或存在具有隔离代理的问题描述 (例如：PDU已与网络断开连接)。
+
+*如何解决：*
+
+. 验证节点是否已实际关闭。
++
+
+IMPORTANT: 如果您指定的节点实际上未关闭、但正在运行集群服务或资源、则会发生数据损坏/集群故障。
+
+. 手动确认隔离： `pcs stonith confirm <NODE>`
+
+
+此时、服务应完成故障转移并在另一个运行正常的节点上重新启动。
+
+
+
+== 常见故障排除任务
+
+
+
+=== 重新启动单个BeeGFS服务
+
+通常、如果需要重新启动BeeGFS服务(例如、为了便于更改配置)、应通过更新Ansible清单并重新运行攻略手册来完成此操作。在某些情况下、可能需要重新启动单个服务以加快故障排除速度、例如更改日志记录级别而无需等待整个攻略手册运行。
+
+
+IMPORTANT: 除非同时将任何手动更改添加到Ansible清单中、否则将在下次运行Ansible攻略手册时还原这些更改。
+
+
+
+==== 选项1：由系统d控制的重新启动
+
+如果存在BeeGFS服务无法使用新配置正确重新启动的风险、请先将集群置于维护模式、以防止BeeGFS监控器检测到服务已停止并触发不需要的故障转移：
+
+[source, console]
+----
+pcs property set maintenance-mode=true
+----
+如果需要、可通过对服务配置进行任何更改 `/mnt/<SERVICE_ID>/*_config/beegfs-*.conf` (例如： `/mnt/meta_01_tgt_0101/metadata_config/beegfs-meta.conf`)、然后使用systemd重新启动它：
+
+[source, console]
+----
+systemctl restart beegfs-*@<SERVICE_ID>.service
+----
+示例 `systemctl restart beegfs-meta@meta_01_tgt_0101.service`
+
+
+
+==== 选项2：起搏器控制的重新启动
+
+如果您不关心新配置是否可能发生原因 会使服务意外停止(例如、更改日志记录级别)、或者您处于维护窗口而不担心停机、则只需为要重新启动的服务重新启动BeeGFS监控器即可：
+
+[source, console]
+----
+pcs resource restart <SERVICE>-monitor
+----
+例如、要重新启动BeeGFS管理服务、请执行以下操作： `pcs resource restart mgmt-monitor`

@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-deploy-create-inventory.html 
+permalink: second-gen/beegfs-deploy-create-inventory.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: 要定义文件和块节点的配置、请创建一个Ansible清单、用于表示要部署的BeeGFS文件系统。 
 ---
@@ -10,7 +10,7 @@ summary: 要定义文件和块节点的配置、请创建一个Ansible清单、�
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]

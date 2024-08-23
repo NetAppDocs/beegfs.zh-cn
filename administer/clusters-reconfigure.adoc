@@ -1,0 +1,65 @@
+---
+sidebar: sidebar 
+permalink: administer/clusters-reconfigure.html 
+keywords: BeeGFS on NetApp, HA, Cluster, Administration, Ansible, pcs 
+summary: 使用Ansible重新配置集群。 
+---
+= 重新配置HA集群和BeeGFS
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+使用Ansible重新配置集群。
+
+
+
+== 概述
+
+通常、要重新配置BeeGFS HA集群的任何方面、都应更新您的Ansient清单并重新运行 `ansible-playbook`命令。其中包括更新警报、更改永久隔离配置或调整BeeGFS服务配置。这些 `group_vars/ha_cluster.yml`选项可使用文件进行调整、可在link:../custom/architectures-inventory-common-file-node-configuration.html["指定通用文件节点配置"^]部分中找到完整的选项列表。
+
+有关管理员在执行集群维护或维护时应注意的部分配置选项的其他详细信息、请参见下文。
+
+
+
+== 如何禁用和启用隔离
+
+设置集群时、默认情况下会启用/需要隔离。在某些情况下、可能需要暂时禁用隔离、以确保在执行某些维护操作(例如升级操作系统)时节点不会意外关闭。虽然可以手动禁用此功能、但管理员应注意一些利弊权衡。
+
+
+
+=== 选项1：使用Ansible禁用隔离(建议)。
+
+使用Ansible禁用隔离后、BeeGFS监控器的"发生故障"操作将从"隔离"更改为"备用"。这意味着、如果BeeGFS监控器检测到故障、它将尝试将节点置于备用状态并对所有BeeGFS服务进行故障转移。在外部主动故障排除/测试中、这通常比选项2更理想。缺点是、如果某个资源无法在原始节点上停止、则会被阻止从其他位置启动(这就是生产集群通常需要隔离的原因)。
+
+. 位于Ansible清单中 `groups_vars/ha_cluster.yml` 添加以下配置：
++
+[source, console]
+----
+beegfs_ha_cluster_crm_config_options:
+    stonith-enabled: False
+----
+. 重新运行Ansible攻略手册、将所做的更改应用于集群。
+
+
+
+
+=== 选项2：手动禁用隔离。
+
+在某些情况下、您可能希望在不重新运行Ansible的情况下临时禁用隔离、以便于对集群进行故障排除或测试。
+
+
+WARNING: 在此配置中、如果BeeGFS监控器检测到故障、集群将尝试停止相应的资源组。它不会触发完全故障转移、也不会尝试重新启动受影响的资源组或将其移动到其他主机。要进行恢复、请解决所有问题、然后运行 `pcs resource cleanup` 或者手动将节点置于备用状态。
+
+步骤
+
+. 要确定是否全局启用或禁用了隔离(stonith")、请运行： `pcs property show stonith-enabled`
+. 要禁用隔离、请运行： `pcs property set stonith-enabled=false`
+. 要启用隔离、请运行： `pcs property set stonith-enabled=true`
+
+
+注意：下次运行Ansible攻略手册时、此设置将被覆盖。

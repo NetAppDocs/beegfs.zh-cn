@@ -1,0 +1,82 @@
+---
+sidebar: sidebar 
+permalink: custom/architectures-deploy-playbook-overview.html 
+keywords: BeeGFS on NetApp, NetApp Custom Architectures, EF600 
+summary: 使用Ansible部署和管理BeeGFS HA集群。 
+---
+= Ansible攻略手册概述
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+使用Ansible部署和管理BeeGFS HA集群。
+
+
+
+== 概述
+
+前面几节介绍了构建表示BeeGFS HA集群的Ansible清单所需的步骤。本节介绍由NetApp开发的用于部署和管理集群的Ansible自动化功能。
+
+
+
+== Ansible：关键概念
+
+在继续操作之前、熟悉几个关键的Ansible概念会很有帮助：
+
+* 根据Ansible清单执行的任务在称为*攻略手册*的内容中进行了定义。
++
+** Ansible中的大多数任务都设计为*幂等*、这意味着可以多次运行这些任务、以验证所需的配置/状态是否仍然适用、而不会造成中断或进行不必要的更新。
+
+
+* Ansible中最小的执行单位是*模块*。
++
+** 典型的攻略手册使用多个模块。
++
+*** 示例：下载软件包、更新配置文件、启动/启用服务。
+
+
+** NetApp分发模块以自动执行NetApp E系列系统。
+
+
+* 更好地将复杂的自动化作为一个角色进行打包。
++
+** 基本上是分发可重复使用的攻略手册的标准格式。
+** NetApp为Linux主机和BeeGFS文件系统分发角色。
+
+
+
+
+
+
+== BeeGFS HA Role for Ansible：关键概念
+
+在NetApp上部署和管理每个版本的BeeGFS所需的所有自动化功能均作为Ansible角色打包、并作为的一部分进行分发 link:https://galaxy.ansible.com/netapp_eseries/beegfs["适用于BeeGFS的NetApp E系列Ansible资料集"^]：
+
+* 可以将此角色视为BeeGFS的*安装程序*和现代*部署/管理*引擎之间的某个位置。
++
+** 将现代基础架构应用为代码实践和理念、以简化任何规模的存储基础架构管理。
+** 与此link:https://github.com/kubernetes-sigs/kubespray["Kubespray"^]项目允许用户部署/维护整个Kubirnetes分发版以实现横向扩展计算基础架构的方式类似。
+
+
+* 此角色是NetApp用于打包、分发和维护基于NetApp的BeeGFS解决方案的*软件定义*格式。
++
+** 无需分发整个Linux分发版或大型映像、即可努力打造"类似设备的"体验。
+** 包括NetApp编写的符合Open Cluster Framework (OCF)的集群资源代理、用于自定义BeeGFS目标、IP地址和监控、从而实现智能Pacemaker/BeeGFS集成。
+
+
+* 此角色不仅仅是部署"自动化"、还用于管理整个文件系统生命周期、包括：
++
+** 应用按服务或集群范围的配置更改和更新。
+** 解决硬件问题后自动执行集群修复和恢复。
+** 通过对BeeGFS和NetApp卷进行广泛测试来设置默认值、简化性能调整。
+** 验证并更正配置偏差。
+
+
+
+
+NetApp还为提供了Ansible角色 link:https://github.com/netappeseries/beegfs/tree/master/roles/beegfs_client["BeeGFS客户端"^]、可选择用于安装BeeGFS并将文件系统挂载到计算/GPU/登录节点。

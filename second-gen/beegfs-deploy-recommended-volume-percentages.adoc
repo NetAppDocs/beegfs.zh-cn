@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-deploy-recommended-volume-percentages.html 
+permalink: second-gen/beegfs-deploy-recommended-volume-percentages.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: 对于第二代构建块、在每个存储池配置中使用标准的四个卷时、请参考以下建议百分比。 
 ---
@@ -10,7 +10,7 @@ summary: 对于第二代构建块、在每个存储池配置中使用标准的�
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]

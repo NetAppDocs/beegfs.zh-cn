@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-deploy-high-capacity-building-block.html 
+permalink: second-gen/beegfs-deploy-high-capacity-building-block.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600, EF300, HDD, Expansion 
 summary: 高容量组件的部署变体。 
 ---
@@ -10,13 +10,13 @@ summary: 高容量组件的部署变体。
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]
 标准BeeGFS解决方案 部署指南概述了满足高性能工作负载要求的过程和建议。希望满足高容量要求的客户应观察此处所述的不同部署和建议。
 
-image:high-capacity-rack-diagram.png[""]
+image:high-capacity-rack-diagram.png["高容量机架图"]
 
 
 
@@ -32,7 +32,7 @@ image:high-capacity-rack-diagram.png[""]
 
 每个块节点至少需要4个NVMe SSD才能存储BeeGFS元数据。这些驱动器应放置在机箱最外侧的插槽中。
 
-image:high-capacity-drive-slots-diagram.png[""]
+image:high-capacity-drive-slots-diagram.png["高容量驱动器插槽示意图"]
 
 
 

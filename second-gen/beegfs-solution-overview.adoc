@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-solution-overview.html 
+permalink: second-gen/beegfs-solution-overview.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: NetApp解决方案 上的BeeGFS将BeeGFS并行文件系统与NetApp EF600存储系统相结合、打造了一个可靠、可扩展且经济高效的基础架构、可满足苛刻的工作负载要求。 
 ---
@@ -10,7 +10,7 @@ summary: NetApp解决方案 上的BeeGFS将BeeGFS并行文件系统与NetApp EF6
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]

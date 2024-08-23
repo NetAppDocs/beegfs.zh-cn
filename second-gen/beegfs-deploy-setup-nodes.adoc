@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-deploy-setup-nodes.html 
+permalink: second-gen/beegfs-deploy-setup-nodes.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: '在每个服务器的基板管理控制器(BMC)上配置网络连接、并在每个控制器上配置管理端口。' 
 ---
@@ -10,7 +10,7 @@ summary: '在每个服务器的基板管理控制器(BMC)上配置网络连接�
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]

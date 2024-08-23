@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-design-software-architecture.html 
+permalink: second-gen/beegfs-design-software-architecture.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: NetApp上的BeeGFS软件配置包括BeeGFS网络组件、EF600块节点、BeeGFS文件节点、资源组和BeeGFS服务。 
 ---
@@ -10,7 +10,7 @@ summary: NetApp上的BeeGFS软件配置包括BeeGFS网络组件、EF600块节点
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]
@@ -43,13 +43,14 @@ BeeGFS实施多轨支持、允许在一个IPoIB子网中使用多个IB接口。�
 +
 下图显示了在多个BeeGFS客户端接口之间平衡流量的情况。
 
-+
-image:../media/beegfs-design-image8.png[""]
 
-+
+
+image:beegfs-design-image8.png["接口流量平衡"]
+
 由于BeeGFS中的每个文件通常在多个存储服务之间进行条带化、因此多导轨配置可以使客户端实现比单个InfiniBand端口更大的吞吐量。例如、以下代码示例显示了一个通用文件条带化配置、该配置允许客户端在两个接口之间平衡流量：
 
 +
+
 ....
 root@beegfs01:/mnt/beegfs# beegfs-ctl --getentryinfo myfile
 Entry type: file
@@ -67,8 +68,6 @@ Stripe pattern details:
 ....
 
 
-
-
 == EF600块节点配置
 
 块节点由两个主动/主动RAID控制器组成、这些控制器可共享访问同一组驱动器。通常、每个控制器拥有系统上配置的一半卷、但可以根据需要接管另一个控制器。
@@ -77,11 +76,11 @@ Stripe pattern details:
 
 下图显示了EF600块节点中的控制器布局。
 
-image:../media/beegfs-design-image9.png[""]
+image:beegfs-design-image9.png["EF600阵列"]
 
 为了便于使用共享磁盘HA解决方案 、卷会映射到两个文件节点、以便它们可以根据需要相互接管。下图显示了如何配置BeeGFS服务和首选卷所有权以实现最高性能的示例。每个BeeGFS服务左侧的接口指示客户端和其他服务用来与其联系的首选接口。
 
-image:../media/beegfs-design-image10.png[""]
+image:beegfs-design-image10.png["BeeGFS服务卷所有权"]
 
 在上一示例中、客户端和服务器服务更愿意使用接口i1b与存储服务1进行通信。存储服务1使用接口i1a作为与其第一个块节点的控制器A上的卷(storage_tgt_101、102)进行通信的首选路径。此配置可利用InfiniBand适配器可用的全双向PCIe带宽、并通过双端口HDR InfiniBand适配器获得比PCIe 4.0更高的性能。
 
@@ -124,7 +123,7 @@ NetApp编写并扩展了多个开放式集群框架(Open Cluster Framework、OCF
 
 下图显示了由Pacemaker控制的BeeGFS服务和依赖项。
 
-image:../media/beegfs-design-image11.png[""]
+image:beegfs-design-image11.png["起搏器控制器服务"]
 
 
 NOTE: 为了在同一节点上启动多个相同类型的BeeGFS服务、我们将Pacemaker配置为使用多模式配置方法启动BeeGFS服务。有关详细信息，请参见 https://doc.beegfs.io/latest/advanced_topics/multimode.html["有关多模式的BeeGFS文档"^]。

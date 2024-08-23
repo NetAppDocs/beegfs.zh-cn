@@ -1,0 +1,78 @@
+---
+sidebar: sidebar 
+permalink: administer/clusters-replace-file-nodes.html 
+keywords: BeeGFS on NetApp, HA, Cluster, Administration, replace 
+summary: 如果原始服务器出现故障、请更换文件节点。 
+---
+= 替换文件节点
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+如果原始服务器出现故障、请更换文件节点。
+
+
+
+== 概述
+
+本节概述了更换集群中的文件节点所需的步骤。以下步骤假定文件节点因硬件问题描述 而失败、并替换为新的相同文件节点。
+
+
+
+== 步骤
+
+. 物理更换文件节点、并还原到块节点和存储网络的所有布线。
+. 在文件节点上重新安装操作系统、包括添加Red Hat订阅。
+. 在文件节点上配置管理和BMC网络。
+. 如果主机名、IP、PCIe到逻辑接口映射或有关新文件节点的任何其他更改、请更新Ansible清单。通常、如果节点已更换为相同的服务器硬件、而您使用的是原始网络配置、则不需要执行此操作。
++
+.. 例如、如果主机名发生更改、请创建(或重命名)节点的清单文件 (`host_vars/<NEW_NODE>.yml``)、然后在Ansible清单文件中 (`inventory.yml`)、将旧节点的名称替换为新节点名称：
++
+[source, console]
+----
+all:
+    ...
+    children:
+    ha_cluster:
+        children:
+        mgmt:
+            hosts:
+            node_h1_new:   # Replaced "node_h1" with "node_h1_new"
+            node_h2:
+----
+
+
+. 从集群中的其他一个节点中、删除旧节点： `pcs cluster node remove <HOSTNAME>`。
++
+
+IMPORTANT: 请勿在运行此步骤之前继续操作。
+
+. 在Ansible控制节点上：
++
+.. 使用删除旧SSH密钥：
++
+[source, console]
+----
+`ssh-keygen -R <HOSTNAME_OR_IP>`
+----
+.. 使用以下命令为替换节点配置无密码SSH：
++
+[source, console]
+----
+ssh-copy-id <USER>@<HOSTNAME_OR_IP>
+----
+
+
+. 重新运行Ansible攻略手册以配置节点并将其添加到集群：
++
+[source, console]
+----
+ansible-playbook -i <inventory>.yml <playbook>.yml
+----
+. 此时、请运行 `pcs status` 并验证已更换的节点现在是否已列出并正在运行服务。
+

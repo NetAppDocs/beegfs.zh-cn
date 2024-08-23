@@ -1,0 +1,152 @@
+---
+sidebar: sidebar 
+permalink: administer/clusters-update-beegfs.html 
+keywords: BeeGFS on NetApp, HA, Cluster, Administration, update, upgrade 
+summary: 使用Ansible更新BeeGFS和HA集群。 
+---
+= 更新BeeGFS版本
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+请按照以下步骤使用Ansient更新HA集群的BeeGFS版本。
+
+
+
+== 概述
+
+BeeGFS采用 `major.minor.patch`版本控制方案。每个受支持的 `major.minor`版本(例如 `beegfs_ha_7_2`和 `beegfs_ha_7_3`)都提供了BeeGFS HA Ansient角色。每个HA角色都固定为在发布此Ansient集合时提供的最新BeeGFS修补程序版本。
+
+所有BeeGFS升级都应使用Ansible、包括在BeeGFS的主要、次要和修补版本之间移动。要更新BeeGFS、您首先需要更新BeeGFS Ansible集合、该集合还将提供有关部署/管理自动化和底层HA集群的最新修复和增强功能。即使更新到最新版本的集合、BeeGFS也不会升级、直到 `ansible-playbook` 与一起运行 `-e "beegfs_ha_force_upgrade=true"` 设置。
+
+
+NOTE: 有关BeeGFS版本的详细信息、请参见 link:https://doc.beegfs.io/latest/advanced_topics/upgrade.html["BeeGFS升级文档"^]。
+
+
+
+== 已测试升级路径
+
+每个版本的BeeGFS集合都会使用特定版本的BeeGFS进行测试、以确保所有组件之间的互操作性。此外、还会执行测试、以确保可以从收集的最后一个版本支持的BeeGFS版本升级到最新版本支持的版本。
+
+[cols="1,1,1,5"]
+|===
+| 原始版本 | 升级版本 | 多导轨 | 详细信息 
+
+
+| 7.2.6 | 7.3.2 | 是的。 | 将beegfs收集从v3.0.1升级到v3.1.0、添加了多轨 
+
+
+| 7.2.6 | 7.2.8 | 否 | 将beegfs收集从v3.0.1升级到v3.1.0 
+
+
+| 7.2.8 | 7.3.1 | 是的。 | 使用beegfs集合v3.1.0进行升级、并添加了多轨 
+
+
+| 7.3.1 | 7.3.2 | 是的。 | 使用beegfs Collection v3.1.0进行升级 
+
+
+| 7.3.2 | 7.4.1 | 是的。 | 使用beegfs Collection v3.2.0进行升级 
+
+
+| 7.4.1 | 7.4.2 | 是的。 | 使用beegfs Collection v3.2.0进行升级 
+|===
+
+
+== BeeGFS升级步骤
+
+以下各节介绍了更新BeeGFS的Ansient集合和BeeGFS本身的步骤。请特别注意更新BeeGFS主要或次要版本的任何额外步骤。
+
+
+
+=== 第1步：升级BeeGFS集合
+
+用于升级可访问的集合 link:https://galaxy.ansible.com/netapp_eseries/beegfs["Ansible Galax河"^]下，运行以下命令：
+
+[source, console]
+----
+ansible-galaxy collection install netapp_eseries.beegfs --upgrade
+----
+要进行脱机收集升级、请从下载此收集 link:https://galaxy.ansible.com/netapp_eseries/beegfs["Ansible Galax河"^] 单击所需的 `Install Version`` 然后 `Download tarball`。将tarball传输到Ansible控制节点并运行以下命令。
+
+[source, console]
+----
+ansible-galaxy collection install netapp_eseries-beegfs-<VERSION>.tar.gz --upgrade
+----
+请参见 link:https://docs.ansible.com/ansible/latest/collections_guide/collections_installing.html["正在安装收集"^] 有关详细信息 ...
+
+
+
+=== 第2步：更新Ands处理 清单
+
+对集群的Ansible清单文件进行任何必要或所需的更新。link:clusters-update-beegfs.html#version-upgrade-notes["版本升级说明"]有关特定升级要求的详细信息、请参见以下部分。link:../custom/architectures-inventory-overview.html["Ansible清单概述"^]有关配置BeeGFS HA清单的常规信息、请参见一节。
+
+
+
+=== 第3步：更新《Ands维修 手册》(仅在更新主要或次要版本时)
+
+如果要在主要版本或次要版本之间切换、请在用于部署和维护集群的文件中 `playbook.yml` 更新角色名称、 `beegfs_ha_<VERSION>` 以反映所需的版本。例如，如果您要部署BeeGFS 7.4，则该文件为 `beegfs_ha_7_4`：
+
+[source, yaml]
+----
+- hosts: all
+  gather_facts: false
+  any_errors_fatal: true
+  collections:
+    - netapp_eseries.beegfs
+  tasks:
+    - name: Ensure BeeGFS HA cluster is setup.
+      ansible.builtin.import_role:  # import_role is required for tag availability.
+        name: beegfs_ha_7_4
+----
+有关此播放手册文件内容的更多详细信息、请参见link:../custom/architectures-deploy-ha-cluster.html["部署BeeGFS HA集群"^]一节。
+
+
+
+=== 第4步：运行BeeGFS升级
+
+要应用BeeGFS更新、请执行以下操作：
+
+[source, console]
+----
+ansible-playbook -i inventory.yml beegfs_ha_playbook.yml -e "beegfs_ha_force_upgrade=true" --tags beegfs_ha
+----
+BeeGFS HA角色将在后台处理：
+
+* 确保集群处于最佳状态、每个BeeGFS服务都位于其首选节点上。
+* 将集群置于维护模式。
+* 更新HA集群组件(如果需要)。
+* 按照以下步骤逐个升级每个文件节点：
++
+** 将其置于备用状态并将其服务故障转移到二级节点。
+** 升级BeeGFS软件包。
+** 回退服务。
+
+
+* 将集群移出维护模式。
+
+
+
+
+== 版本升级说明
+
+
+
+=== 从BeeGFS 7.2.6或7.3.0版升级
+
+
+
+==== 对基于连接的身份验证进行的更改
+
+7.3.1之后发布的BeeGFS版本将不再允许在未指定的情况下启动服务 `connAuthFile` 或设置 `connDisableAuthentication=true` 在服务的配置文件中。强烈建议启用基于连接的身份验证安全性。请参见 link:https://doc.beegfs.io/7.3.2/advanced_topics/authentication.html#connectionbasedauth["基于BeeGFS连接的身份验证"^] 有关详细信息 ...
+
+默认情况下、 `beegfs_ha*` 角色将生成并分发此文件、同时将其添加到的Ansible控制节点 `<playbook_directory>/files/beegfs/<beegfs_mgmt_ip_address>_connAuthFile`。。 `beegfs_client` 角色还会检查此文件是否存在、并将其提供给客户端(如果有)。
+
+
+WARNING: 如果 `beegfs_client` 角色未用于配置客户端、需要手动将此文件分发到每个客户端和 `connAuthFile` 中的配置 `beegfs-client.conf` 要使用的文件集。从先前版本的BeeGFS升级时、如果未启用基于连接的身份验证、则客户端将丢失访问权限、除非在升级过程中通过设置禁用基于连接的身份验证 `beegfs_ha_conn_auth_enabled: false` 在中 `group_vars/ha_cluster.yml` (不建议)。
+
+有关其他详细信息和备用配置选项、请参见link:../custom/architectures-inventory-common-file-node-configuration.html["指定通用文件节点配置"^]一节中配置连接身份验证的步骤。

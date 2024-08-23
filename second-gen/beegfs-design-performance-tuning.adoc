@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-design-performance-tuning.html 
+permalink: second-gen/beegfs-design-performance-tuning.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: BeeGFS解决方案 提供了基于验证测试的性能调整建议。 
 ---
@@ -10,7 +10,7 @@ summary: BeeGFS解决方案 提供了基于验证测试的性能调整建议。
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]
