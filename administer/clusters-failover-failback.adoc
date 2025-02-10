@@ -54,7 +54,7 @@ pcs cluster start <HOSTNAME>
 
 [source, console]
 ----
-pcs cluster node unstandby <HOSTNAME>
+pcs node unstandby <HOSTNAME>
 ----
 最后、使用以下命令将所有BeeGFS服务重新定位回其首选节点：
 

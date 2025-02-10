@@ -26,6 +26,8 @@ indexpage:
       url: https://doc.beegfs.io/
     - title: TR-4915—使用E系列和BeeGFS进行数据移动以实现AI
       url: https://www.netapp.com/pdf.html?item=/media/65882-tr-4915.pdf
+    - title: NVA-1174 -采用NVIDIA DGX SuperPoD系统的NetApp EF系列上的BeeGFS
+      url: "/media/PDF/nva-1174-deploy.pdf"
   - title: 工具支持
     links:
     - title: Ansible GALAXY上的NetApp E系列集合

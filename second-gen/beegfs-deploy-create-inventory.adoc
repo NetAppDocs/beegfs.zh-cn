@@ -41,6 +41,39 @@ summary: 要定义文件和块节点的配置、请创建一个Ansible清单、�
 +
 `软件包`
 
+. 为集群密码创建子目录，并通过使用Ans可 存储对文件进行加密来保护文件(请参见 https://docs.ansible.com/ansible/latest/user_guide/vault.html["使用Ansible Vault加密内容"^])：
++
+.. 创建子目录 `group_vars/all`。
+.. 在目录中 `group_vars/all`，创建一个标记为的密码文件 `passwords.yml`。
+.. 使用以下内容填充 `passwords.yml file`、根据您的配置替换所有用户名和密码参数：
++
+....
+# Credentials for storage system's admin password
+eseries_password: <PASSWORD>
+
+# Credentials for BeeGFS file nodes
+ssh_ha_user: <USERNAME>
+ssh_ha_become_pass: <PASSWORD>
+
+# Credentials for HA cluster
+ha_cluster_username: <USERNAME>
+ha_cluster_password: <PASSWORD>
+ha_cluster_password_sha512_salt: randomSalt
+
+# Credentials for fencing agents
+# OPTION 1: If using APC Power Distribution Units (PDUs) for fencing:
+# Credentials for APC PDUs.
+apc_username: <USERNAME>
+apc_password: <PASSWORD>
+
+# OPTION 2: If using the Redfish APIs provided by the Lenovo XCC (and other BMCs) for fencing:
+# Credentials for XCC/BMC of BeeGFS file nodes
+bmc_username: <USERNAME>
+bmc_password: <PASSWORD>
+....
+.. 根据提示运行 `ansible-vault encrypt passwords.yml`并设置存储密码。
+
+
 
 
 
@@ -172,8 +205,8 @@ beegfs_ha_ntp_server_pools:  # Modify the NTP server addressess if desired.
 ### ha_cluster Ansible group inventory file.
 # Place all default/common variables for BeeGFS HA cluster resources below.
 ### Cluster node defaults
-ansible_ssh_user: root
-ansible_become_password: <PASSWORD>
+ansible_ssh_user: {{ ssh_ha_user }}
+ansible_become_password: {{ ssh_ha_become_pass }}
 eseries_ipoib_default_hook_templates:
   - 99-multihoming.j2   # This is required for single subnet deployments, where static IPs containing multiple IB ports are in the same IPoIB subnet. i.e: cluster IPs, multirail, single subnet, etc.
 # If the following options are specified, then Ansible will automatically reboot nodes when necessary for changes to take effect:
@@ -185,7 +218,7 @@ eseries_ib_opensm_options:
 ....
 +
 
-NOTE: 尤其是在生产环境中、不要以纯文本格式存储密码。请改用Ansible Vault (请参见 https://docs.ansible.com/ansible/latest/user_guide/vault.html["使用Ansible Vault加密内容"^])或运行攻略手册时的`-ask-pass-pass`选项。如果`Ansible _ssh_user`已是`root`、则可以选择省略`Ansible变为密码`。
+NOTE: 如果 `ansible_ssh_user`已经是 `root`，则可以选择省略， `ansible_become_password`并在运行该播放手册时指定 `--ask-become-pass`选项。
 
 . (可选)配置高可用性(HA)集群的名称、并为集群内通信指定用户。
 +
@@ -202,9 +235,9 @@ eseries_beegfs_ha_disable_selinux: True
 eseries_selinux_state: disabled
 # The following variables should be adjusted depending on the desired configuration:
 beegfs_ha_cluster_name: hacluster                  # BeeGFS HA cluster name.
-beegfs_ha_cluster_username: hacluster              # BeeGFS HA cluster username.
-beegfs_ha_cluster_password: hapassword             # BeeGFS HA cluster username's password.
-beegfs_ha_cluster_password_sha512_salt: randomSalt # BeeGFS HA cluster username's password salt.
+beegfs_ha_cluster_username: "{{ ha_cluster_username }}" # Parameter for BeeGFS HA cluster username in the passwords file.
+beegfs_ha_cluster_password: "{{ ha_cluster_password }}" # Parameter for BeeGFS HA cluster username's password in the passwords file.
+beegfs_ha_cluster_password_sha512_salt: "{{ ha_cluster_password_sha512_salt }}" # Parameter for BeeGFS HA cluster username's password salt in the passwords file.
 beegfs_ha_mgmtd_floating_ip: 100.127.101.0         # BeeGFS management service IP address.
 # Email Alerts Configuration
 beegfs_ha_enable_alerts: True
@@ -239,14 +272,14 @@ NOTE: 虽然`冗余、但当您将BeeGFS文件系统扩展到单个HA集群之�
 beegfs_ha_fencing_agents:
  fence_apc:
    - ipaddr: <PDU_IP_ADDRESS>
-     login: <PDU_USERNAME>
-     passwd: <PDU_PASSWORD>
+     login: "{{ apc_username }}" # Parameter for APC PDU username in the passwords file.
+     passwd: "{{ apc_password }}" # Parameter for APC PDU password in the passwords file.
      pcmk_host_map: "<HOSTNAME>:<PDU_PORT>,<PDU_PORT>;<HOSTNAME>:<PDU_PORT>,<PDU_PORT>"
 # OPTION 2: To enable fencing using the Redfish APIs provided by the Lenovo XCC (and other BMCs):
 redfish: &redfish
-  username: <BMC_USERNAME>
-  password: <BMC_PASSWORD>
-  ssl_insecure: 1 # If a valid SSL certificate is not available specify “1”.
+  username: "{{ bmc_username }}" # Parameter for XCC/BMC username in the passwords file.
+  password: "{{ bmc_password }}" # Parameter for XCC/BMC password in the passwords file.
+    ssl_insecure: 1 # If a valid SSL certificate is not available specify “1”.
 beegfs_ha_fencing_agents:
   fence_redfish:
     - pcmk_host_list: <HOSTNAME>
@@ -344,13 +377,9 @@ NOTE: 在验证测试中、通常会使用`Randomrobin`来确保测试文件在�
 ### eseries_storage_systems Ansible group inventory file.
 # Place all default/common variables for NetApp E-Series Storage Systems here:
 ansible_connection: local
-eseries_system_password: <PASSWORD>
+eseries_system_password: {{ eseries_password }} # Parameter for E-Series storage array password in the passwords file.
 eseries_validate_certs: false
 ....
-+
-
-NOTE: 不建议以纯文本格式列出任何密码。使用`-ext-vars`运行Ansible时、请使用Ansible vault或提供`E系列系统密码`。
-
 . 为确保获得最佳性能、请在中安装为块节点列出的版本 link:beegfs-technology-requirements.html["技术要求"]。
 +
 从下载相应的文件 https://mysupport.netapp.com/site/products/all/details/eseries-santricityos/downloads-tab["NetApp 支持站点"^]。您可以手动升级它们、也可以将其包含在Ansible控制节点的`packages/`目录中、然后在`Esery_storage_systems.yml`中填充以下参数以使用Ansible进行升级：
