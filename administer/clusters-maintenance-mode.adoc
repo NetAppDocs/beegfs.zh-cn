@@ -37,9 +37,9 @@ summary: 防止HA集群意外对环境中的预期更改做出响应。
 
 [source, console]
 ----
-pcs property show maintenance-mode
+pcs property config
 ----
-当集群正常运行时、此操作将返回false。要启用维护模式、请运行：
+此 `maintenance-mode`如果集群运行正常、则不会显示属性。如果集群当前处于维护模式，则该属性将报告为 `true`。要启用维护模式、请运行：
 
 [source, console]
 ----

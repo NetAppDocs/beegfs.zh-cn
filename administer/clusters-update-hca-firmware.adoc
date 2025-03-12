@@ -1,0 +1,233 @@
+---
+sidebar: sidebar 
+permalink: administer/clusters-update-hca-firmware.html 
+keywords: BeeGFS on NetApp, HA, Cluster, Administration, Update, Upgrade, HCA, ConnectX, Firmware, Card, Adapter 
+summary: 更新文件节点的ConnectX-7适配器固件的步骤。 
+---
+= 更新文件节点适配器固件
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+按照以下步骤将文件节点的ConnectX-7适配器更新为最新固件。
+
+
+
+== 概述
+
+要支持新的MLNX_OFED驱动程序、启用新功能或修复错误、可能需要更新ConnectX-7适配器固件。本指南将使用NVIDIA的 `mlxfwmanager`实用程序进行适配器更新、因为它易于使用且效率高。
+
+
+
+== 升级注意事项
+
+本指南介绍更新ConnectX-7适配器固件的两种方法：滚动更新和双节点集群更新。根据集群大小选择适当的更新方法。在执行固件更新之前、请验证：
+
+* 安装了受支持的MLNR_OFED驱动程序，请参阅link:../second-gen/beegfs-technology-requirements.html["技术要求"^]。
+* 您的BeeGFS文件系统和PacMaker集群配置具有有效的备份。
+* 集群处于运行状况良好的状态。
+
+
+
+
+== 固件更新准备
+
+建议使用NVIDIA的 `mlxfwmanager`实用程序更新节点的适配器固件、该固件与NVIDIA的MLNR_OFED驱动程序捆绑在一起。开始更新之前、请从下载适配器的固件映像link:https://network.nvidia.com/support/firmware/firmware-downloads/["NVIDIA的支持站点"^]、并将其存储在每个文件节点上。
+
+
+NOTE: 对于联想ConnectX-7适配器、请使用 `mlxfwmanager_LES`NVIDIA页面上提供的工具link:https://network.nvidia.com/support/firmware/lenovo-intelligent-cluster/["OEM 固件"^]。
+
+
+
+== 滚动更新方法
+
+对于具有两个以上节点的任何HA集群、建议使用此方法。此方法涉及一次更新一个文件节点上的适配器固件、以使HA集群能够继续处理请求、但建议避免在此期间处理I/O。
+
+. 确认集群处于最佳状态、每个BeeGFS服务都在其首选节点上运行。有关详细信息、请参见 link:clusters-examine-state.html["检查集群的状态"^] 。
+. 选择要更新的文件节点并将其置于备用模式、此模式会从该节点中消耗(或移动)所有BeeGFS服务：
++
+[source, console]
+----
+pcs node standby <HOSTNAME>
+----
+. 运行以下命令、验证节点的服务是否已耗尽：
++
+[source, console]
+----
+pcs status
+----
++
+确认没有服务在备用节点上报告为 `Started`。
+
++
+
+NOTE: 根据集群大小、BeeGFS服务可能需要几秒钟或几分钟才能移至姊妹节点。如果BeeGFS服务无法在姊妹节点上启动，请参阅link:clusters-troubleshoot.html["故障排除指南"^]。
+
+. 使用更新适配器固件 `mlxfwmanager`。
++
+[source, console]
+----
+ mlxfwmanager -i <path/to/firmware.bin> -u
+----
++
+记下接收固件更新的 `PCI Device Name`每个适配器的。
+
+. 使用实用程序重置每个适配器 `mlxfwreset`以应用新固件。
++
+
+NOTE: 某些固件更新可能需要重新启动才能应用更新。有关指导、请参见。link:https://docs.nvidia.com/networking/display/mftv4310/mlxfwreset+%E2%80%93+loading+firmware+on+5th+generation+devices+tool#src-3566627427_safe-id-bWx4ZndyZXNldOKAk0xvYWRpbmdGaXJtd2FyZW9uNXRoR2VuZXJhdGlvbkRldmljZXNUb29sLW1seGZ3cmVzZXRMaW1pdGF0aW9ucw["NVIDIA的mxfwreset限制"^]如果需要重新启动、请执行重新启动、而不是重置适配器。
+
++
+.. 停止opensm服务：
++
+[source, console]
+----
+systemctl stop opensm
+----
+.. 对前面提到的每个执行以下命令 `PCI Device Name`。
++
+[source, console]
+----
+mlxfwreset -d <pci_device_name> reset -y
+----
+.. 启动opensm服务：
++
+[source, console]
+----
+systemctl start opensm
+----
+
+
+. 运行 `ibstat`并验证所有适配器是否以所需的固件版本运行：
++
+[source, console]
+----
+ibstat
+----
+. 在节点上启动PacMaker集群服务：
++
+[source, console]
+----
+pcs cluster start <HOSTNAME>
+----
+. 使节点退出待机状态：
++
+[source, console]
+----
+pcs node unstandby <HOSTNAME>
+----
+. 将所有BeeGFS服务重新定位回其首选节点：
++
+[source, console]
+----
+pcs resource relocate run
+----
+
+
+对集群中的每个文件节点重复上述步骤、直到所有适配器均已更新为止。
+
+
+
+== 双节点集群更新方法
+
+对于仅包含两个节点的HA集群、建议使用此方法。此方法类似于滚动更新、但还包括一些额外的步骤、以防止在一个节点的集群服务停止时出现服务停机。
+
+. 确认集群处于最佳状态、每个BeeGFS服务都在其首选节点上运行。有关详细信息、请参见 link:clusters-examine-state.html["检查集群的状态"^] 。
+. 选择要更新的文件节点并将该节点置于备用模式、此操作将从该节点中消耗(或移动)所有BeeGFS服务：
++
+[source, console]
+----
+pcs node standby <HOSTNAME>
+----
+. 运行以下命令、验证节点的资源是否已耗尽：
++
+[source, console]
+----
+pcs status
+----
++
+确认没有服务在备用节点上报告为 `Started`。
+
++
+
+TIP: 根据集群大小、BeeGFS服务可能需要数秒或数分钟才能报告为 `Started`在姐妹节点上。如果BeeGFS服务无法启动，请参见link:clusters-troubleshoot.html["故障排除指南"^]。
+
+. 将集群置于维护模式。
++
+[source, console]
+----
+pcs property set maintenance-mode=true
+----
+. 使用更新适配器固件 `mlxfwmanager`。
++
+[source, console]
+----
+ mlxfwmanager -i <path/to/firmware.bin> -u
+----
++
+记下接收固件更新的 `PCI Device Name`每个适配器的。
+
+. 使用实用程序重置每个适配器 `mlxfwreset`以应用新固件。
++
+
+NOTE: 某些固件更新可能需要重新启动才能应用更新。有关指导、请参见。link:https://docs.nvidia.com/networking/display/mftv4310/mlxfwreset+%E2%80%93+loading+firmware+on+5th+generation+devices+tool#src-3566627427_safe-id-bWx4ZndyZXNldOKAk0xvYWRpbmdGaXJtd2FyZW9uNXRoR2VuZXJhdGlvbkRldmljZXNUb29sLW1seGZ3cmVzZXRMaW1pdGF0aW9ucw["NVIDIA的mxfwreset限制"^]如果需要重新启动、请执行重新启动、而不是重置适配器。
+
++
+.. 停止opensm服务：
++
+[source, console]
+----
+systemctl stop opensm
+----
+.. 对前面提到的每个执行以下命令 `PCI Device Name`。
++
+[source, console]
+----
+mlxfwreset -d <pci_device_name> reset -y
+----
+.. 启动opensm服务：
++
+[source, console]
+----
+systemctl start opensm
+----
+
+
+. 运行 `ibstat`并验证所有适配器是否以所需的固件版本运行：
++
+[source, console]
+----
+ibstat
+----
+. 在节点上启动PacMaker集群服务：
++
+[source, console]
+----
+pcs cluster start <HOSTNAME>
+----
+. 使节点退出待机状态：
++
+[source, console]
+----
+pcs node unstandby <HOSTNAME>
+----
+. 使集群退出维护模式。
++
+[source, console]
+----
+pcs property set maintenance-mode=false
+----
+. 将所有BeeGFS服务重新定位回其首选节点：
++
+[source, console]
+----
+pcs resource relocate run
+----
+
+
+对集群中的每个文件节点重复上述步骤、直到所有适配器均已更新为止。

@@ -21,7 +21,6 @@
   <block id="9197ec103d780b6779cb78eec6afce31" category="cell">7.2.6</block>
   <block id="51cf7c858a71d06ee12a42cfbff97da7" category="cell">核心同步</block>
   <block id="d95adee972ae170512bd3bdbce557054" category="cell">起搏器</block>
-  <block id="0a0d34e3921098e12d40efeb9e5b64ff" category="cell">opensm</block>
   <block id="13f2a3097f055e043d74b20940df2658" category="section-title">Ansible控制节点要求</block>
   <block id="c3ee5ddf91e65773d3e9d27f9e627350" category="inline-link">Ansible文档</block>
   <block id="83d32979307efd813f41ef5070206fd3" category="paragraph">NetApp解决方案 上的BeeGFS可从Ansible控制节点进行部署和管理。有关详细信息，请参见<block ref="4410f583cbabaee2389115371eb2ab02" category="inline-link-rx"></block>。</block>
@@ -920,7 +919,6 @@
   <block id="9e94ba8f70ed52b0ae6c2a8725f97a9f" category="paragraph">要在所有节点上启动集群服务和资源、请运行：</block>
   <block id="80bd5673b361d19dc46e6b882f98b061" category="paragraph">或使用以下命令在特定节点上启动服务：</block>
   <block id="56ad9ec5396c5f035697d1e62c4b0926" category="paragraph">此时、请运行<block ref="fcad1c87c23363c990849a7aaf9d6cd9" prefix=" " category="inline-code"></block> 并验证集群和BeeGFS服务是否已在所有节点上启动、以及服务是否正在预期节点上运行。</block>
-  <block id="f2cc0b0e79d5eccda5009e593729ce23" category="admonition">根据集群的大小、整个集群可能需要一段时间(秒到分钟)才能停止、或者显示已在中启动<block ref="fcad1c87c23363c990849a7aaf9d6cd9" prefix=" " category="inline-code"></block>。条件<block ref="88f9ea6da6d01a3e529f8aa41e0e4643" prefix=" " category="inline-code"></block> 挂起超过五分钟、然后运行Ctrl+C以取消命令、登录到集群中的每个节点并使用<block ref="fcad1c87c23363c990849a7aaf9d6cd9" prefix=" " category="inline-code"></block> 查看集群服务(CorosynC/Pacemaker)是否仍在该节点上运行。您可以从集群仍处于活动状态的任何节点上检查阻止集群的资源。手动输入问题描述 地址、然后命令应完成或可以重新运行以停止任何剩余服务。</block>
   <block id="9cdd9805effd30bec624c806fd980309" category="summary">在集群节点之间移动BeeGFS服务。</block>
   <block id="f6054493b235622c6d85c56597db1eb1" category="doc">故障转移和故障恢复服务</block>
   <block id="2c053c4f4aa73d509803b712a335712b" category="paragraph">BeeGFS服务可以在集群中的节点之间进行故障转移、以确保客户端能够在节点发生故障或您需要执行计划内维护时继续访问文件系统。本节介绍管理员在从故障中恢复后修复集群或在节点之间手动移动服务的各种方法。</block>
@@ -971,7 +969,6 @@
   <block id="92a6e3227dfe7be15777e64043fb613f" category="list-text">文件节点操作系统、内核或其他软件包更新。</block>
   <block id="6c1cf36b91fdf2375e857652291bab2e" category="paragraph">通常、手动将集群置于维护模式的唯一原因是、防止集群对环境中的外部更改做出响应。如果集群中的单个节点需要物理修复、请勿使用维护模式、只需按照上述操作步骤 将该节点置于备用状态即可。请注意、重新运行Ansible会自动将集群置于维护模式、以便于进行大多数软件维护、包括升级和配置更改。</block>
   <block id="bbf6745fae83e12806200feeb795f0ef" category="paragraph">要检查集群是否处于维护模式、请运行：</block>
-  <block id="4a6b1ae7d59c5bf02b1b5759e9f9b8e7" category="paragraph">当集群正常运行时、此操作将返回false。要启用维护模式、请运行：</block>
   <block id="4ecbc8384cde54344112e6ab08db42be" category="paragraph">您可以通过运行pcs状态并确保所有资源显示"(非受管)"来进行验证。要使集群退出维护模式、请运行：</block>
   <block id="9afe1c93907babebeb4d7a466e216a3e" category="summary">在集群中添加或删除组件。</block>
   <block id="da82c1c93eafcb34930ae3da89361e1e" category="doc">扩展或缩减集群</block>
@@ -1728,15 +1725,9 @@
   <block id="c618fd1e9213f6ba6e4961e3d1165110" category="list-text">用于带内操作系统管理的1GbE端口</block>
   <block id="db812d54d604d8c71ffd5e4be563e3e5" category="list-text">采用Redfish API的1GbE BMC、用于带外服务器管理</block>
   <block id="15cf8b6d2674b1d9c9b0383ecfee8929" category="list-text">双热插拔电源和性能风扇</block>
-  <block id="1fb2f6fd0ecd0371486e7642b03c5dee" category="list-text">*Lenovo ThinkSystem SR7SE*</block>
-  <block id="78cbac434e403c43ef215a8541f8e62a" category="list-text">*处理器：* 2个AMD EPYC 7343 16C 3.2 GHz (配置为两个NUMA分区)。</block>
-  <block id="634d6174b88e5856171cb65f69c870d6" category="list-text">*内存：* 256 GB (16个16 GB TruDDR4 3200 MHz RDIMM A)</block>
-  <block id="7d381836b9e0d0145f8901a9e826a329" category="list-text">*PCIe扩展：*四个PCIe Gen4 x16插槽(每个NUMA分区两个)</block>
   <block id="1e36a3ec484f8d613eabadcfb7010a41" category="paragraph">主机卡适配器因文件节点使用的服务器型号而异。针对经验证的文件节点的建议包括：</block>
   <block id="22d9c94f9f4ead6ee028aeb105c59845" category="list-text">*Lenovo ThinkSystem SR6SR V3服务器:*</block>
   <block id="6ea32d47808c9a0a8b4ad8ce7c3d46a8" category="list-text">MCX755106AS-热连接X-7、NDR200、QSFP112、双端口、PCIe Gen5 x16、 InfiniBand适配器</block>
-  <block id="2f02d951d56eb9f3451bbc826c3e8750" category="list-text">*Lenovo ThinkSystem SR6SR服务器:*</block>
-  <block id="a6db2cf27367b5061d9dcb3d029e4836" category="list-text">MCX65546A-HDAT ConnectX-6、HDR、QP-56、双端口、PCIe Gen4 x16、 InfiniBand适配器</block>
   <block id="b74051cf2ad1a189f8a05453712ca47a" category="cell">存储网络交换机</block>
   <block id="abf33d394022ed774955ca8b4e892340" category="paragraph">存储网络交换机必须支持200 Gb/秒的InfiniBand速度。建议的交换机型号包括：</block>
   <block id="d7405c22a666ad0d0cb249c209ed8a2a" category="list-text">* NVIDIA QM9700昆特2 NDNS InfiniBand交换机*</block>
@@ -1751,9 +1742,7 @@
   <block id="0f0a45940e8946022b971d4ccdf6154e" category="cell">NVIDIA QM9700</block>
   <block id="a87ff679a2f3e71d9181a67b7542122c" category="cell">4</block>
   <block id="979ceabbdb73904b7beec8a0d58c32b8" category="cell">活动光纤</block>
-  <block id="270f13016300dfe6e2fe7c681978bef9" category="cell">MFA7U10-H002 (NVIDIA有源光纤电缆、InfiniBand 400Gb/s到2个200Gb/s、OSFP到2个QSFP56)</block>
   <block id="f629de18a131cfa25b9f36ef4690fc92" category="cell">无源铜线</block>
-  <block id="bebb3995ccd5809442d1bb1bc0a25e3a" category="cell">NVIDIA 7Y60-H002 (无源铜缆、InfiniBand 400Gb/s到2个200Gb/s、OSFP到2个QSFP56)</block>
   <block id="f3b15dfb9c8e8d6298034f5cc32a59cd" category="cell">NVIDIA MqM8700</block>
   <block id="30657be0f3a2fdc8c171bce10af72efc" category="cell">MFS1S00-H003C (NVIDIA有源光纤电缆、InfiniBand 200Gb/秒、QFP56)</block>
   <block id="c1850fdcdcbbaf2fb48f3055382d5a41" category="cell">NVIDIA 1500-H002E26 (无源铜缆、InfiniBand 200Gb/秒、QSFP56)</block>
@@ -1761,14 +1750,7 @@
   <block id="099646c88bdb63cce0ec389f4c842fed" category="cell">5.14.0-362.24.1.el9_3.x86_64</block>
   <block id="de4e152f23f311bbd0da3bd3cc07390d" category="cell">MLNR_OFED_LINUX-23.10-3.2.0.2-LTS</block>
   <block id="8c21a74db8c25bd18866fe78a889642f" category="paragraph">HCA固件</block>
-  <block id="cf135b5c065c2f500279337fc59c78ac" category="paragraph">*ConnectX-7 HCA固件*固件：28.39.1002+ PXE：3.7.0201 + UEFI：14.32.0012</block>
-  <block id="932d22339e7f2f10a02d7bf453b85501" category="paragraph">*ConnectX-6 HCA Firmware* FW：20.31.1014 + PXE：3.6.0403 + UEFI：14.24.0013</block>
-  <block id="41d49156a74390ee5d03e3516c1dca6b" category="cell">11.80.0</block>
-  <block id="36744b059ba2d833befd7109b0ba5167" category="cell">N6000-880834-D08.DLP</block>
   <block id="141a8d7da406be785ba26084a46e1c00" category="cell">7.4.4</block>
-  <block id="92f9c52d96ebf7ac8dc2f41e6e11647a" category="cell">3.1.5-4.</block>
-  <block id="c60a2cf4eb7f8efdd97013c9acb1f45b" category="cell">2.1.4-5.</block>
-  <block id="a1a2ed259d1be22e6373097baea242eb" category="paragraph">opensm-5.13.2 (来自MLNR_OFED_LINUX-23.10-3.2.0.2-LTS)</block>
   <block id="5487c77147bdac492714cd2896a16557" category="cell">通过pip安装时为6.x：Ansight-6.0.0和Ansight-core &gt;= 2.13.0</block>
   <block id="b1e65a5d34a577630a4fc7840358333f" category="cell">3.9 (或更高版本)</block>
   <block id="1f6e93b1ea11aa12e871822a2cabfc76" category="cell">加密法-43.0.0、netaddr-1.3.0、ipaddr-2.2.0</block>
@@ -1799,8 +1781,6 @@
   <block id="cd35a558180e5a60f1da5ebd80b06ed2" category="paragraph">有关其他详细信息和备用配置选项、请参见<block ref="dc7fd2b3ea1b2b4a060b953a1b281371" category="inline-link-macro-rx"></block>一节中配置连接身份验证的步骤。</block>
   <block id="8d4ce44e7e1f685f22f0480066f6dadc" category="summary">升级HA集群的E-Series存储阵列的步骤。</block>
   <block id="fecb4be6b37a9fda6b207eaf97363fed" category="doc">升级E-Series存储阵列</block>
-  <block id="26f796a7ab5fa8e4b49e64f8f8bf2a80" category="paragraph">按照以下步骤升级HA集群的E-Series存储阵列(块节点)。</block>
-  <block id="e134ac69d8641d9208d2cf890fad5275" category="paragraph">确保HA集群的NetApp E-Series存储阵列始终使用最新固件、以确保最佳性能和更高的安全性。存储阵列的固件更新可通过SANtricity操作系统、NVS而且 驱动器固件文件来应用。</block>
   <block id="40039e282631364c07ceaedf99c2cf6c" category="admonition">虽然可以在HA集群联机的情况下升级存储阵列、但建议在进行所有升级时将集群置于维护模式。</block>
   <block id="e23311179b5a9fe1039e35e28290b482" category="section-title">块节点升级步骤</block>
   <block id="4a77379e9fcc01e35b7933a91b02a2bb" category="inline-link-macro">升级注意事项</block>
@@ -1816,7 +1796,6 @@
   <block id="bad7f30f1449c1f5ab5e97ce89aee762" category="list-text">*驱动器固件：*导航到<block ref="dc6c914f008159d5969a25304ddfb479" category="inline-link-macro-rx"></block>并下载每个存储阵列驱动器型号的最新固件。</block>
   <block id="c26b41b932786e55f3bf481a6938083e" category="list-text">将SANtricity操作系统、NVSRAID和驱动器固件文件存储在您的Ans负责人 控制节点的<block ref="971398284b1e828e40efc6b6630f0369" prefix=" " category="inline-code"></block>目录中。</block>
   <block id="09a777fce4515aa1a8dcd86346441924" category="list-text">如有必要、请更新集群的"Andsess"清单文件、以包括所有需要更新的存储阵列(块节点)。有关指导、请参见<block ref="f7bda10e421919e9d8ced89dacaba34f" category="inline-link-macro-rx"></block>一节。</block>
-  <block id="44ab0407eb93bf62fd987a8132e5a912" category="list-text">确保集群处于最佳状态、并且每个BeeGFS服务都位于其首选节点上。有关详细信息、请参见 <block ref="1d1f85855f64d7b14ac7c0ae29a52511" category="inline-link-macro-rx"></block> 。</block>
   <block id="f525483091b48c05e08ecf537a6c9e5a" category="list-text">按照中的说明将集群置于维护模式<block ref="4b8504199df3a0ade85c92603634e18f" category="inline-link-macro-rx"></block>。</block>
   <block id="390c5fa21f5dea398732a7b3b4024304" category="list-text">创建一个名为的新的Ands要 用手册<block ref="bdc450c9ffd9674cb7c88bcb24bfedb8" prefix=" " category="inline-code"></block>。使用以下内容填充此操作手册、将SANtricity操作系统、NVSAN并 将驱动器固件版本更换为所需的升级路径：</block>
   <block id="13ec6a1291f9e3d303bbc7f6bece60a3" category="list-text">要启动更新、请从您的Andsute控制节点执行以下命令：</block>
@@ -1923,4 +1902,95 @@
   <block id="49e794dd3d68025fd6943b67048e4f27" category="paragraph">基于NetApp的第二代BeeGFS经过优化、可满足高性能计算(HPC)、机器学习(ML)、深度学习(DL)和其他人工智能(AI)技术等苛刻工作负载的性能要求。通过整合共享磁盘高可用性(HA)架构、此设计可确保数据持久性和可用性、使其成为无法承受停机或数据丢失的企业和其他组织的理想选择。第二代设计包括PCIe Gen5服务器等组件，并支持NVIDIA®QuutM9700 400Gb/s InfiniBand交换机。该解决方案不仅经过NetApp的验证，还通过了NVIDIA DGX™A100 SuperPOD存储选项的外部认证，并获得了DGX SuperPOD H100、H200和B200系统的扩展认证。</block>
   <block id="7da4cabbb2f4c4e53ccb9660355b7dd1" category="list-text">NVIDIA DGX SuperPOD系统采用采用DGX的A100、H100、H200和B200 GPU。</block>
   <block id="e02a1b9bf28135b2931b63ac814ff7ac" category="sidebar">NVA-1174 -采用NVIDIA DGX SuperPoD系统的NetApp EF系列上的BeeGFS</block>
+  <block id="049125cf8ec62098912c4f2c8db9f61b" category="paragraph">此<block ref="e6211db0073064ade016ad4558767968" prefix=" " category="inline-code"></block>如果集群运行正常、则不会显示属性。如果集群当前处于维护模式，则该属性将报告为<block ref="b326b5062b2f0e69046810717534cb09" prefix=" " category="inline-code"></block>。要启用维护模式、请运行：</block>
+  <block id="ae7cd547e02c1f67adce822f49e1815f" category="admonition">根据集群大小、整个集群可能需要几秒钟或几分钟才能停止或显示为中已启动<block ref="fcad1c87c23363c990849a7aaf9d6cd9" prefix=" " category="inline-code"></block>。如果挂起超过五分钟、请在运行Ctrl+C取消命令之前登录到集群的每个节点、然后使用<block ref="fcad1c87c23363c990849a7aaf9d6cd9" prefix=" " category="inline-code"></block>查看该节点上的集群服务(Corosync/PacMaker)是否仍在运行。<block ref="88f9ea6da6d01a3e529f8aa41e0e4643" prefix=" " category="inline-code"></block>您可以从集群仍处于活动状态的任何节点上检查阻止集群的资源。手动输入问题描述 地址、然后命令应完成或可以重新运行以停止任何剩余服务。</block>
+  <block id="5dfbb07786784ecd0c0829f3624766bf" category="summary">在HA集群中升级PacMaker和Corosync软件包的步骤。</block>
+  <block id="256ad8b6e95e34f8784f6b80bcf07e62" category="doc">升级HA集群中的PacMaker和Corosync软件包</block>
+  <block id="f9b43d72a27351762f4809a45ab3809e" category="paragraph">按照以下步骤升级HA集群中的PacMaker和Corosync软件包。</block>
+  <block id="93bcc5a6e49472d3ee328b74217072a4" category="paragraph">升级PacMaker和Corosync可确保集群受益于新功能、安全修补程序和性能改进。</block>
+  <block id="d5870f2e8bb30d5fd8dba0f3bcba2ff2" category="section-title">升级方法</block>
+  <block id="3910bde80db45114f03b57a1cea719d7" category="inline-link-macro">升级PacMaker集群</block>
+  <block id="fbe527032decd848e5233378716880ef" category="paragraph">建议使用两种方法升级集群：滚动升级或完全关闭集群。每种方法都有自己的优缺点。升级过程可能因您的PacMaker版本而异。请参见ClusterLabs<block ref="f46eb388ba6d1748ea24c2340bf59c47" category="inline-link-macro-rx"></block>文档以确定使用哪种方法。在执行升级方法之前、请验证：</block>
+  <block id="3875a0129b5e7200d99ab95798b4ca49" category="list-text">NetApp BeeGFS解决方案支持新的PacMaker和Corosync软件包。</block>
+  <block id="14bc480662de00a882a587d6c753c533" category="list-text">您的BeeGFS文件系统和PacMaker集群配置具有有效的备份。</block>
+  <block id="efd7093d185f1f3506d2f99fa2406088" category="list-text">集群处于运行状况良好的状态。</block>
+  <block id="22e44c8383bdd51e7823eed40de12db4" category="section-title">滚动升级</block>
+  <block id="49939651104a8f4bf473311d280796b9" category="paragraph">此方法包括从集群中删除每个节点、对其进行升级、然后将其重新引入集群、直到所有节点都运行新版本为止。这种方法可以使集群保持正常运行、这是大型HA集群的理想选择、但会带来在此过程中运行混合版本的风险。在双节点集群中应避免使用此方法。</block>
+  <block id="4fe0553e4bb27a05a3680575a66540a7" category="list-text">确认集群处于最佳状态、每个BeeGFS服务都在其首选节点上运行。有关详细信息、请参见 <block ref="1d1f85855f64d7b14ac7c0ae29a52511" category="inline-link-macro-rx"></block> 。</block>
+  <block id="afcf7685b4b8a18d898e6c84f2b84166" category="list-text">对于要升级的节点、请将其置于备用模式以耗尽(或移动)所有BeeGFS服务：</block>
+  <block id="36b48c4e047e7d7107eaa995708914b1" category="list-text">运行以下命令、验证节点的服务是否已耗尽：</block>
+  <block id="9c1adfab509ac587de61a03c43cda767" category="paragraph">确保未将备用节点上的服务报告为<block ref="8428552d86c0d262a542a528af490afa" prefix=" " category="inline-code"></block>。</block>
+  <block id="2b26b4d53851d442c712564adfb4b445" category="admonition">根据您的集群大小、服务可能需要几秒钟或几分钟才能移至姊妹节点。如果BeeGFS服务无法在姊妹节点上启动，请参阅<block ref="c31c76dcbaad8e2836998d58888cb639" category="inline-link-macro-rx"></block>。</block>
+  <block id="e2939fee46b1883f2b4fb3fec03f83fb" category="list-text">关闭节点上的集群：</block>
+  <block id="7a3db5a8197b212244d160de60f682da" category="list-text">升级节点上的PacMaker、Corosync和pcs软件包：</block>
+  <block id="054ce71db50c3d6b29d6ddfda5264cc9" category="admonition">软件包管理器命令因操作系统而异。以下命令适用于运行RHEL 8及更高版本的系统。</block>
+  <block id="0a761ff507fc5bb4859d6d425b2b120a" category="list-text">在节点上启动PacMaker集群服务：</block>
+  <block id="7a98d33ee2035dc15b33a6ccaea4753b" category="list-text">如果<block ref="3ecf2642759a04bd3616642bd56bed59" prefix=" " category="inline-code"></block>软件包已更新、请向集群重新对节点进行身份验证：</block>
+  <block id="039f324455c000e0dad7b93f641cd7bf" category="list-text">使用工具验证PacMaker配置是否仍然有效<block ref="419527551374e0fe5024d6bb1f3f2814" prefix=" " category="inline-code"></block>。</block>
+  <block id="51c1fa488cc911104720c97dad8ec5eb" category="admonition">在集群升级期间、只需验证一次即可。</block>
+  <block id="265a35348bf91dcba3e55e3454e3c155" category="list-text">使节点退出待机状态：</block>
+  <block id="ea285586c4e419f14cfb8b432dd0d4b6" category="list-text">将所有BeeGFS服务重新定位回其首选节点：</block>
+  <block id="1fa806fcbe49745af0c2b70e8779b73d" category="list-text">对集群中的每个节点重复上述步骤、直到所有节点都运行所需的PacMaker、Corosync和pcs版本为止。</block>
+  <block id="d90c1dfacfcfe6034c62dbbf554aa336" category="list-text">最后、运行<block ref="fcad1c87c23363c990849a7aaf9d6cd9" prefix=" " category="inline-code"></block>并验证集群是否运行正常、并<block ref="60c21e5e7bb2f6f1f478a497d52448f3" prefix=" " category="inline-code"></block>报告所需的PacMaker版本。</block>
+  <block id="894166f580af39476db30ddf0b39e93c" category="admonition">如果<block ref="60c21e5e7bb2f6f1f478a497d52448f3" prefix=" " category="inline-code"></block>报告"mxy-version"、则表示集群中的某个节点仍在运行先前的Pacemker版本、需要进行升级。如果任何升级后的节点无法重新加入集群或资源无法启动、请查看集群日志、并参阅PacMaker发行说明或用户指南以了解已知的升级问题。</block>
+  <block id="2360c7132bb0f703a6af1f784e30721f" category="section-title">完全关闭集群</block>
+  <block id="c56b96ad19ba7ad1a0a28a5dd92fccd7" category="paragraph">在这种方法中、所有集群节点和资源都会关闭、节点会升级、然后集群会重新启动。如果PacMaker和Corosync版本不支持混合版本配置、则必须使用此方法。</block>
+  <block id="ada4df9ccfff1547c1f09456386caf07" category="list-text">关闭所有节点上的集群软件(PacMaker和Corosync)。</block>
+  <block id="ec37f5378eeba13984a263685014a655" category="admonition">根据集群大小、整个集群可能需要几秒钟或几分钟才能停止。</block>
+  <block id="26dce8ee8153faa4816d7468ec720330" category="list-text">关闭所有节点上的集群服务后、根据您的要求升级每个节点上的PacMaker、Corosync和pcs软件包。</block>
+  <block id="142f756ea3d035f02b974a98db74916c" category="list-text">升级所有节点后、在所有节点上启动集群软件：</block>
+  <block id="492e09d8d491f90ea20fad54f615816a" category="list-text">如果<block ref="3ecf2642759a04bd3616642bd56bed59" prefix=" " category="inline-code"></block>软件包已更新、请重新对集群中的每个节点进行身份验证：</block>
+  <block id="fe0b373cea492c0574adf218141f90b9" category="list-text">最后、运行<block ref="fcad1c87c23363c990849a7aaf9d6cd9" prefix=" " category="inline-code"></block>并验证集群是否运行正常、并报告正确的<block ref="60c21e5e7bb2f6f1f478a497d52448f3" prefix=" " category="inline-code"></block>PacMaker版本。</block>
+  <block id="c07d2f5207c17b96abd3e5c6aa314715" category="admonition">如果<block ref="60c21e5e7bb2f6f1f478a497d52448f3" prefix=" " category="inline-code"></block>报告"mxy-version"、则表示集群中的某个节点仍在运行先前的Pacemker版本、需要进行升级。</block>
+  <block id="6b923a0944f4926d7adb6a03c07c9a69" category="summary">更新文件节点的ConnectX-7适配器固件的步骤。</block>
+  <block id="8fce27499bf82a3c6907d5382138d466" category="doc">更新文件节点适配器固件</block>
+  <block id="c344aab4fba3911c1af618a881763c15" category="paragraph">按照以下步骤将文件节点的ConnectX-7适配器更新为最新固件。</block>
+  <block id="89cdf8293572c88c65745474062df951" category="paragraph">要支持新的MLNX_OFED驱动程序、启用新功能或修复错误、可能需要更新ConnectX-7适配器固件。本指南将使用NVIDIA的<block ref="073f22c545d6312ca19220ec3d6d9547" prefix=" " category="inline-code"></block>实用程序进行适配器更新、因为它易于使用且效率高。</block>
+  <block id="d41774d5dcaa69f5393d8da7101754ec" category="paragraph">本指南介绍更新ConnectX-7适配器固件的两种方法：滚动更新和双节点集群更新。根据集群大小选择适当的更新方法。在执行固件更新之前、请验证：</block>
+  <block id="1d79fc0255b694c56bd5dea749c741cd" category="list-text">安装了受支持的MLNR_OFED驱动程序，请参阅<block ref="178d97073525b373723b8dda031e8548" category="inline-link-macro-rx"></block>。</block>
+  <block id="e9b1ac80ddb831f90b95b913fae55a9f" category="section-title">固件更新准备</block>
+  <block id="6b9b7c71638c919ff18548623403c799" category="inline-link-macro">NVIDIA的支持站点</block>
+  <block id="28adaa75c816b77283bde4522b8cc249" category="paragraph">建议使用NVIDIA的<block ref="073f22c545d6312ca19220ec3d6d9547" prefix=" " category="inline-code"></block>实用程序更新节点的适配器固件、该固件与NVIDIA的MLNR_OFED驱动程序捆绑在一起。开始更新之前、请从下载适配器的固件映像<block ref="1a2b49373c8b50530166a64f6ed91a90" category="inline-link-macro-rx"></block>、并将其存储在每个文件节点上。</block>
+  <block id="415a4f653138a852500ffee84bf5c1b4" category="inline-link-macro">OEM 固件</block>
+  <block id="4f4c0bb368cf9ad01cdc3ff868ebf17c" category="admonition">对于联想ConnectX-7适配器、请使用<block ref="afeb1af9ee3dad5422ab912ec5ed916d" prefix=" " category="inline-code"></block>NVIDIA页面上提供的工具<block ref="01d7d47a93ae1e4d58f3e91b6cd1d0c0" category="inline-link-macro-rx"></block>。</block>
+  <block id="da3485dbd4b4e5883fb3b1f4e9556949" category="section-title">滚动更新方法</block>
+  <block id="1f97f3d9707d91def548aa8a2e62b91d" category="paragraph">对于具有两个以上节点的任何HA集群、建议使用此方法。此方法涉及一次更新一个文件节点上的适配器固件、以使HA集群能够继续处理请求、但建议避免在此期间处理I/O。</block>
+  <block id="a6e5bc149cec5a68a62c041d3c6a0b33" category="list-text">选择要更新的文件节点并将其置于备用模式、此模式会从该节点中消耗(或移动)所有BeeGFS服务：</block>
+  <block id="a6f5d5c821201989f4f5f4b1434bbab2" category="list-text">运行以下命令、验证节点的服务是否已耗尽：</block>
+  <block id="879176c1b609d9d4155509330b98a7dc" category="paragraph">确认没有服务在备用节点上报告为<block ref="8428552d86c0d262a542a528af490afa" prefix=" " category="inline-code"></block>。</block>
+  <block id="9d2557a9c1e296e086e87e0ea139e32b" category="admonition">根据集群大小、BeeGFS服务可能需要几秒钟或几分钟才能移至姊妹节点。如果BeeGFS服务无法在姊妹节点上启动，请参阅<block ref="c31c76dcbaad8e2836998d58888cb639" category="inline-link-macro-rx"></block>。</block>
+  <block id="d15de38a9cc8343b26b76e04866effdf" category="list-text">使用更新适配器固件<block ref="073f22c545d6312ca19220ec3d6d9547" prefix=" " category="inline-code"></block>。</block>
+  <block id="4d87c4ea16f4cf2adbeefb288c4840e6" category="paragraph">记下接收固件更新的<block ref="0e4a508dbc00c0684c2ed58952be4420" prefix=" " category="inline-code"></block>每个适配器的。</block>
+  <block id="69b31d926cd00aa9de80cf7b14eab218" category="list-text">使用实用程序重置每个适配器<block ref="45e6a20266bfc1fa2c25471ddf52308b" prefix=" " category="inline-code"></block>以应用新固件。</block>
+  <block id="25eb42c85a64acec04cf19a3ad2b7395" category="inline-link-macro">NVIDIA的mxfwreset限制</block>
+  <block id="435a7ccec9f9ff6251954e95de4d0077" category="admonition">某些固件更新可能需要重新启动才能应用更新。有关指导、请参见。<block ref="ebfc57e157ebe1ff1768e220a8dc329c" category="inline-link-macro-rx"></block>如果需要重新启动、请执行重新启动、而不是重置适配器。</block>
+  <block id="d974fd8f7ae3828a4b95f6e90d4c579a" category="list-text">停止opensm服务：</block>
+  <block id="6a878a1cd043169c82c66374f6fec2a5" category="list-text">对前面提到的每个执行以下命令<block ref="0e4a508dbc00c0684c2ed58952be4420" prefix=" " category="inline-code"></block>。</block>
+  <block id="bd1516e27db5d9760920cc6ac65637f7" category="list-text">启动opensm服务：</block>
+  <block id="e8dd47a8d6e5d7d4ce23864009576781" category="list-text">运行<block ref="64284c8d228536994c2b22912d2dfd88" prefix=" " category="inline-code"></block>并验证所有适配器是否以所需的固件版本运行：</block>
+  <block id="afdebfdd553f315294b6e2613a68bac2" category="paragraph">对集群中的每个文件节点重复上述步骤、直到所有适配器均已更新为止。</block>
+  <block id="2e24e5f97c6ecd461030eb1eb884379b" category="section-title">双节点集群更新方法</block>
+  <block id="305a0f364da0ff85c6c92c4680866c24" category="paragraph">对于仅包含两个节点的HA集群、建议使用此方法。此方法类似于滚动更新、但还包括一些额外的步骤、以防止在一个节点的集群服务停止时出现服务停机。</block>
+  <block id="8daaa6355694edbaba2cb5a9b13ce781" category="list-text">选择要更新的文件节点并将该节点置于备用模式、此操作将从该节点中消耗(或移动)所有BeeGFS服务：</block>
+  <block id="370d6736b9730ee3ed471c975dca3040" category="list-text">运行以下命令、验证节点的资源是否已耗尽：</block>
+  <block id="04adfc113361937ceba2fcd8d61b3c92" category="admonition">根据集群大小、BeeGFS服务可能需要数秒或数分钟才能报告为<block ref="8428552d86c0d262a542a528af490afa" prefix=" " category="inline-code"></block>在姐妹节点上。如果BeeGFS服务无法启动，请参见<block ref="c31c76dcbaad8e2836998d58888cb639" category="inline-link-macro-rx"></block>。</block>
+  <block id="322895ffeb919484b312ccccded9b8ac" category="list-text">将集群置于维护模式。</block>
+  <block id="936f1016c7b40dcadce05d9585e03c4c" category="list-text">使集群退出维护模式。</block>
+  <block id="7190ac3ac7ea745d4c9a31ade586f240" category="paragraph">请按照以下步骤升级HA集群的E系列存储阵列组件。</block>
+  <block id="91ba484bdb8dfae4fcf9b5f1cb4c9407" category="paragraph">确保HA集群的NetApp E-Series存储阵列始终使用最新固件、以确保最佳性能和更高的安全性。存储阵列的固件更新可通过SANtricity操作系统、NVSRAID和驱动器固件文件应用。</block>
+  <block id="f04c5fdc9e10396af2f82ce9565f65a5" category="list-text">确保集群处于最佳状态、并且每个BeeGFS服务都位于其首选节点上。有关详细信息、请参见 <block ref="1d1f85855f64d7b14ac7c0ae29a52511" category="inline-link-macro-rx"></block> 。</block>
+  <block id="d5c73bafdf627c28554a39d3e655f1bf" category="cell">有源光纤(包括收发器)</block>
+  <block id="c44b2ed9fc36044ebe1e8b9057c4a281" category="cell">MMA4Z00-NS (多模式、IB/ETH、800 Gb/秒2x400 Gb/秒双端口OSFP)</block>
+  <block id="53fff94cbca4161cd31d168451033f2e" category="cell">MFP7E20-Nxxx (多模式、4通道到2通道分路器光缆)</block>
+  <block id="804e83e6974e7f6076f940326b985a83" category="cell">MMA1Z00-NS400 (多模式、IB/ETH、400 Gb/秒单端口QP-112)</block>
+  <block id="b2f1f9abf8117b3cde0475d1adf7a64f" category="cell">NVIDIA 7Y40-N002 (InfiniBand无源铜缆分路器电缆、InfiniBand 800Gb/s到4个200Gb/s、OSFP到4个QSFP112)</block>
+  <block id="fbe7b2959f641c0a45951417fc744ba8" category="paragraph">*ConnectX-7 HCA固件* FW 28.42.1000 + PXE 3.7.0500 + UEFI 14.35.0015</block>
+  <block id="63c2d436fc11f0bcdd598c38560aca3f" category="paragraph">*ConnectX-6 HCA固件* FW 20.43.1014 + PXE 3.7.0500 + UEFI 14.36.0016</block>
+  <block id="0d665a6c7072af8fddd1f64d9c741762" category="cell">11.90R1</block>
+  <block id="6c3a5f2fbe0e1eb20af96ccd813c89b0" category="cell">N6000-890834-D02.DLP</block>
+  <block id="2c31ce9dbdba754d30ac4980d7d504df" category="cell">3.1.7-1.</block>
+  <block id="fec83cb9bb84cd6342be622a93d94a1b" category="cell">2.1.6-10.</block>
+  <block id="088914339db9effda3ac57ec2e9439b6" category="cell">Fence Agent (红鱼/APC)</block>
+  <block id="f726fcf5784fc25f630a32e650f8b5a0" category="cell">4.10.0-55.</block>
+  <block id="f8b6aa2ae96c25a05a0cc6e26a9236d7" category="sidebar">升级PacMaker和Corosync软件包</block>
 </blocks>

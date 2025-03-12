@@ -139,6 +139,10 @@ sidebar:
       entries:
       - title: 更新BeeGFS版本
         url: "/administer/clusters-update-beegfs.html"
+      - title: 升级PacMaker和Corosync软件包
+        url: "/administer/clusters-update-ha-services.html"
+      - title: 更新文件节点适配器固件
+        url: "/administer/clusters-update-hca-firmware.html"
       - title: 升级E-Series存储阵列
         url: "/administer/clusters-update-storage-array.html"
     - title: 维护和维护
