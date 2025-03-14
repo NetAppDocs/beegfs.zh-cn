@@ -49,10 +49,7 @@ NOTE: 尽管严格要求不高、但后续章节假定主机名按顺序编号(�
 ....
 subscription-manager repo-override --repo=rhel-9-for-x86_64-highavailability-rpms --add=enabled:1
 ....
-. 将所有HCA固件更新为中建议的版本 link:beegfs-technology-requirements.html["技术要求"]。
-+
-要完成此更新、可以下载并运行捆绑了建议固件的lxup工具版本。您可以从下载此工具 https://network.nvidia.com/support/firmware/mlxup-mft/["lxup—更新和查询实用程序"^] (link:https://docs.nvidia.com/networking/display/mlxupfwutility["用户指南"^])。
-
+. 使用link:..administer/clusters-update-hca-firmware.html["更新文件节点适配器固件"^]指南将所有HCA固件更新到中建议的版本link:beegfs-technology-requirements.html["技术要求"]。
 
 
 
@@ -63,11 +60,11 @@ subscription-manager repo-override --repo=rhel-9-for-x86_64-highavailability-rpm
 
 . 在每个EF600控制器上配置管理端口。
 +
-有关配置端口的说明、请转至 https://docs.netapp.com/us-en/e-series/maintenance-ef600/hpp-overview-supertask-concept.html["E系列文档中心"^]。
+有关配置端口的说明，请转到 https://docs.netapp.com/us-en/e-series/install-hw-ef600/complete-setup-task.html#step-2-connect-and-configure-the-management-connection["E系列文档中心"^]。
 
 . (可选)设置每个系统的存储阵列名称。
 +
-通过设置名称、可以更轻松地在后续章节中引用每个系统。有关设置阵列名称的说明、请转到 https://docs.netapp.com/us-en/e-series/maintenance-ef600/hpp-overview-supertask-concept.html["E系列文档中心"^]。
+通过设置名称、可以更轻松地在后续章节中引用每个系统。有关设置阵列名称的说明，请转到 https://docs.netapp.com/us-en/e-series-santricity/sm-interface/setup-wizard-overview.html#first-time-setup["E系列文档中心"^]。
 
 
 

@@ -14,15 +14,15 @@ summary: 开始部署之前、请确保了解如何使用Ansible使用第二代B
 
 
 [role="lead"]
-开始部署之前、请确保了解如何使用Ansible使用第二代BeeGFS组件设计在NetApp解决方案 上配置和部署BeeGFS。
+在开始部署之前、请熟悉如何配置和使用Ansient来部署基于NetApp的BeeGFS解决方案。
 
-Ansible清单定义了文件和块节点的配置、并表示要部署的BeeGFS文件系统。清单包括描述所需BeeGFS文件系统的主机、组和变量。可从下载示例清单 https://github.com/netappeseries/beegfs/tree/master/getting_started/["NetApp E系列BeeGFS GitHub"^]。
+此目录结构是一个目录结构、其中列出了要在其中部署BeeGFS文件系统的文件和块节点。它包括用于描述所需BeeGFS文件系统的主机、组和变量。需要将该清单存储在可访问用于运行可编阅指南的文件和块节点的任何计算机上的可编阅控制节点上。可从下载样本清单 https://github.com/netappeseries/beegfs/tree/master/getting_started/["NetApp E系列BeeGFS GitHub"^]。
 
 
 
 == Ansible模块和角色
 
-要应用NetApp E-Series清单中所述的配置，请使用在"Ansil得"集合中提供的各种"Ansil得"模块和角色，特别是部署端到端解决方案的BeeGFS HA 7.4角色(可从获取 https://github.com/netappeseries/beegfs/tree/master/roles/beegfs_ha_7_4["NetApp E系列BeeGFS GitHub"^])。
+要应用在"Ands还是"清单中描述的配置，请使用NetApp E系列的"Ands还是"集合中提供的各种"Ands还是"模块和角色(可从获取 https://github.com/netappeseries/beegfs/tree/master/roles/beegfs_ha_7_4["NetApp E系列BeeGFS GitHub"^])来部署端到端解决方案。
 
 NetApp E系列Ansible资料集中的每个角色都是在NetApp解决方案 上完整地端到端部署BeeGFS。这些角色使用NetApp E系列SANtricity 、主机和BeeGFS集合、通过这些集合、您可以使用HA (高可用性)配置BeeGFS文件系统。然后、您可以配置和映射存储、并确保集群存储已准备就绪、可以使用。
 
@@ -35,11 +35,11 @@ NOTE: 尽管部署步骤会尝试提供足够详细的信息、以便事先使�
 
 == BeeGFS HA集群的清单布局
 
-使用Ansible清单结构定义BeeGFS HA集群。
+使用Ansient清单结构定义BeeGFS HA集群。
 
-任何以前具有Ansible经验的用户都应了解BeeGFS HA角色可通过一种自定义方法来发现每个主机适用的变量(或事实)。要简化Ansible清单的构建、使其能够描述可在多个服务器上运行的资源、需要执行此操作。
+任何具有以往的Andsware经验的人员都应了解BeeGFS HA角色可通过一种自定义方法来发现适用于每个主机的变量(或事实)。这种设计简化了构建可在多台服务器上运行的资源的Ans维修 清单。
 
-Ansible清单通常由`host_vars`和`group_vars`中的文件以及一个`inventory.yml`文件组成、该文件可将主机分配给特定组(并可能将组分配给其他组)。
+一个"Ands还是"And"清单通常由和 `group_vars`中的文件以及一个 `inventory.yml`将主机分配给特定组(可能还会将这些组分配给其他组)的文件组成 `host_vars`。
 
 
 NOTE: 请勿使用本小节中的内容创建任何文件、本小节仅用作示例。
@@ -93,7 +93,7 @@ beegfs_targets:
           - size: 21.25
             owning_controller: A
 ....
-通过此布局、可以在一个位置为每个资源定义BeeGFS服务、网络和存储配置。在后台、BeeGFS角色会根据此清单结构为每个文件和块节点聚合所需的配置。有关详细信息、请参见以下博客文章： https://www.netapp.com/blog/accelerate-deployment-of-ha-for-beegfs-with-ansible/["NetApp借助Ansible加快了BeeGFS HA的部署"^]。
+通过此布局、可以在一个位置为每个资源定义BeeGFS服务、网络和存储配置。在后台、BeeGFS角色会根据此清单结构为每个文件和块节点聚合所需的配置。
 
 
 NOTE: 系统会根据组名称自动配置每个服务的BeeGFS数字和字符串节点ID。因此、除了组名称唯一的一般可逆要求之外、表示BeeGFS服务的组必须以该组所代表的BeeGFS服务类型唯一的数字结尾。例如、允许使用meta_01和stor_01、但不允许使用metadata_01和metada_01。

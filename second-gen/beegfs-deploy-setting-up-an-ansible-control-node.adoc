@@ -14,66 +14,64 @@ summary: 要设置Ansible控制节点、请确定可以通过网络访问可用�
 
 
 [role="lead"]
-要设置Ansible控制节点、您必须确定能够通过网络访问可用于配置解决方案 的所有文件和块节点的管理端口的虚拟机或物理机。
+要设置可扩展控制节点、您必须指定一台虚拟机或物理机、以便能够通过网络访问为基于NetApp的BeeGFS解决方案部署的所有文件和块节点。
 
-以下步骤已在Ubuntu 22.04上进行了测试。有关首选Linux发行版的特定步骤，请参见 https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html["Ansible文档"^]。
+查看、link:beegfs-technology-requirements.html#ansible-control-node-requirements["技术要求"]了解建议的软件包版本列表。以下步骤已在Ubuntu 22.04上进行了测试。有关首选Linux发行版的特定步骤，请参见 https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html["Ansible文档"^]。
 
-. 安装Python 3.10并确保已安装正确版本的 `pip` 。
+. 从您的Ans还是 控制节点、安装以下Python和Python虚拟环境软件包。
 +
-....
-sudo apt install python3.10 -y
-sudo apt install python3-pip
-sudo apt install sshpass
-....
-. 创建符号链接、确保调用或时使用Python 3.10二进制文件 `python3` `python` 。
+[source, console]
+----
+sudo apt-get install python3 python3-pip python3-setuptools python3.10-venv
+----
+. 创建Python虚拟环境
 +
-....
-sudo ln -sf /usr/bin/python3.10 /usr/bin/python3
-sudo ln -sf /usr/bin/python3 /usr/bin/python
-....
-. 安装NetApp BeeGFS集合所需的Python软件包。
+[source, console]
+----
+python3 -m venv ~/pyenv
+----
+. 激活虚拟环境。
 +
-....
-python3 -m pip install ansible cryptography netaddr
-....
+[source, console]
+----
+source ~/pyenv/bin/activate
+----
+. 在激活的虚拟环境中安装所需的Python软件包。
 +
-
-NOTE: 要确保您安装的是受支持的Ansible版本以及所有必需的Python软件包、请参阅BeeGFS集合的自述文件。中还说明了支持的版本 link:beegfs-technology-requirements.html["技术要求"]。
-
-. 验证是否已安装正确版本的Ansible和Python。
+[source, console]
+----
+pip install ansible netaddr cryptography passlib
+----
+. 使用Ansient Galaxy安装BeeGFS集合。
 +
-....
+[source, console]
+----
+ansible-galaxy collection install netapp_eseries.beegfs
+----
+. 验证已安装的Ansient、Python版本和BeeGFS集合是否与匹配link:beegfs-technology-requirements.html#ansible-control-node-requirements["技术要求"]。
++
+[source, console]
+----
 ansible --version
-ansible [core 2.17.2]
-  config file = None
-  configured module search path = ['/root/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
-  ansible python module location = /usr/local/lib/python3.10/dist-packages/ansible
-  ansible collection location = /root/.ansible/collections:/usr/share/ansible/collections
-  executable location = /usr/local/bin/ansible
-  python version = 3.10.12 (main, Jul 29 2024, 16:56:48) [GCC 11.4.0] (/usr/bin/python3)
-  jinja version = 3.1.4
-  libyaml = True
-....
-. 将用于描述BeeGFS部署的Ansible清单存储在Git或BitBucket等源控制系统中、然后安装Git以与这些系统进行交互。
+ansible-galaxy collection list netapp_eseries.beegfs
+----
+. 设置无密码SSH、以允许Ansient从Ansient控制节点访问远程BeeGFS文件节点。
 +
-....
-sudo apt install git -y
-....
-. 设置无密码SSH。这是允许Ansible从Ansible控制节点访问远程BeeGFS文件节点的最简单方法。
+.. 如果需要、在Ans可 控制节点上生成一对公共密钥。
 +
-.. 如果需要、在Ansible控制节点上、使用`ssh-keygen`生成一对公有 密钥
-.. 使用`ssh-copy-id <ip_or_hostname>`为每个文件节点设置无密码SSH
+[source, console]
+----
+ssh-keygen
+----
+.. 为每个文件节点设置无密码SSH。
 +
-Do * not* set up passworwless SSH to the block nodes.这既不受支持、也不是必需的。
+[source, console]
+----
+ssh-copy-id <ip_or_hostname>
+----
 
 
 
-. 使用Ansible GALAXY安装中列出的BeeGFS集合版本 link:beegfs-technology-requirements.html["技术要求"]。
-+
-此安装还包括其他Ansible依赖关系、例如NetApp SANtricity 软件和主机集合。
 
-+
-....
-ansible-galaxy collection install netapp_eseries.beegfs:==3.2.0
-....
 
+IMPORTANT: Do * not* set up passworwless SSH to the block nodes.这既不受支持、也不是必需的。

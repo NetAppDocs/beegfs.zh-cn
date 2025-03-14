@@ -14,15 +14,15 @@ summary: 您可以使用NetApp的第二代BeeGFS组件设计将NetApp上的BeeGF
 
 
 [role="lead"]
-您可以使用NetApp的第二代BeeGFS组件设计将NetApp上的BeeGFS部署到经验证的文件和块节点。
+NetApp上的BeeGFS可以通过将Ansilient与NetApp的BeeGFS组件设计结合使用来部署到经过验证的文件和块节点。
 
 
 
 == Ansible集合和角色
 
-您可以使用Ansible在NetApp解决方案 上部署BeeGFS、Ansible是一种常用的IT自动化引擎、用于自动执行应用程序部署。Ansible使用一系列文件、统称为清单、用于为要部署的BeeGFS文件系统建立模型。
+基于NetApp的BeeGFS解决方案使用Andsient进行部署、该引擎是一个可自动执行应用程序部署的常用IT自动化引擎。Ansient使用一系列文件(统称为清单)、这些文件用于为您要部署的BeeGFS文件系统建模。
 
-利用NetApp等公司可以在利用Ansilt Galaxy上的集合扩展内置功能(请参见 https://galaxy.ansible.com/netapp_eseries/santricity["NetApp E系列BeeGFS集合"^])。集合包括执行某些特定功能或任务(例如创建E系列卷)的模块、以及可以调用多个模块和其他角色的角色。这种自动化方法可减少部署BeeGFS文件系统和底层HA集群所需的时间。此外、它还简化了添加组件以扩展现有文件系统的过程。
+利用NetApp等公司的Ansilt，可以使用在Ansilt Galaxy上提供的集合来扩展内置功能(请参见 https://galaxy.ansible.com/netapp_eseries/santricity["NetApp E系列BeeGFS集合"^])。集合包括执行特定功能或任务(例如创建E系列卷)的模块以及可以调用多个模块和其他角色的角色。这种自动化方法可减少部署BeeGFS文件系统和底层HA集群所需的时间。此外、它还简化了集群和BeeGFS文件系统的维护和扩展。
 
 有关其他详细信息，请参见 link:beegfs-deploy-learn-ansible.html["了解Ansible清单"]。
 
@@ -40,7 +40,7 @@ NOTE: 由于在NetApp解决方案 上部署BeeGFS涉及许多步骤、因此NetA
 * 仅包含存储服务的第三个组件。
 
 
-这些配置文件展示了NetApp BeeGFS组件的完整建议配置文件。对于每个部署、元数据和存储组件或仅存储服务组件的数量可能因容量和性能要求而有所不同。
+这些配置文件展示了NetApp BeeGFS组件的完整建议配置文件。对于每个部署、元数据和存储组件或仅存储服务组件的数量可能会因容量和性能要求而异。
 
 
 
