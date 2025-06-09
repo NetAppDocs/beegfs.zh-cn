@@ -24,7 +24,7 @@ summary: 要设置Ansible控制节点、请确定可以通过网络访问可用�
 ----
 sudo apt-get install python3 python3-pip python3-setuptools python3.10-venv
 ----
-. 创建Python虚拟环境
+. 创建 Python 虚拟环境。
 +
 [source, console]
 ----
@@ -74,4 +74,4 @@ ssh-copy-id <ip_or_hostname>
 
 
 
-IMPORTANT: Do * not* set up passworwless SSH to the block nodes.这既不受支持、也不是必需的。
+CAUTION: Do * not* set up passworwless SSH to the block nodes.这既不受支持、也不是必需的。

@@ -424,7 +424,7 @@ beegfs_targets:
 ....
 +
 
-NOTE: 有关要使用的正确大小、请参见 link:beegfs-deploy-recommended-volume-percentages.html["建议的存储池过度配置百分比"]...
+NOTE: 要了解正确的尺寸，请参阅link:beegfs-deploy-recommended-volume-percentages.html["建议的存储池过度配置百分比"] ..
 
 +
 |===
@@ -528,7 +528,7 @@ beegfs_targets:
 ....
 +
 
-NOTE: 有关要使用的正确大小、请参见 link:beegfs-deploy-recommended-volume-percentages.html["建议的存储池过度配置百分比"]。
+NOTE: 要了解正确的尺寸，请参阅link:beegfs-deploy-recommended-volume-percentages.html["建议的存储池过度配置百分比"] 。
 
 +
 |===

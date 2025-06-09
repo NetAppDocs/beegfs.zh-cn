@@ -33,9 +33,9 @@ NOTE: 基板管理控制器(Baseboard Management Controller、BMC)有时也称�
 您可以使用UEFI设置(以前称为BIOS)或许多BMC提供的Redfish API配置系统设置。系统设置因用作文件节点的服务器型号而异。
 
 +
-要了解如何为经过验证的联想SR665文件节点配置系统设置、请参见 link:beegfs-deploy-file-node-tuning.html["调整系统性能设置"]。
+要了解如何配置已验证的 Lenovo SR665 V3 文件节点的系统设置，请参阅link:beegfs-deploy-file-node-tuning.html["调整系统性能设置"] 。
 
-. 安装Red Hat 9.3并配置用于管理操作系统的主机名和网络端口、包括来自Ansible控制节点的SSH连接。
+. 安装 Red Hat Enterprise Linux (RHEL) 9.4 并配置用于管理操作系统的主机名和网络端口，包括来自 Ansible 控制节点的 SSH 连接。
 +
 此时、请勿在任何InfiniBand端口上配置IP。
 
@@ -43,7 +43,7 @@ NOTE: 基板管理控制器(Baseboard Management Controller、BMC)有时也称�
 
 NOTE: 尽管严格要求不高、但后续章节假定主机名按顺序编号(例如H1-HN)、并提及应在奇数主机上完成的任务、而不是偶数主机上完成的任务。
 
-. 使用RedHat订阅管理器注册和订阅系统，以便从Red Hat官方存储库安装所需的软件包，并将更新限制为受支持的Red Hat版本： `subscription-manager release --set=9.3`。有关说明，请参阅 https://access.redhat.com/solutions/253273["如何注册和订阅RHEL系统"^] 和  https://access.redhat.com/solutions/2761031["如何限制更新"^]。
+. 使用 Red Hat Subscription Manager 注册并订阅系统，以允许从官方 Red Hat 存储库安装所需的软件包，并将更新限制在受支持的 Red Hat 版本上：  `subscription-manager release --set=9.4` 。有关说明，请参阅 https://access.redhat.com/solutions/253273["如何注册和订阅RHEL系统"^] 和  https://access.redhat.com/solutions/2761031["如何限制更新"^]。
 . 启用包含高可用性所需软件包的Red Hat存储库。
 +
 ....

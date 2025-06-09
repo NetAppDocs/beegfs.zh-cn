@@ -45,9 +45,9 @@ NOTE: 如果需要使用Redfish进行基于BMC的隔离、请确保已启用Redf
 
 
 
-==== RedHat
+==== Red Hat
 
-使用RedHat订阅管理器注册并订阅系统、以便可以从官方Red Hat存储库安装所需的软件包、并将更新限制为受支持的Red Hat版本： `subscription-manager release --set=<MAJOR_VERSION>.<MINOR_VERSION>`。有关说明，请参见 https://access.redhat.com/solutions/253273["如何注册和订阅RHEL系统"^] 和  https://access.redhat.com/solutions/2761031["如何限制更新"^]。
+使用 Red Hat Subscription Manager 注册并订阅系统，以允许从官方 Red Hat 存储库安装所需的软件包，并将更新限制在受支持的 Red Hat 版本上：  `subscription-manager release --set=<MAJOR_VERSION>.<MINOR_VERSION>` 。有关说明，请参阅 https://access.redhat.com/solutions/253273["如何注册和订阅RHEL系统"^]和 https://access.redhat.com/solutions/2761031["如何限制更新"^] 。
 
 启用包含高可用性所需软件包的Red Hat存储库：
 

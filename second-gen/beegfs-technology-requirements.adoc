@@ -61,7 +61,7 @@ BeeGFS文件节点
 
 
 | 8. | InfiniBand主机卡适配器(适用于文件节点)。  a| 
-主机卡适配器因文件节点使用的服务器型号而异。针对经验证的文件节点的建议包括：
+主机卡适配器可能根据文件节点的服务器型号而有所不同。针对经验证的文件节点的建议包括：
 
 * *Lenovo ThinkSystem SR6SR V3服务器:*
 +
@@ -132,18 +132,18 @@ BeeGFS文件节点
 | 软件 | version 
 
 
-| RedHat Enterprise Linux | 具有高可用性的RedHat 9.3 Server物理服务器(双插槽)。重要信息：文件节点需要有效的RedHat Enterprise Linux Server订阅和Red Hat Enterprise Linux High Availability Add-On。 
+| Red Hat Enterprise Linux (RHEL) | RHEL 9.4 高可用性物理服务器（双插槽）。*注：*文件节点需要有效的 Red Hat Enterprise Linux Server 订阅和 Red Hat Enterprise Linux 高可用性附加组件。 
 
 
-| Linux内核 | 5.14.0-362.24.1.el9_3.x86_64 
+| Linux内核 | 5.14.0-427.42.1.el9_4.x86_64 
 
 
  a| 
 HCA固件
  a| 
-*ConnectX-7 HCA固件* FW 28.42.1000 + PXE 3.7.0500 + UEFI 14.35.0015
+*ConnectX-7 HCA固件* FW 28.43.1014 + PXE 3.7.0500 + UEFI 14.36.0016
 
-*ConnectX-6 HCA固件* FW 20.43.1014 + PXE 3.7.0500 + UEFI 14.36.0016
+*ConnectX-6 HCA固件* FW 20.43.2566 + PXE 3.7.0500 + UEFI 14.37.0013
 
 |===
 
@@ -161,7 +161,7 @@ HCA固件
 | NVSRAM | N6000-890834-D02.DLP 
 
 
-| 驱动器固件 | 适用于所用驱动器型号的最新版本。 
+| 驱动器固件 | 适用于所用驱动器型号的最新版本。请参见link:https://mysupport.netapp.com/site/downloads/firmware/e-series-disk-firmware["E-Series磁盘固件站点"^]。 
 |===
 
 
@@ -174,19 +174,22 @@ HCA固件
 | 软件 | version 
 
 
-| BeeGFS | 7.4.4 
+| BeeGFS | 7.4.6 
 
 
-| 核心同步 | 3.1.7-1. 
+| 核心同步 | 3.1.8-1. 
 
 
-| 起搏器 | 2.1.6-10. 
+| 起搏器 | 2.1.7-5.2. 
 
 
-| Fence Agent (红鱼/APC) | 4.10.0-55. 
+| 件 | 0.11.7-2. 
 
 
-| InfiniBand / RDMA驱动程序 | MLNR_OFED_LINUX-23.10-3.2.0.2-LTS 
+| Fence Agent (红鱼/APC) | 4.10.0-62. 
+
+
+| InfiniBand / RDMA驱动程序 | MLNX_OFED_LINUX-23.10-3.2.2.1-LTS 
 |===
 
 

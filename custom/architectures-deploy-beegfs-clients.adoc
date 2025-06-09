@@ -89,7 +89,7 @@ all:
 ----
 +
 
-IMPORTANT: 请勿以纯文本格式存储密码。请改用Ansible Vault (请参见) link:https://docs.ansible.com/ansible/latest/user_guide/vault.html["Ansible文档"^] 使用Ansible Vault对内容进行加密)或使用 `--ask-become-pass` 运行攻略手册时的选项。
+NOTE: 请勿以纯文本格式存储密码。请改用Ansible Vault (请参见) link:https://docs.ansible.com/ansible/latest/user_guide/vault.html["Ansible文档"^] 使用Ansible Vault对内容进行加密)或使用 `--ask-become-pass` 运行攻略手册时的选项。
 
 . 在中 `client_inventory.yml` 文件中、列出应在下配置为BeeGFS客户端的所有主机 `beegfs_clients` 组、然后参考实时注释、取消注释在系统上构建BeeGFS客户端内核模块所需的任何其他配置：
 +

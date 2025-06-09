@@ -40,7 +40,7 @@ summary: 更新文件节点的ConnectX-7适配器固件的步骤。
 建议使用NVIDIA的 `mlxfwmanager`实用程序更新节点的适配器固件、该固件与NVIDIA的MLNR_OFED驱动程序捆绑在一起。开始更新之前、请从下载适配器的固件映像link:https://network.nvidia.com/support/firmware/firmware-downloads/["NVIDIA的支持站点"^]、并将其存储在每个文件节点上。
 
 
-NOTE: 对于联想ConnectX-7适配器、请使用 `mlxfwmanager_LES`NVIDIA页面上提供的工具link:https://network.nvidia.com/support/firmware/lenovo-intelligent-cluster/["OEM 固件"^]。
+TIP: 对于联想ConnectX-7适配器、请使用 `mlxfwmanager_LES`NVIDIA页面上提供的工具link:https://network.nvidia.com/support/firmware/lenovo-intelligent-cluster/["OEM 固件"^]。
 
 
 
@@ -101,8 +101,21 @@ mlxfwreset -d <pci_device_name> reset -y
 ----
 systemctl start opensm
 ----
+.. 重新启动 `eseries_nvme_ib.service` 。
++
+[source, console]
+----
+systemctl restart eseries_nvme_ib.service
+----
+.. 验证 E 系列存储阵列的卷是否存在。
 
 
+
+
+[listing]
+----
+multipath -ll
+----
 . 运行 `ibstat`并验证所有适配器是否以所需的固件版本运行：
 +
 [source, console]

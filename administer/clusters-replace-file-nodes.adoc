@@ -50,7 +50,7 @@ all:
 . 从集群中的其他一个节点中、删除旧节点： `pcs cluster node remove <HOSTNAME>`。
 +
 
-IMPORTANT: 请勿在运行此步骤之前继续操作。
+CAUTION: 请勿在运行此步骤之前继续操作。
 
 . 在Ansible控制节点上：
 +
