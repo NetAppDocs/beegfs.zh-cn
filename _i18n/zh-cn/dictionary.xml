@@ -121,15 +121,6 @@
   <block id="f0f701867a5e02fa406b05e22df7ae03" category="paragraph">自然语言理解。</block>
   <block id="af33781ae5dd2f5ffb194a90989038a8" category="paragraph">NVA</block>
   <block id="4119dd754c8118aa6a1bb36f194a2f52" category="paragraph">NetApp经验证的架构(NVA)计划为特定工作负载和使用情形提供参考配置和规模估算指导。这些解决方案经过全面测试、旨在最大程度地降低部署风险并加快上市速度。</block>
-  <block id="51bfd24e79e0939d84e9230980db5f18" category="summary">NetApp解决方案 上的BeeGFS目前正处于第二代设计阶段。</block>
-  <block id="fa0de4179a84e742d2d88028d16bf137" category="doc">设计代数</block>
-  <block id="51c16b7415d506b9bbcedd7241c7c1c0" category="paragraph">第一代和第二代均采用一种基础架构、其中整合了BeeGFS文件系统和NVMe EF600存储系统。但是、第二代基于第一代产品构建、其中包括以下附加优势：</block>
-  <block id="20667306535e51f69f34371b95abfd0b" category="list-text">将性能和容量提高一倍、同时仅添加2U机架空间</block>
-  <block id="edcc56d654a1a9362699f309c738a185" category="list-text">高可用性(High Availability、HA)基于共享磁盘的两层硬件设计</block>
-  <block id="189fdda096d5b994e140eac128f464e1" category="section-title">第二代设计</block>
-  <block id="145c927b5996411105e8a05381bfab75" category="section-title">第一代设计</block>
-  <block id="8c2de6dc6972aa428c25b73867ee0c6c" category="inline-link-macro">采用NVIDIA DGX A100系统和BeeGFS的NetApp EF系列AI</block>
-  <block id="cb0e1ee82028e21bcb25d1cedee42a90" category="paragraph">有关第一代产品的详细信息、请参见 <block ref="7c75f12548abfaad3f9a226ecdfc54d3" category="inline-link-macro-rx"></block>。</block>
   <block id="745f22cbd412f2eab6c6bf95417e8b09" category="doc">此站点包含的内容</block>
   <block id="fb7e8abee0ed4186f8c4b871d0ea6ac3" category="inline-link-macro">设计概述</block>
   <block id="42f8643eb52a942747937327c72c8361" category="inline-link-macro">部署概述</block>
@@ -766,9 +757,6 @@
   <block id="e3b88cba18358b065044f4788449026b" category="summary">解决方案 支持在高性能、低延迟NetApp E系列存储上运行的BeeGFS并行集群文件系统。一款经济高效、易于管理且高度可用的HPC解决方案 、并获得NetApp的支持。</block>
   <block id="28e8b3e83af233fe7085ba954fc6fd36" category="doc">NetApp上的BeeGFS与E系列存储</block>
   <block id="be11c74c1dd7f307bb80183a90dc2067" category="sidebar">入门</block>
-  <block id="12623d7cc9dff74b7325aa809ffc84df" category="sidebar">博客—了解BeeGFS和E系列</block>
-  <block id="0af9e7bf64a8e8c1b37ec554248f3d14" category="sidebar">博客—适合新手的BeeGFS</block>
-  <block id="6316c96cdd51a54d33d0011cf5f10c81" category="sidebar">博客—BeeGFS的HA</block>
   <block id="b89fcecfac1f6b8376165aabe5b6c5ee" category="sidebar">其他文档</block>
   <block id="bc4fe2352063642d68529f2aa0ca7ca3" category="sidebar">NetApp 产品文档</block>
   <block id="dbd68e15f4c30d2a47d780a9bf4f3da1" category="sidebar">BeeGFS文档</block>
@@ -776,7 +764,6 @@
   <block id="d564be87f67790fe4b92faa0eea29c48" category="sidebar">Ansible GALAXY上的NetApp E系列集合</block>
   <block id="bc8be72fdc9d6054f356bb2b7f80fd12" category="sidebar">NetApp 互操作性表</block>
   <block id="668e2078ef1b1722c77cdb5c523a4463" category="sidebar">NetApp 知识库</block>
-  <block id="2bae42f280067110dfd52cc69a468364" category="sidebar">Active IQ （需要登录）</block>
   <block id="c35665ae18bf4eff9afa413fcb281b07" category="sidebar">BeeGFS on NetApp文档</block>
   <block id="f40341c80e215542b4fdfe4e2f2e2a21" category="sidebar">此站点包含的内容</block>
   <block id="539652fdf317cc6e27c7373dc6fe13d3" category="sidebar">查看解决方案 设计</block>
@@ -1651,9 +1638,6 @@
   <block id="9d550842e04b4f253a1d3e7bb3297890" category="paragraph">这些组件连接到两个NVIDIA qMTM InfiniBand (M8700)交换机。此外、还将10个BeeGFS客户端连接到InfiniBand交换机、并用于运行综合基准实用程序。</block>
   <block id="16e30c156c86a2bc6240a20ed7b6fdc4" category="section-title">NVIDIA DGX SuperPOD和BasePOD验证</block>
   <block id="40fa362dda8b4d271b61c38987bd5131" category="paragraph">NetApp使用一个类似的BeeGFS文件系统验证了用于NVIDIA DGX A100 SuperPOD的存储解决方案 、该文件系统由三个组件组成、并应用了元数据和存储配置文件。资格认定工作涉及使用20台DGX A100 GPU服务器测试此NVA所述的解决方案 、这些服务器运行各种存储、机器学习和深度学习基准。基于NVIDIA DGX A100 SuperPOD的验证、基于NetApp的BeeGFS解决方案已获得批准、可用于DGX SuperPOD H100、8200和B200系统。此扩展基于满足之前建立的基准和系统要求、并已通过NVIDIA DGX A100的验证。</block>
-  <block id="21b6d1b90774505daa15a9be831436a9" category="inline-link-macro">设计指南</block>
-  <block id="1cba1266f00c729aee1318803f870d22" category="list-text">该架构专为NVIDIA DGX SuperPOD A100、H100、H200和B200系统设计、之前已在NVIDIA的专用验收集群上进行过验证。有关采用NetApp的NVIDIA DGX SuperPOD的更多信息，请参见 <block ref="e98320202738eb339bebe66cbb05ad8f" category="inline-link-macro-rx"></block>。</block>
-  <block id="10ca191b839b35e5100464ff59b95b97" category="paragraph">基于NetApp的第一代BeeGFS专为使用NetApp EF600 NVMe存储系统、BeeGFS并行文件系统、NVIDIA DGX™A100系统和NVIDIA®Mellanox®定量分析TM QM8700Gb/s IB交换机的机器学习(ML)和人工智能(AI)工作负载而设计。此设计还为存储和计算集群互连网络结构提供了200 Gb/秒InfiniBand (IB)、以便为高性能工作负载提供完全基于IB的架构。</block>
   <block id="aef5a6ba281c6919d0a3e3ff7d8feaf3" category="section-title">设计概述</block>
   <block id="a1d7af56cbcfca285cd257ae3430a2d3" category="inline-link-macro">架构概述</block>
   <block id="61dd8d13bec6e1ac3455eb2e13d61261" category="paragraph">基于NetApp的BeeGFS解决方案是一个可扩展的组件架构、可针对各种要求苛刻的工作负载进行配置。无论是处理多个小文件、管理大量大文件操作、还是混合工作负载、都可以对文件系统进行自定义以满足这些需求。高可用性内置在设计中、采用双层硬件结构、支持在多个硬件层进行独立故障转移、并确保性能稳定一致、即使在部分系统降级期间也是如此。BeeGFS文件系统支持在不同的Linux分发版之间实现高性能和可扩展的环境、并为客户端提供一个易于访问的存储命名空间。要了解更多信息，请访问 <block ref="45037eea1e64b480408f051dfe424a3c" category="inline-link-macro-rx"></block>。</block>
@@ -1837,7 +1821,6 @@
   <block id="da8d8318ceb4254068ec25272c92bc85" category="list-text">使用以下内容填充<block ref="b8d32e4c2d78b6e404b69e5c1fbf3118" prefix=" " category="inline-code"></block>、根据您的配置替换所有用户名和密码参数：</block>
   <block id="7e60d329db54d74d692f53620b366281" category="list-text">根据提示运行<block ref="150063209c60b18e2173569bd82ec639" prefix=" " category="inline-code"></block>并设置存储密码。</block>
   <block id="1d2459ca9cef1e38badde9d192eff628" category="admonition">如果<block ref="f2bf771afbc16045e1951ded58c56f98" prefix=" " category="inline-code"></block>已经是<block ref="63a9f0ea7bb98050796b649e85481845" prefix=" " category="inline-code"></block>，则可以选择省略，<block ref="424240cd4e5c359372b7f199431603d5" prefix=" " category="inline-code"></block>并在运行该播放手册时指定<block ref="13d87b4892426ec19bdc58a4643d3104" prefix=" " category="inline-code"></block>选项。</block>
-  <block id="49e794dd3d68025fd6943b67048e4f27" category="paragraph">基于NetApp的第二代BeeGFS经过优化、可满足高性能计算(HPC)、机器学习(ML)、深度学习(DL)和其他人工智能(AI)技术等苛刻工作负载的性能要求。通过整合共享磁盘高可用性(HA)架构、此设计可确保数据持久性和可用性、使其成为无法承受停机或数据丢失的企业和其他组织的理想选择。第二代设计包括PCIe Gen5服务器等组件，并支持NVIDIA®QuutM9700 400Gb/s InfiniBand交换机。该解决方案不仅经过NetApp的验证，还通过了NVIDIA DGX™A100 SuperPOD存储选项的外部认证，并获得了DGX SuperPOD H100、H200和B200系统的扩展认证。</block>
   <block id="7da4cabbb2f4c4e53ccb9660355b7dd1" category="list-text">NVIDIA DGX SuperPOD系统采用采用DGX的A100、H100、H200和B200 GPU。</block>
   <block id="e02a1b9bf28135b2931b63ac814ff7ac" category="sidebar">NVA-1174 -采用NVIDIA DGX SuperPoD系统的NetApp EF系列上的BeeGFS</block>
   <block id="049125cf8ec62098912c4f2c8db9f61b" category="paragraph">此<block ref="e6211db0073064ade016ad4558767968" prefix=" " category="inline-code"></block>如果集群运行正常、则不会显示属性。如果集群当前处于维护模式，则该属性将报告为<block ref="b326b5062b2f0e69046810717534cb09" prefix=" " category="inline-code"></block>。要启用维护模式、请运行：</block>
@@ -1922,7 +1905,6 @@
   <block id="53fff94cbca4161cd31d168451033f2e" category="cell">MFP7E20-Nxxx (多模式、4通道到2通道分路器光缆)</block>
   <block id="804e83e6974e7f6076f940326b985a83" category="cell">MMA1Z00-NS400 (多模式、IB/ETH、400 Gb/秒单端口QP-112)</block>
   <block id="b2f1f9abf8117b3cde0475d1adf7a64f" category="cell">NVIDIA 7Y40-N002 (InfiniBand无源铜缆分路器电缆、InfiniBand 800Gb/s到4个200Gb/s、OSFP到4个QSFP112)</block>
-  <block id="0d665a6c7072af8fddd1f64d9c741762" category="cell">11.90R1</block>
   <block id="6c3a5f2fbe0e1eb20af96ccd813c89b0" category="cell">N6000-890834-D02.DLP</block>
   <block id="088914339db9effda3ac57ec2e9439b6" category="cell">Fence Agent (红鱼/APC)</block>
   <block id="f8b6aa2ae96c25a05a0cc6e26a9236d7" category="sidebar">升级PacMaker和Corosync软件包</block>
@@ -1984,7 +1966,6 @@
   <block id="eb13ea1edb52f2f7cdf4b15544892c06" category="cell">Red Hat Enterprise Linux (RHEL)</block>
   <block id="33b7125f0da71f5f4c0d1adb2490c32d" category="cell">RHEL 9.4 高可用性物理服务器（双插槽）。*注：*文件节点需要有效的 Red Hat Enterprise Linux Server 订阅和 Red Hat Enterprise Linux 高可用性附加组件。</block>
   <block id="6e2ccf2574232a4db553354b8bf2b912" category="cell">5.14.0-427.42.1.el9_4.x86_64</block>
-  <block id="1e921a460cdb78aac6c0658f56a63429" category="paragraph">*ConnectX-7 HCA固件* FW 28.43.1014 + PXE 3.7.0500 + UEFI 14.36.0016</block>
   <block id="564eb0bfa4895a5fed3372708aea6e59" category="paragraph">*ConnectX-6 HCA固件* FW 20.43.2566 + PXE 3.7.0500 + UEFI 14.37.0013</block>
   <block id="7670b29ec4dc7aed23b236d72df9dc4e" category="cell">适用于所用驱动器型号的最新版本。请参见<block ref="dc6c914f008159d5969a25304ddfb479" category="inline-link-macro-rx"></block>。</block>
   <block id="90a84b80b2ae4bb2a14bb18a1c790012" category="cell">7.4.6</block>
@@ -1994,4 +1975,6 @@
   <block id="23df4986c6f31aaed7db4752a96b620b" category="cell">0.11.7-2.</block>
   <block id="ddf60efdd8bc8468bc0a5502f1b51c47" category="cell">4.10.0-62.</block>
   <block id="c83be155e8adea701991eeba59a9d048" category="cell">MLNX_OFED_LINUX-23.10-3.2.2.1-LTS</block>
+  <block id="7cd5ec19f90bf866b287afecf9a8cce0" category="paragraph">*ConnectX-7 HCA 固件* FW：28.45.1200 + PXE：3.7.0500 + UEFI：14.38.0016</block>
+  <block id="f86fe0da10c1b039adc0c656c6fe10a1" category="cell">11.90R3</block>
 </blocks>

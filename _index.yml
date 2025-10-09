@@ -12,12 +12,6 @@ indexpage:
       url: "/second-gen/beegfs-solution-overview.html"
     - title: 架构概述
       url: "/second-gen/beegfs-architecture-overview.html"
-    - title: 博客—了解BeeGFS和E系列
-      url: https://www.netapp.com/blog/solution-support-for-beegfs-and-e-series/
-    - title: 博客—适合新手的BeeGFS
-      url: https://www.netapp.com/blog/beegfs-for-beginners/
-    - title: 博客—BeeGFS的HA
-      url: https://www.netapp.com/blog/high-availability-beegfs/
   - title: 其他文档
     links:
     - title: NetApp 产品文档
@@ -36,5 +30,3 @@ indexpage:
       url: http://mysupport.netapp.com/matrix/
     - title: NetApp 知识库
       url: https://kb.netapp.com/
-    - title: Active IQ （需要登录）
-      url: https://activeiq.netapp.com/?source=aiqnsspage

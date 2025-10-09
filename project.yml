@@ -23,8 +23,6 @@ sidebar:
       entries:
       - title: 解决方案概述
         url: "/second-gen/beegfs-solution-overview.html"
-      - title: 设计代数
-        url: "/second-gen/beegfs-gens.html"
       - title: 架构概述
         url: "/second-gen/beegfs-architecture-overview.html"
       - title: 技术要求
