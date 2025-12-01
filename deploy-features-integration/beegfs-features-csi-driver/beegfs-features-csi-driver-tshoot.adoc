@@ -1,0 +1,294 @@
+---
+sidebar: sidebar 
+permalink: deploy-features-integration/beegfs-csi-driver/csi-driver-tshoot.html 
+keywords: BeeGFS Features, CSI, Driver, Troubleshoot, Troubleshooting 
+summary: BeeGFS CSI 驱动程序部署故障排除。 
+---
+= BeeGFS CSI 驱动程序部署故障排除
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+在排查 BeeGFS CSI 驱动程序部署问题时，请确保：
+
+* 所有先决条件均已满足，包括 BeeGFS 客户端的安装和配置。
+* BeeGFS CSI 驱动程序已使用正确的覆盖层进行部署。
+* 部署已验证，任何错误（例如节点污点或启用交换分区）均已解决。
+* 已部署并验证示例应用程序，以确认其功能正常。
+
+
+如需深入排查故障，请参阅link:https://github.com/ThinkParQ/beegfs-csi-driver["BeeGFS CSI 驱动程序 GitHub"]。
+
+
+
+== Kubernetes 配置 - 常见错误场景
+
+尝试检索节点上所有当前正在运行的 Pod 时出现的示例错误：
+
+[source, console]
+----
+kubectl get pods
+----
+错误输出示例：
+
+[listing]
+----
+root@node@1:~# kubectl get pods
+E0829 14:30:28.644318 5617 memcache.go:265)] "Unhandled Error" err="couldn't get current server API group list: Get \"https://XX.YYY.ZZ.CC:644
+3: connect: connection refused"
+...
+ The connection to the server XX.YYY.ZZ.CC:6443 was refused - did you specify the right host or port?
+----
+解决这类问题时，有几个关键领域需要调查。建议首先检查以下列出的各个方面。
+
+
+
+== containerd 出错
+
+检查 containerd 守护进程的状态：
+
+[source, console]
+----
+systemctl status containerd
+----
+预期输出：
+
+[listing]
+----
+root@node01:/home/user_id/beegfs-csi-driver# systemctl status containerd
+o containerd.service - containerd container runtime
+     Loaded: loaded (/lib/systemd/system/containerd.service; enabled; vendor preset: enabled)
+     Active: inactive (dead)
+     Docs: https://containerd.io
+----
+如果守护进程未运行(`Active: inactive (dead)`），重新启动它。如果重启后仍然无法运行，请检查系统日志是否存在错误：
+
+[source, console]
+----
+systemctl restart containerd
+journalctl -u containerd
+----
+
+
+== kubelet 出错
+
+检查 kubelet 服务的状态：
+
+[source, console]
+----
+systemctl status kubelet
+----
+预期输出：
+
+[listing]
+----
+root@node01:/home/user_id/beegfs-csi-driver# systemctl status kubelet
+o kubelet.service - kubelet: The Kubernetes Node Agent
+    Loaded: loaded (/lib/systemd/system/kubelet.service; enabled; vendor preset: enabled)
+    Drop-In: /usr/lib/systemd/system/kubelet.service.d
+             └─10-kubeadm.conf
+    Active: activating (auto-restart) (Result: exit-code) since Fri 2025-08-29 14:34:25 CDT; 6s ago
+      Docs: https://kubernetes.io/docs/
+     Process: 6636 ExecStart=/usr/bin/kubelet $KUBELET_KUBECONFIG ARGS $KUBELET CONFIG ARGS $KUBELET KUBEADM ARGS
+     $KUBELET_EXTRA ARGS (code=exited, status=1/FAILURE)
+     Main PID: 6636 (code=exited, status=1/FAILURE)
+----
+如果服务未运行，请重新启动它：
+
+[source, console]
+----
+systemctl restart kubelet
+----
+如果问题仍然存在，请检查系统日志中的错误：
+
+[source, console]
+----
+tail -f /var/log/syslog | grep kubelet
+----
+
+
+== 互换发行
+
+如果遇到与“swap”相关的错误，请禁用 swap 并重新启动 kubelet。
+
+[source, console]
+----
+swapoff -a
+----
+[source, console]
+----
+systemctl restart kubelet
+----
+预期输出：
+
+[listing]
+----
+root@node01:/home/user_id/beegfs-csi-driver# systemctl status kubelet
+● kubelet.service - kubelet: The Kubernetes Node Agent
+    Loaded: loaded (/lib/systemd/system/kubelet.service; enabled; vendor preset: enabled)
+    Drop-In: /usr/lib/systemd/system/kubelet.service.d
+             └─10-kubeadm.conf
+     Active: active (running) since Tue 2025-10-07 18:11:05 CDT; 5 days ago
+       Docs: https://kubernetes.io/docs/
+   Main PID: 1302401 (kubelet)
+      Tasks: 58 (limit: 231379)
+     Memory: 63.0M
+     CGroup: /system.slice/kubelet.service
+             └─1302401 /usr/bin/kubelet --bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf --config=/var/lib/kubelet/config.yaml conta>
+----
+
+NOTE: 交换分区通常在操作系统安装过程中默认启用，并列在以下位置： `/etc/fstab` Kubernetes 不支持启用交换分区运行。为防止重启后重新启用交换分区，请注释掉所有交换分区条目。 `/etc/fstab` 。
+
+
+
+== BeeGFS客户端和辅助配置故障排除
+
+. 查看配置 `/etc/beegfs/beegfs-client.conf`。
++
+默认情况下，对于安全环境，BeeGFS 连接身份验证应**启用**。确保 `connDisableAuthentication`标志位已设置为 `false`以及正确的路径 `connAuthFile`已指定：
+
++
+[source, console]
+----
+connDisableAuthentication = false
+connAuthFile=/etc/beegfs/XXX.X.XX.X_connAuthFile
+----
++
+
+NOTE: 如果您有意允许 BeeGFS 文件系统在**无需身份验证**的情况下连接，请进行如下设置 `connDisableAuthentication = true`并删除或注释掉 `connAuthFile`范围。
+
+. 验证管理服务的 IP 地址。 `sysMgmtdHost`参数设置正确。
+. 更新路径 `connRDMAInterfacesFile`和 `connInterfacesFile`。这些文件指定用于存储或节点间通信的网络接口。例如：
++
+[source, shell]
+----
+ibs1f0
+ibs1f1
+----
+. 更新路径 `connAuthFile`参数（如果启用身份验证）。
++
+**配置示例：**
+
++
+[listing]
+----
+connDisableAuthentication = false
+connAuthFile=/etc/beegfs/XXX.X.XX.X_connAuthFile
+connClientPortUDP=8004
+connMaxInternodeNum=128
+connMaxConcurrentAttempts=4
+connRDMABufNum=36
+connRDMABufSize=65536
+tuneFileCacheType=native
+tuneFileCacheBufSize=2097152
+connFallbackExpirationSecs=90
+connCommRetrySecs=600
+sysSessionChecksEnabled=False
+connRDMAInterfacesFile=/etc/beegfs/XXX.X.XX.X_8004_connInterfaces.conf
+sysMountSanityCheckMS=11000
+connRDMAKeyType=dma
+sysMgmtdHost=XXX.X.XX.X
+connInterfacesFile=/etc/beegfs/XXX.X.XX.X_8004_connInterfaces.conf
+----
+. 查看配置 `/etc/beegfs/beegfs-helperd.conf`。
++
+与客户端配置一样，连接身份验证默认情况下应该**启用**。确保 `connDisableAuthentication`标志位已设置为 `false`以及正确的路径 `connAuthFile`已指定：
+
++
+[source, console]
+----
+connDisableAuthentication = false
+connAuthFile=/etc/beegfs/XXX.X.XX.X_connAuthFile
+----
++
+
+NOTE: 如果您有意允许 BeeGFS 文件系统在**无需身份验证**的情况下连接，请进行如下设置 `connDisableAuthentication = true`并删除或注释掉 `connAuthFile`范围。
+
++
+**辅助配置示例：**
+
++
+[listing]
+----
+# --- Section 1: [Settings] ---
+#
+connDisableAuthentication     = false
+connAuthFile                  = /etc/beegfs/XXX.X.XX.X_connAuthFile
+connHelperdPortTCP            = 8006
+connPortShift                 = 0
+logNoDate                     = false
+logNumLines                   = 50000
+logNumRotatedFiles            = 5
+logStdFile                    = /var/log/beegfs-client.log
+runDaemonized                 = true
+tuneNumWorkers                = 2
+----
+
+
+
+
+== BeeGFS 控制器问题排查
+
+部署覆盖层后，您可能会在 kubectl get all 的输出中看到一些资源处于 PENDING 状态。
+
+[listing]
+----
+root@node01:/home/user_id/beegfs-csi-driver# kubectl get all -n beegfs-csi
+NAME                          READY   STATUS    RESTARTS   AGE
+pod/csi-beegfs-controller-0   0/3     Pending   0          59s
+----
+豆荚 `Pending`状态异常可能是由节点污点、资源限制、镜像缺失或调度需求未满足引起的。查看 pod 事件和日志以获取更多详细信息。如果状态如上所示，请使用 describe 命令检查已创建的 pod。
+
+[source, shell]
+----
+kubectl describe pod csi-beegfs-controller-0 -n beegfs-csi
+----
+如果您看到镜像拉取错误或 pod 卡住， `ImagePullBackOff`验证所有必需的镜像是否都存在于 containerd 中（离线）或可从注册表访问（在线）。请与以下人员联系：
+
+[source, console]
+----
+kubectl describe pod <pod-name> -n beegfs-csi | grep -i image
+----
+
+
+=== 检查 Pod 日志
+
+如果一个 pod 无法启动或处于以下状态 `CrashLoopBackOff`状态，请查看其日志了解更多详情：
+
+[source, console]
+----
+kubectl logs <pod-name> -n beegfs-csi
+----
+如果您遇到与“无法容忍的污点”相关的错误（可在 kubectl describe 的输出中看到），如下所示：
+
+[listing]
+----
+Events:
+  Type     Reason            Age   From               Message
+  ----     ------            ----  ----               -------
+  Warning  FailedScheduling  84s   default-scheduler  0/1 nodes are available: 1 node(s) had untolerated taint {node.kubernetes.io/disk-pressure: }. preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
+----
+使用以下命令从节点中移除污点：
+
+[source, shell]
+----
+kubectl taint nodes node01 node-role.kubernetes.io/control-plane:NoSchedule-
+----
+预期输出：
+
+[listing]
+----
+root@node01:/home/user_id/beegfs-csi-driver# kubectl taint nodes node01 node-role.kubernetes.io/control-plane:NoSchedule-
+error: taint "node-role.kubernetes.io/control-plane:NoSchedule" not found
+----
+清除污点后，重新应用叠加层。这样应该可以解决问题：
+
+[source, shell]
+----
+kubectl apply -k deploy/k8s/overlays/default
+----

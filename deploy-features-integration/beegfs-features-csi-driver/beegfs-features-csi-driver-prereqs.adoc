@@ -1,0 +1,90 @@
+---
+sidebar: sidebar 
+permalink: deploy-features-integration/beegfs-csi-driver/csi-driver-prereqs.html 
+keywords: BeeGFS Features, CSI, Driver 
+summary: 部署 BeeGFS CSI 驱动程序的前提条件 
+---
+= 部署 BeeGFS CSI 驱动程序的前提条件
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+在部署和配置 BeeGFS CSI 驱动程序之前，请确保您有一个正在运行的 Kubernetes 集群、可以访问您的 BeeGFS 集群，以及安装集群范围资源的适当权限。
+
+
+
+== 验证 Kubernetes 设置
+
+运行以下命令检查 Kubernetes 集群中 Pod 的状态：
+
+[source, console]
+----
+kubectl get pods
+----
+**预期输出：**
+
+[listing]
+----
+root@node01:/etc/cni/net.d# kubectl get pods
+No resources found in default namespace.
+----
+如果没有 pod 正在运行，则列表为空。否则，pod 应该能够正常列出。
+
+
+
+== 验证 BeeGFS 客户端和服务
+
+运行以下命令验证 BeeGFS 集群是否运行正常且所有服务均可访问：
+
+BeeGFS 7.4
+
+[source, console]
+----
+beegfs-check-servers
+----
+**BeeGFS 8**
+
+[source, console]
+----
+beegfs health check
+----
+
+NOTE: CSI驱动程序可与两者配合使用 `beegfs-dkms-client`和 `beegfs-client`必须将其安装在每个 Kubernetes 节点上。有关安装步骤，请参阅 BeeGFS 客户端 DKMS 文档： https://doc.beegfs.io/latest/advanced_topics/client_dkms.html[]
+
+BeeGFS 7.4 预期输出：
+
+[listing]
+----
+root@node01:/home/user_id/beegfs-csi-driver# beegfs-check-servers
+Management
+==========
+mgmt [ID: 1]: reachable at XXX.X.AB.1:8008 (protocol: TCP)
+
+Metadata
+==========
+meta_25_tgt_2501 [ID: 2501]: reachable at XXX.X.AA.MN:8255 (protocol: RDMA)
+meta_26_tgt_2601 [ID: 2601]: reachable at XXX.X.BB.NO:8265 (protocol: RDMA)
+meta_27_tgt_2701 [ID: 2701]: reachable at XXX.X.AA.OP:8275 (protocol: RDMA)
+meta_28_tgt_2801 [ID: 2801]: reachable at XXX.X.BB.PQ:8285 (protocol: RDMA)
+meta_29_tgt_2901 [ID: 2901]: reachable at XXX.X.AA.QR:8295 (protocol: RDMA)
+meta_30_tgt_3001 [ID: 3001]: reachable at XXX.X.BB.RS:8305 (protocol: RDMA)
+meta_31_tgt_3101 [ID: 3101]: reachable at XXX.X.AA.ST:8315 (protocol: RDMA)
+meta_32_tgt_3201 [ID: 3201]: reachable at XXX.X.BB.TU:8325 (protocol: RDMA)
+
+Storage
+==========
+stor_25_tgt_2501 [ID: 2501]: reachable at XXX.X.CC.MN:8253 (protocol: RDMA)
+stor_26_tgt_2601 [ID: 2601]: reachable at XXX.X.DD.NO:8263 (protocol: RDMA)
+stor_27_tgt_2701 [ID: 2701]: reachable at XXX.X.CC.OP:8273 (protocol: RDMA)
+stor_28_tgt_2801 [ID: 2801]: reachable at XXX.X.DD.PQ:8283 (protocol: RDMA)
+stor_29_tgt_2901 [ID: 2901]: reachable at XXX.X.CC.QR:8293 (protocol: RDMA)
+stor_30_tgt_3001 [ID: 3001]: reachable at XXX.X.DD.RS:8303 (protocol: RDMA)
+stor_31_tgt_3101 [ID: 3101]: reachable at XXX.X.CC.ST:8313 (protocol: RDMA)
+stor_32_tgt_3201 [ID: 3201]: reachable at XXX.X.DD.32:8323 (protocol: RDMA)
+----
+如果任何服务无法访问，请确保 BeeGFS 客户端配置正确，并且与 BeeGFS 服务器的网络连接正常。

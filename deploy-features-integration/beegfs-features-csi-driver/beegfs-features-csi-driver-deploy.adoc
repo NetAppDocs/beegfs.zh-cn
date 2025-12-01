@@ -1,0 +1,386 @@
+---
+sidebar: sidebar 
+permalink: deploy-features-integration/beegfs-csi-driver/csi-driver-deploy.html 
+keywords: BeeGFS Features, CSI, Driver 
+summary: BeeGFS CSI 驱动程序的部署说明。 
+---
+= BeeGFS CSI 驱动程序的部署
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+在 Kubernetes 环境中部署 BeeGFS CSI 驱动程序的说明。
+
+
+
+== 气隙部署
+
+要执行离线部署，必须事先在可访问互联网的系统上下载 Kubernetes YAML 配置文件和所需的容器镜像。然后需要将这些文件传输到将要安装 CSI 驱动程序的目标节点。
+
+
+
+=== 获取驱动程序和图像
+
+要在物理隔离环境中部署 BeeGFS CSI 驱动程序，请执行以下步骤。
+
+. 将 BeeGFS CSI 驱动程序 GitHub 存储库克隆到可访问互联网的系统：
++
+[source, console]
+----
+git clone https://github.com/ThinkParQ/beegfs-csi-driver.git
+----
+. 获取并记录下列图像的最新图像版本标签。您可以访问每个镜像的官方注册表或 GitHub 发布页面，以确定最新版本标签：
++
+[cols="20%,80%"]
+|===
+| 图片名称 | 注册中心 URL/参考 
+
+
+| beegfs-csi-driver | https://github.com/ThinkParQ/beegfs-csi-driver/pkgs/container/beegfs-csi-driver[] 
+
+
+| CSI配置器 | https://github.com/kubernetes-csi/external-provisioner/releases[] 
+
+
+| CSI调整器 | https://github.com/kubernetes-csi/external-resizer/releases[] 
+
+
+| 活体探测 | https://github.com/kubernetes-csi/livenessprobe/releases[] 
+
+
+| csi-node-driver-registrar | https://github.com/kubernetes-csi/node-driver-registrar/releases[] 
+|===
+. 使用 containerd 将每个镜像拉取到您的系统中，并确保替换 `<latest-tag>`每张图片都带有最新的实际标签：
++
+[source, console]
+----
+ctr -n k8s.io images pull ghcr.io/thinkparq/beegfs-csi-driver:<latest-tag>
+ctr -n k8s.io images pull registry.k8s.io/sig-storage/csi-provisioner:<latest-tag>
+ctr -n k8s.io images pull registry.k8s.io/sig-storage/csi-resizer:<latest-tag>
+ctr -n k8s.io images pull registry.k8s.io/sig-storage/livenessprobe:<latest-tag>
+ctr -n k8s.io images pull registry.k8s.io/sig-storage/csi-node-driver-registrar:<latest-tag>
+----
+. 每张提取的图像都必须导出为单独的文件。 `.tar`文件。这是将镜像传输到您的隔离环境并将其导入目标系统上的 containerd 所必需的。例如：
++
+[source, console]
+----
+ctr -n k8s.io images export beegfs-csi-driver_<latest-tag>.tar ghcr.io/thinkparq/beegfs-csi-driver:<latest-tag>
+ctr -n k8s.io images export csi-provisioner_<latest-tag>.tar registry.k8s.io/sig-storage/csi-provisioner:<latest-tag>
+ctr -n k8s.io images export csi-resizer_<latest-tag>.tar registry.k8s.io/sig-storage/csi-resizer:<latest-tag>
+ctr -n k8s.io images export livenessprobe_<latest-tag>.tar registry.k8s.io/sig-storage/livenessprobe:<latest-tag>
+ctr -n k8s.io images export csi-node-driver-registrar_<latest-tag>.tar registry.k8s.io/sig-storage/csi-node-driver-registrar:<latest-tag>
+----
++
+对每个需要的图像重复此导出命令，并根据需要替换图像名称和标签。
+
+. 复制 BeeGFS CSI 驱动程序存储库和所有导出内容 `.tar`使用您喜欢的方式将文件传输到您的物理隔离环境。对于这种设置，请保存 `beegfs-csi-driver`文件到 `/home/<User>/beegfs-csi-driver`以及图像 `/home/<User>/beegfs-csi-images`。
+
+
+
+
+=== 导入所需图像
+
+. 导航至 `/home/<User>/beegfs-csi-images`保存图像的目录，并使用 containerd 导入每个图像。例如：
++
+[source, console]
+----
+ctr -n k8s.io images import beegfs-csi-driver_<latest-tag>.tar
+ctr -n k8s.io images import csi-provisioner_<latest-tag>.tar
+ctr -n k8s.io images import csi-resizer_<latest-tag>.tar
+ctr -n k8s.io images import livenessprobe_<latest-tag>.tar
+ctr -n k8s.io images import csi-node-driver-registrar_<latest-tag>.tar
+----
+. 运行以下命令以验证镜像是否已加载到 containerd 中：
++
+[source, console]
+----
+crictl images
+----
+
+
+
+
+=== 配置和部署 CSI 驱动程序覆盖层
+
+. 导航至 `/home/<User>/beegfs-csi-driver`目录。
+. 默认情况下，覆盖层配置适用于在线部署。要执行物理隔离部署，需要修改覆盖层配置。将“default”叠加层文件夹复制到一个新的叠加层，例如： `beegfs-overlay` ：
++
+[source, console]
+----
+cp -r deploy/k8s/overlays/default deploy/k8s/overlays/beegfs-overlay
+----
+. 编辑 `deploy/k8s/overlays/beegfs-overlay/kustomization.yaml`文件。取消注释并更新 `images`包含您下载的确切标签的部分：
++
+[source, yaml]
+----
+  - name: ghcr.io/thinkparq/beegfs-csi-driver
+    newTag: <latest-tag>
+    # digest: sha256:eb7ff01259e6770d0103f219e11b7ff334c9d9102a29ea0af95a3c0d7aec1ae3
+  - name: k8s.gcr.io/sig-storage/csi-provisioner
+    newName: registry.k8s.io/sig-storage/csi-provisioner
+    newTag: <latest-tag>
+  - name: k8s.gcr.io/sig-storage/csi-resizer
+    newName: registry.k8s.io/sig-storage/csi-resizer
+    newTag: <latest-tag>
+  - name: k8s.gcr.io/sig-storage/livenessprobe
+    newName: registry.k8s.io/sig-storage/livenessprobe
+    newTag: <latest-tag>
+  - name: k8s.gcr.io/sig-storage/csi-node-driver-registrar
+    newName: registry.k8s.io/sig-storage/csi-node-driver-registrar
+    newTag: <latest-tag>
+----
+. 通过更改镜像拉取策略，将 Kubernetes 设置为使用 containerd 中本地加载的镜像。 `Always`到 `Never`。创建一个名为的文件 `image-pull-policy.yaml`你的 `deploy/k8s/overlays/beegfs-overlay/`包含以下内容的目录：
++
+[source, yaml]
+----
+# Patch for controller
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: csi-beegfs-controller
+spec:
+  template:
+    spec:
+      containers:
+        - name: beegfs
+          imagePullPolicy: Never
+        - name: csi-provisioner
+          imagePullPolicy: Never
+        - name: csi-resizer
+          imagePullPolicy: Never
+
+# Patch for node
+kind: DaemonSet
+apiVersion: apps/v1
+metadata:
+  name: csi-beegfs-node
+spec:
+  template:
+    spec:
+      containers:
+        - name: beegfs
+          imagePullPolicy: Never
+        - name: node-driver-registrar
+          imagePullPolicy: Never
+        - name: liveness-probe
+          imagePullPolicy: Never
+----
++
+
+NOTE: 环境 `imagePullPolicy: Never`确保 Kubernetes 使用加载到 containerd 中的镜像，而不尝试从外部镜像仓库拉取镜像。
+
+. 打开 `deploy/k8s/overlays/beegfs-overlay/kustomization.yaml`并添加以下部分：
++
+[source, yaml]
+----
+patchesStrategicMerge:
+  - image-pull-policy.yaml
+----
++
+
+NOTE: 这 `patchesStrategicMerge`该部分允许您应用自定义补丁——例如更改 `imagePullPolicy`在基础 Kubernetes 清单之上。验证路径 `image-pull-policy.yaml`相对于你而言是正确的 `kustomization.yaml`文件。
+
+
+
+
+
+=== 安装 BeeGFS CSI 驱动程序
+
+. 使用自定义覆盖层安装 BeeGFS CSI 驱动程序。此步骤将应用所有配置更改，包括使用本地导入的图像和更新的图像拉取策略。
++
+在克隆的 BeeGFS CSI 驱动程序仓库的根目录下，运行以下命令：
+
++
+[source, console]
+----
+kubectl apply -k deploy/k8s/overlays/beegfs-overlay
+----
+. 继续前往<<部署示例应用程序>>本节用于部署和验证您的 BeeGFS CSI 驱动程序设置。
+
+
+
+
+== 在线部署
+
+如果您的 Kubernetes 节点可以访问互联网，您可以直接部署 BeeGFS CSI 驱动程序，而无需手动下载或传输容器镜像。当 pod 部署完成后，它们会自动从镜像中心下载镜像并启动所需的服务。
+
+
+
+=== 获取驱动程序库
+
+. 将 BeeGFS CSI 驱动程序 GitHub 存储库克隆到本地系统：
++
+[source, console]
+----
+git clone https://github.com/ThinkParQ/beegfs-csi-driver.git
+----
+
+
+
+
+=== 配置驱动程序
+
+. 导航至克隆的存储库目录，如有必要，更新默认覆盖目录中的配置文件：
++
+[source, console]
+----
+ls deploy/k8s/overlays/default/
+----
++
+您应该会看到类似这样的文件：
+
++
+[listing]
+----
+csi-beegfs-config.yaml
+csi-beegfs-connauth.yaml
+kustomization.yaml
+namespace.yaml
+patches/
+----
+. 如果您的 BeeGFS 客户端配置文件未命名 `/etc/beegfs/beegfs-client.conf`创建一个与此名称完全相同的符号链接，指向您的配置文件：
++
+[source, console]
+----
+ln -s /path/to/your/beegfs-client.conf /etc/beegfs/beegfs-client.conf
+----
++
+
+NOTE: CSI驱动程序要求配置文件位于以下位置： `/etc/beegfs/beegfs-client.conf`并且要用这个名字。
+
+. 如果您需要自定义任何设置，例如存储类、密钥或连接身份验证，请编辑相关文件。 `deploy/k8s/overlays/default/`部署前。
+
+
+
+
+=== 安装 BeeGFS CSI 驱动程序
+
+. 使用以下命令安装默认覆盖层 `kubectl`。这将自动从各自的镜像仓库拉取所需的镜像，并创建所有必要的 Kubernetes 资源：
++
+[source, console]
+----
+kubectl apply -k deploy/k8s/overlays/default
+----
+. 确认资源已创建且 Pod 正在运行：
++
+[source, console]
+----
+kubectl get pods -n beegfs-csi
+----
+. 示例输出：
++
+[listing]
+----
+namespace/beegfs-csi created
+serviceaccount/csi-beegfs-controller-sa created
+serviceaccount/csi-beegfs-node-sa created
+role.rbac.authorization.k8s.io/csi-beegfs-privileged-scc-role created
+clusterrole.rbac.authorization.k8s.io/csi-beegfs-provisioner-role created
+rolebinding.rbac.authorization.k8s.io/csi-beegfs-privileged-scc-binding created
+clusterrolebinding.rbac.authorization.k8s.io/csi-beegfs-provisioner-binding created
+configmap/csi-beegfs-config-kkc8fg68fh created
+secret/csi-beegfs-connauth-b8kbm2mmm2 created
+statefulset.apps/csi-beegfs-controller created
+daemonset.apps/csi-beegfs-node created
+csidriver.storage.k8s.io/beegfs.csi.netapp.com created
+----
++
+
+NOTE: 使用 `kubectl apply -k`对于覆盖层（包含目录） `kustomization.yaml`文件）。使用 `kubectl apply -f`适用于纯 YAML 清单或清单目录。
+
+. 继续前往<<部署示例应用程序>>用于验证 BeeGFS CSI 驱动程序设置的部分。
+
+
+
+
+== 部署示例应用程序
+
+安装 BeeGFS CSI 驱动程序（无论是物理隔离还是在线）后，您可以部署示例应用程序来验证您的设置。此示例包含 StorageClass、PersistentVolumeClaim (PVC) 和使用 BeeGFS CSI 驱动程序的 pod。
+
+
+
+=== 部署前：
+
+. 获取 BeeGFS 管理节点的 IP 地址：
++
+BeeGFS 7.4
+
++
+[source, console]
+----
+beegfs-check-servers
+----
++
+**BeeGFS 8**
+
++
+[source, console]
+----
+beegfs health network
+----
++
+预期输出：
+
++
+[listing]
+----
+Management
+==========
+mgmt [ID: 1]: reachable at 192.1.18.1:8008 (protocol: TCP)
+----
+. 更新管理节点 IP `examples/k8s/dyn/dyn-sc.yaml` 。
+. 更新值 `volDirBasePath`。将其设置为唯一值（例如您的 k8s 集群名称），以防止多个集群在同一 BeeGFS 路径上动态配置卷。
++
+.StorageClass 示例代码片段：
+[source, yaml]
+----
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: csi-beegfs-dyn-sc
+provisioner: beegfs.csi.netapp.com
+parameters:
+  sysMgmtdHost: 192.1.18.1
+  volDirBasePath: user_id_k8s
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+allowVolumeExpansion: true
+----
+
+
+
+
+=== 部署
+
+. 部署示例应用程序文件：
++
+[source, console]
+----
+kubectl apply -f examples/k8s/dyn
+----
++
+预期输出：
+
++
+[listing]
+----
+pod/csi-beegfs-dyn-app created
+persistentvolumeclaim/csi-beegfs-dyn-pvc created
+storageclass.storage.k8s.io/csi-beegfs-dyn-sc created
+----
+. 验证示例 pod 和 PVC 是否正在运行并已绑定：
++
+[source, console]
+----
+kubectl get pod csi-beegfs-dyn-app
+kubectl get pvc csi-beegfs-dyn-pvc
+----
+
+
+
+NOTE: 对于物理隔离部署和在线部署，示例应用程序部署步骤完全相同。请确保您已更新管理节点 IP 地址和 `volDirBasePath`在部署前，在 StorageClass 清单中。
