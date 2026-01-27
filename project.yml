@@ -137,6 +137,8 @@ sidebar:
         url: "/deploy-features-integration/beegfs-csi-driver/csi-driver-verify.html"
       - title: 故障排除
         url: "/deploy-features-integration/beegfs-csi-driver/csi-driver-tshoot.html"
+    - title: 为 BeeGFS 8 配置 TLS 加密
+      url: "/deploy-features-integration/beegfs-tls/beegfs-tls-deploy.html"
   - title: 管理BeeGFS集群
     entries:
     - title: 概述、关键概念和术语
@@ -149,8 +151,10 @@ sidebar:
       url: "/administer/clusters-reconfigure.html"
     - title: 更新HA集群组件
       entries:
-      - title: 更新BeeGFS版本
-        url: "/administer/clusters-update-beegfs.html"
+      - title: 升级 BeeGFS 服务
+        url: "/administer/clusters-upgrade-beegfs.html"
+      - title: 升级到 BeeGFS v8
+        url: "/administer/clusters-upgrade-beegfs-v8.html"
       - title: 升级PacMaker和Corosync软件包
         url: "/administer/clusters-update-ha-services.html"
       - title: 更新文件节点适配器固件
