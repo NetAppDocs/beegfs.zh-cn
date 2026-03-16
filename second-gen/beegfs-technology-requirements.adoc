@@ -79,23 +79,6 @@ IMPORTANT: 文件节点需要有效的 Red Hat Enterprise Linux Server 订阅和
 | 数量 | 型号 | 规格 
 
 
-| 2. | EF80  a| 
-*硬件：*
-
-* *内存：* 128GB（每个控制器 64GB）
-* *适配器：* 2x 2 端口 200Gb/NDR (NVMe/IB)
-* *驱动器：*配置以匹配所需的元数据和存储容量
-
-
-*固件：*
-
-* *SANtricity 操作系统：* 12.00
-* *NVSRAM：* NEF80-200834-D00
-* *驱动器固件：* 最新可用于您的驱动器型号（请参阅 link:https://mysupport.netapp.com/site/downloads/firmware/e-series-disk-firmware["E-Series磁盘固件站点"^]）
-
-
-
-
 | 2. | EF600  a| 
 *硬件：*
 
@@ -107,7 +90,7 @@ IMPORTANT: 文件节点需要有效的 Red Hat Enterprise Linux Server 订阅和
 *固件：*
 
 * *SANtricity 操作系统：* 11.90R5
-* *NVSRAM：* N6000-890834-D02
+* *NVSRAM：* N6000-890834-D03
 * *驱动器固件：* 最新可用于您的驱动器型号（请参阅 link:https://mysupport.netapp.com/site/downloads/firmware/e-series-disk-firmware["E-Series磁盘固件站点"^]）
 
 
