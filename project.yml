@@ -153,7 +153,7 @@ sidebar:
       entries:
       - title: 升级 BeeGFS 服务
         url: "/administer/clusters-upgrade-beegfs.html"
-      - title: 升级到 BeeGFS v8
+      - title: 升级到 BeeGFS 8
         url: "/administer/clusters-upgrade-beegfs-v8.html"
       - title: 升级PacMaker和Corosync软件包
         url: "/administer/clusters-update-ha-services.html"

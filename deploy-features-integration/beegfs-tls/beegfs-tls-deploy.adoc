@@ -4,7 +4,7 @@ permalink: deploy-features-integration/beegfs-tls/beegfs-tls-deploy.html
 keywords: BeeGFS on NetApp, HA, Cluster, TLS, encryption, security, certificate authority 
 summary: 为 BeeGFS 服务和客户端之间的安全通信配置 TLS 加密。 
 ---
-= 为 BeeGFS v8 配置 TLS 加密
+= 为 BeeGFS 8 配置 TLS 加密
 :hardbreaks:
 :allow-uri-read: 
 :nofooter: 
@@ -14,37 +14,37 @@ summary: 为 BeeGFS 服务和客户端之间的安全通信配置 TLS 加密。
 
 
 [role="lead"]
-配置 TLS 加密以保护 BeeGFS v8 管理服务和客户端之间的通信。
+配置 TLS 加密以保护 BeeGFS 8 管理服务和客户端之间的通信。
 
 
 
 == 概述
 
-BeeGFS v8 引入了 TLS 支持，用于加密管理工具（如 `beegfs`命令行实用程序）和 BeeGFS 服务器服务（如 Management 或 Remote）之间的网络通信。本指南介绍了使用三种 TLS 配置方法在 BeeGFS 集群中配置 TLS 加密：
+BeeGFS 8 引入了 TLS 支持，用于加密管理工具（如  `beegfs` 命令行实用程序）和 BeeGFS 服务器服务（如 Management 或 Remote）之间的网络通信。使用以下三种方法之一在 BeeGFS 集群中配置 TLS 加密：
 
-* **使用受信任的证书颁发机构：** 在 BeeGFS 集群上使用现有 CA 签名的证书。
-* **创建本地证书颁发机构：** 创建本地证书颁发机构，并使用它为您的 BeeGFS 服务签名证书。此方法适用于希望在不依赖外部 CA 的情况下管理自己的信任链的环境。
-* **禁用 TLS：**对于不需要加密或用于故障排除的环境，完全禁用 TLS。不建议这样做，因为它会以明文形式暴露有关内部文件系统结构和配置的潜在敏感信息。
+* *使用受信任的证书颁发机构：* 在 BeeGFS 集群上使用现有 CA 签名的证书。
+* *创建本地证书颁发机构：* 创建本地证书颁发机构，并使用它来签署 BeeGFS 服务的证书。此方法适用于希望在不依赖外部 CA 的情况下管理自己的信任链的环境。
+* *TLS 已禁用：* 对于不需要加密或用于故障排除的环境，完全禁用 TLS。在生产环境中避免使用此选项，因为它会以明文形式公开有关文件系统结构和配置的潜在敏感信息。
 
 
 选择最适合您的环境和组织策略的方法。有关其他详细信息，请参见 link:https://doc.beegfs.io/latest/advanced_topics/tls.html["BeeGFS TLS"^] 文档。
 
 [NOTE]
 ====
-运行  `beegfs-client` 服务的计算机不需要 TLS 来挂载 BeeGFS 文件系统。必须设置 TLS 以利用 BeeGFS CLI 和其他 beegfs 服务，例如远程和同步。
+运行  `beegfs-client` 服务的客户端不需要 TLS 来挂载 BeeGFS 文件系统。要使用 BeeGFS CLI 和其他 BeeGFS 服务（如 Remote 和 Sync），需要使用 TLS。
 
 ====
 
 
 == 使用受信任的证书颁发机构
 
-如果您具有受信任的证书颁发机构 (CA) 颁发的证书（无论是来自内部企业 CA 还是第三方提供商）的访问权限，则可以将 BeeGFS v8 配置为使用这些 CA 签名的证书而不是生成自签名证书。
+如果您具有受信任的证书颁发机构 (CA) 颁发的证书（无论是来自内部企业 CA 还是第三方提供商）的访问权限，则可以将 BeeGFS 8 配置为使用这些 CA 签名的证书而不是生成自签名证书。
 
 
 
-=== 部署新的 BeeGFS v8 群集
+=== 部署新的 BeeGFS 8 集群
 
-对于新的 BeeGFS v8 群集部署，配置 Ansible 清单的 `user_defined_params.yml`文件以引用您的 CA 签名证书：
+对于新的 BeeGFS 8 集群部署，请配置 Ansible 清单的  `user_defined_params.yml` 文件以引用您的 CA 签名证书：
 
 [source, yaml]
 ----
@@ -63,9 +63,9 @@ beegfs_ha_tls_key_src_path: files/beegfs/cert/mgmtd_tls_key.pem
 ====
 
 
-=== 配置现有 BeeGFS v8 集群
+=== 配置现有 BeeGFS 8 集群
 
-对于现有的 BeeGFS v8 群集，将 BeeGFS 管理服务配置文件中的路径设置为文件节点的 CA 签名证书：
+对于现有的 BeeGFS 8 群集，将 BeeGFS 管理服务配置文件中的路径设置为文件节点的 CA 签名证书：
 
 [source, toml]
 ----
@@ -74,21 +74,26 @@ tls-key-file = /path/to/key.pem
 ----
 
 
-=== 使用 CA 签名的证书配置 BeeGFS v8 客户端
+=== 使用 CA 签名证书配置 BeeGFS 8 客户端
 
-要将 BeeGFS v8 客户端配置为使用系统的证书池信任 CA 签名的证书，请在每个客户端的配置中设置 tls-cert-file = "。如果未使用系统证书池，请通过设置 tls-cert-file = <local cert> 提供本地证书的路径。此设置允许客户端对 BeeGFS 管理服务提供的证书进行身份验证。
+[IMPORTANT]
+====
+如果要将现有 BeeGFS 7 群集升级到 BeeGFS 8，请按照link:../../administer/clusters-upgrade-beegfs-v8.html["升级到 BeeGFS 8"]过程进行操作。在升级过程中指示之前，请勿配置客户端 TLS。
+
+====
+要将 BeeGFS 8 客户端配置为使用系统的证书池信任 CA 签名的证书，请在每个客户端的配置中设置 tls-cert-file = "。如果未使用系统证书池，请通过设置 tls-cert-file = <local cert> 提供本地证书的路径。此设置允许客户端对 BeeGFS 管理服务提供的证书进行身份验证。
 
 
 
 == 创建本地证书颁发机构
 
-如果您的组织希望为 BeeGFS 群集创建自己的证书基础架构，则可以创建一个本地证书颁发机构 (CA) 以颁发和签署 BeeGFS 群集的证书。这种方法涉及创建一个 CA，为 BeeGFS 管理服务签名证书，然后分发给客户端以建立信任链。按照以下说明设置本地 CA 并在现有或新的 BeeGFS v8 群集上部署证书。
+如果您的组织希望为 BeeGFS 群集创建自己的证书基础架构，则可以创建一个本地证书颁发机构 (CA) 以颁发和签署 BeeGFS 群集的证书。这种方法涉及创建一个 CA，为 BeeGFS 管理服务签名证书，然后分发给客户端以建立信任链。
 
 
 
-=== 部署新的 BeeGFS v8 群集
+=== 部署新的 BeeGFS 8 集群
 
-对于新的 BeeGFS v8 部署， `beegfs_8` Ansible 角色将处理在控制节点上创建本地 CA 并为管理服务生成必要的证书。可以通过在 Ansible 库存 `user_defined_params.yml`文件中设置以下参数来启用此功能：
+对于新的 BeeGFS 8 部署， `beegfs_8` Ansible 角色（包含在 BeeGFS HA 集合中）在控制节点上创建本地 CA，并为管理服务生成必要的证书。通过在 Ansible 库存的  `user_defined_params.yml` 文件中设置以下参数来启用此功能：
 
 [source, yaml]
 ----
@@ -110,13 +115,13 @@ beegfs_ha_tls_config_options:
 ====
 
 
-=== 配置现有 BeeGFS v8 集群
+=== 配置现有 BeeGFS 8 集群
 
 对于现有的 BeeGFS 群集，您可以通过创建本地证书颁发机构并为管理服务生成必要的证书来集成 TLS。更新 BeeGFS 管理服务配置文件中的路径，以指向新创建的证书。
 
 [IMPORTANT]
 ====
-本节中的说明将用作参考。处理私钥和证书时应采取适当的安全预防措施。
+请参考这些说明。在处理私钥和证书时采取适当的安全预防措施。
 
 ====
 
@@ -168,7 +173,7 @@ basicConstraints = critical,CA:TRUE
 subjectKeyIdentifier = hash
 authorityKeyIdentifier = keyid:always,issuer:always
 ----
-. 生成 CA 证书。此证书应在系统的有效期内有效，否则您需要计划在证书过期之前重新生成证书。证书过期后，某些组件之间将无法进行通信，更新 TLS 证书通常需要重新启动服务才能完成。
+. 生成 CA 证书。此证书应在系统生命周期内有效。计划在证书过期前重新生成证书。证书过期后，某些组件之间的通信失败。更新 TLS 证书通常需要重新启动服务。
 +
 以下命令生成有效期为 1 年的 CA 证书：
 
@@ -225,7 +230,7 @@ IP.1 = <beegfs_mgmt_service_ip_1>
 IP.2 = <beegfs_mgmt_service_ip_2>
 ----
 +
-更新可分辨名称字段以匹配您的 CA 配置，并将  `IP.1` 和  `IP.2` 值更新为您的管理服务 IP 地址。
+更新可分辨名称字段以匹配您的 CA 配置，并将  `IP.1` 和  `IP.2` 值替换为您的管理服务 IP 地址。
 
 . 生成证书签名请求 (CSR)：
 +
@@ -283,7 +288,7 @@ tls-disable = false
 tls-cert-file = "/etc/beegfs/mgmtd_tls_cert.pem"
 tls-key-file = "/etc/beegfs/mgmtd_tls_key.pem"
 ----
-. 采取适当措施安全地重新启动 BeeGFS 管理服务以使更改生效：
+. 重新启动 BeeGFS 管理服务：
 +
 [source, console]
 ----
@@ -296,8 +301,11 @@ systemctl restart beegfs-mgmtd
 journalctl -xeu beegfs-mgmtd
 ----
 +
+[NOTE]
+====
 查找指示成功 TLS 初始化和证书加载的日志条目。
 
+====
 +
 [listing]
 ----
@@ -308,12 +316,17 @@ Successfully loaded license certificate: TMP-XXXXXXXXXX
 
 
 
-=== 为 BeeGFS v8 客户端配置 TLS
+=== 为 BeeGFS 8 客户端配置 TLS
 
+[IMPORTANT]
+====
+如果要将现有 BeeGFS 7 群集升级到 BeeGFS 8，请按照link:../../administer/clusters-upgrade-beegfs-v8.html["升级到 BeeGFS 8"]过程进行操作。在升级过程中指示之前，请勿配置客户端 TLS。
+
+====
 创建并分发由本地 CA 签名的证书到所有需要与 BeeGFS 管理服务通信的 BeeGFS 客户端。
 
-. 使用与上述管理服务证书相同的过程为客户端生成证书，但在使用者备用名称 (SAN) 字段中使用客户端的 IP 地址或主机名。
-. 安全远程将客户端的证书复制到客户端，并在客户端上将证书重命名为  `cert.pem`：
+. 使用 <<create-management-service-certificates>> 中所述的相同过程生成客户端证书，在 Subject Alternative Name (SAN) 字段中替换客户端的 IP 地址或主机名。
+. 将客户端证书复制到客户端节点并将其重命名为 `cert.pem`：
 +
 [source, console]
 ----
@@ -325,7 +338,7 @@ scp client_cert.pem user@client:/etc/beegfs/cert.pem
 ----
 systemctl restart beegfs-client
 ----
-. 通过执行 `beegfs CLI`命令验证客户端连接，例如：
+. 通过运行 BeeGFS CLI 命令验证客户端连接，例如：
 +
 [source, console]
 ----
@@ -337,13 +350,13 @@ beegfs health check
 
 == 禁用 TLS
 
-可以禁用 TLS 进行故障排除，或者如果用户需要的话。不鼓励这样做，因为它以明文形式暴露了有关内部文件系统结构和配置的潜在敏感信息。按照以下说明在现有或新的 BeeGFS v8 群集上禁用 TLS。
+禁用 TLS 进行故障排除或您的环境不需要加密。在生产环境中避免使用此选项，因为它会以明文形式暴露有关文件系统结构和配置的潜在敏感信息。
 
 
 
-=== 部署新的 BeeGFS v8 群集
+=== 部署新的 BeeGFS 8 集群
 
-对于新的 BeeGFS 集群部署，可以通过在 Ansible 库存 `user_defined_params.yml`文件中设置以下参数，在禁用 TLS 的情况下部署集群：
+对于新的 BeeGFS 集群部署，通过在 Ansible 库存 `user_defined_params.yml`文件中设置以下参数来禁用 TLS：
 
 [source, yaml]
 ----
@@ -351,12 +364,12 @@ beegfs_ha_tls_enabled: false
 ----
 
 
-=== 配置现有 BeeGFS v8 集群
+=== 配置现有 BeeGFS 8 集群
 
-对于现有的 BeeGFS v8 群集，请编辑管理服务配置文件。例如，在  `/mnt/mgmt_tgt_mgmt01/mgmt_config/beegfs-mgmtd.toml` 编辑文件并设置：
+对于现有的 BeeGFS 8 群集，编辑管理服务配置文件。例如，在  `/mnt/mgmt_tgt_mgmt01/mgmt_config/beegfs-mgmtd.toml` 编辑文件并设置：
 
 [source, toml]
 ----
 tls-disable = true
 ----
-采取适当措施，安全地重新启动管理服务以使更改生效。
+重新启动管理服务以使更改生效。

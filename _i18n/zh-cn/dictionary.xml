@@ -5,11 +5,9 @@
   <block id="e95081b0e85f690a9bdcb41ea940c186" category="summary">要在NetApp解决方案 上实施BeeGFS、请确保您的环境满足技术要求。</block>
   <block id="de65efa2c0698ededf4229cafcca2d08" category="doc">技术要求</block>
   <block id="47dee50ad0138b8f5ca70e40e86e6c04" category="section-title">硬件要求</block>
-  <block id="16cc6ce48a597aebb8ab5132cb3523dc" category="cell">硬件组件</block>
   <block id="5a2ebfb8baa378cfcfcba58bbb1380c2" category="cell">要求</block>
   <block id="d41d8cd98f00b204e9800998ecf8427e" category="doc"></block>
   <block id="c81e728d9d4c2f636f067f89cc14862c" category="paragraph">2.</block>
-  <block id="a631c0a4a9b408ccc2559c2a3323af51" category="paragraph">*其他：*</block>
   <block id="c9f0f895fb98ab9159f51fd0297e236d" category="cell">8.</block>
   <block id="5fea6233624bde259c99b82e6d7de3c6" category="section-title">软件部署要求</block>
   <block id="699b33acca98ab1d3eb0d684f59f1c98" category="paragraph">下表列出了在基于Ansible的BeeGFS部署中自动部署的软件要求。</block>
@@ -27,12 +25,7 @@
   <block id="a7f5f35426b927411fc9231b56382173" category="cell">Python</block>
   <block id="d35d779fe31977939a0a72c5c962d2af" category="cell">其他Python软件包</block>
   <block id="5510cedb08df4208db0688e41cea716f" category="section-title">文件节点要求</block>
-  <block id="2488fead2064d4aeb886afc1a0010ee7" category="cell">Linux内核</block>
   <block id="f6883581bd882ffdf705127738982586" category="cell">InfiniBand / RDMA驱动程序</block>
-  <block id="fbc534ed33feffdfe8fc56e7cde13e6e" category="section-title">EF600块节点要求</block>
-  <block id="e791d47d690cbc6aa7c7f9434ebd2fa1" category="cell">SANtricity 操作系统</block>
-  <block id="b384b3cf4ffa3a81a88e8687dd6ca028" category="cell">NVSRAM</block>
-  <block id="b89cb5f38b54c6181858af1281dcaeef" category="cell">驱动器固件</block>
   <block id="cef5ab698867f39ec4b495cba708da1a" category="summary">NetApp解决方案 上的BeeGFS将BeeGFS并行文件系统与NetApp EF600存储系统相结合、打造了一个可靠、可扩展且经济高效的基础架构、可满足苛刻的工作负载要求。</block>
   <block id="c0c4b60d27032c028c91440e9d3be949" category="doc">解决方案概述</block>
   <block id="c6ff1c8ffcd7024a30e7240129bf57a8" category="section-title">NVA计划</block>
@@ -1635,42 +1628,20 @@
   <block id="a1d7af56cbcfca285cd257ae3430a2d3" category="inline-link-macro">架构概述</block>
   <block id="61dd8d13bec6e1ac3455eb2e13d61261" category="paragraph">基于NetApp的BeeGFS解决方案是一个可扩展的组件架构、可针对各种要求苛刻的工作负载进行配置。无论是处理多个小文件、管理大量大文件操作、还是混合工作负载、都可以对文件系统进行自定义以满足这些需求。高可用性内置在设计中、采用双层硬件结构、支持在多个硬件层进行独立故障转移、并确保性能稳定一致、即使在部分系统降级期间也是如此。BeeGFS文件系统支持在不同的Linux分发版之间实现高性能和可扩展的环境、并为客户端提供一个易于访问的存储命名空间。要了解更多信息，请访问 <block ref="45037eea1e64b480408f051dfe424a3c" category="inline-link-macro-rx"></block>。</block>
   <block id="bcaa6be52b9fd12687892056d441d7e4" category="paragraph">要实施基于NetApp的BeeGFS解决方案、请确保您的环境满足本文档中概述的技术要求。</block>
-  <block id="7bf6b11b50ef88e180323b13813659d7" category="paragraph">开始之前、请确保您的硬件满足基于NetApp的BeeGFS解决方案的第二代组件设计的以下规格。根据客户要求、特定部署的确切组件可能会有所不同。</block>
   <block id="694e8d1f2ee056f98ee488bdc4982d73" category="cell">数量</block>
-  <block id="d065c203a4b9103e8896c456d35cceea" category="paragraph">每个文件节点都应满足或超出建议文件节点的规格、以实现预期性能。</block>
-  <block id="fbb1fad3a6f7d3538a8a1f8e9b6f1f08" category="paragraph">*建议的文件节点选项:*</block>
   <block id="5be994ecb912a7fb7448cc05f90afcf7" category="list-text">*Lenovo ThinkSystem SR国际 电脑公司</block>
-  <block id="c0c1df1f325217c6fa04ce4c03ba875a" category="list-text">*处理器：* 2个AMD EPYC 9124 16C 3.0 GHz (配置为两个NUMA分区)。</block>
   <block id="e679361e60a219fe470d3ddb1f34a7d7" category="list-text">*内存：* 256 GB (16个16 GB TruDR5 4800MHz RDIM-A)</block>
   <block id="9946d99f0bd7932556af9646233dd2e8" category="list-text">*PCIe扩展：*四个PCIe Gen5 x16插槽(每个NUMA分区两个)</block>
-  <block id="accd99f82c9ad3f026edd29ae4aaa9d8" category="list-text">在RAID 1中为操作系统配置两个驱动器(1 TB 7.2K SATA或更高)</block>
-  <block id="c618fd1e9213f6ba6e4961e3d1165110" category="list-text">用于带内操作系统管理的1GbE端口</block>
-  <block id="db812d54d604d8c71ffd5e4be563e3e5" category="list-text">采用Redfish API的1GbE BMC、用于带外服务器管理</block>
-  <block id="15cf8b6d2674b1d9c9b0383ecfee8929" category="list-text">双热插拔电源和性能风扇</block>
-  <block id="22d9c94f9f4ead6ee028aeb105c59845" category="list-text">*Lenovo ThinkSystem SR6SR V3服务器:*</block>
-  <block id="6ea32d47808c9a0a8b4ad8ce7c3d46a8" category="list-text">MCX755106AS-热连接X-7、NDR200、QSFP112、双端口、PCIe Gen5 x16、 InfiniBand适配器</block>
-  <block id="b74051cf2ad1a189f8a05453712ca47a" category="cell">存储网络交换机</block>
-  <block id="abf33d394022ed774955ca8b4e892340" category="paragraph">存储网络交换机必须支持200 Gb/秒的InfiniBand速度。建议的交换机型号包括：</block>
-  <block id="d7405c22a666ad0d0cb249c209ed8a2a" category="list-text">* NVIDIA QM9700昆特2 NDNS InfiniBand交换机*</block>
-  <block id="8371ac7bb43cddb78635bb02c4ecf477" category="list-text">* NVIDIA MMM4700多模HDR InfiniBand交换机*</block>
   <block id="118d935cca54466f59122caecfde09ad" category="section-title">布线要求</block>
   <block id="1fe3c9d0657c143dd35fa09974da425b" category="cell">部件号</block>
   <block id="ba2a9c6c8c77e03f83ef8bf543612275" category="cell">长度</block>
-  <block id="c3fc989bc0ee89bd4f833252b93ae9fc" category="cell">NVIDIA 1500-H001E30 (无源铜缆、QSFP56、200 GB/秒)</block>
   <block id="9859011cc78b3687689e719ce0d111a5" category="cell">1 个月</block>
   <block id="e71a6bc9da9d285c521501e596936972" category="cell">交换机型号</block>
   <block id="6fd115591b61cfe21f37443a0afb71e0" category="cell">电缆类型</block>
   <block id="0f0a45940e8946022b971d4ccdf6154e" category="cell">NVIDIA QM9700</block>
   <block id="a87ff679a2f3e71d9181a67b7542122c" category="cell">4</block>
-  <block id="979ceabbdb73904b7beec8a0d58c32b8" category="cell">活动光纤</block>
   <block id="f629de18a131cfa25b9f36ef4690fc92" category="cell">无源铜线</block>
-  <block id="f3b15dfb9c8e8d6298034f5cc32a59cd" category="cell">NVIDIA MqM8700</block>
-  <block id="30657be0f3a2fdc8c171bce10af72efc" category="cell">MFS1S00-H003C (NVIDIA有源光纤电缆、InfiniBand 200Gb/秒、QFP56)</block>
-  <block id="c1850fdcdcbbaf2fb48f3055382d5a41" category="cell">NVIDIA 1500-H002E26 (无源铜缆、InfiniBand 200Gb/秒、QSFP56)</block>
-  <block id="8c21a74db8c25bd18866fe78a889642f" category="paragraph">HCA固件</block>
-  <block id="1f6e93b1ea11aa12e871822a2cabfc76" category="cell">加密法-43.0.0、netaddr-1.3.0、ipaddr-2.2.0</block>
   <block id="7af6b9890b6c8ce699616c59f48b5248" category="cell">NetApp E-Series BeeGFS折叠资料集</block>
-  <block id="070afde0274dc6039a8a8949d12a15cd" category="cell">3.2.0</block>
   <block id="ddc7c5e85c28111eae39eef12269daf4" category="inline-link-macro">使用自定义架构</block>
   <block id="a33f0af0b0b4566b693084a9b90c220b" category="paragraph">向集群添加组件时、您需要<block ref="3342582e194d63e4c91b56623752c9c6" prefix=" " category="inline-code"></block>为每个新文件节点和块节点(E-Series阵列)创建文件。需要将这些主机的名称以及要创建的新资源添加到清单中。<block ref="96fa973cda8809ad84f646e3d8fbbc1c" prefix=" " category="inline-code"></block>需要为每个新资源创建相应的文件。<block ref="46924488f50abe82484adb9bfcdcde3b" category="inline-link-macro-rx"></block>有关详细信息、请参见一节。</block>
   <block id="a9e2fb24cfaef729e583ffb43f910760" category="paragraph">如果节点发生硬件或其他故障、HA集群应自动做出响应并将其服务移动到运行正常的节点、以便管理员有时间采取更正操作。在继续操作之前、请参考<block ref="9f376b3ee66d4a4a484e850809b96601" category="inline-link-macro-rx"></block>一节以确定故障转移的原因并解决任何未解决的问题。在节点重新启动并运行正常后、您可以继续执行故障恢复。</block>
@@ -1797,12 +1768,6 @@
   <block id="9a0ca14324a0c9493b33cc5efdcf3460" category="paragraph"><block ref="9a0ca14324a0c9493b33cc5efdcf3460" category="inline-image-macro-rx" type="image"></block></block>
   <block id="362973e7a4fa534a7db69e8dfa0877a8" category="inline-image-macro">两个BeeGFS元数据和存储组件MDTest结果</block>
   <block id="070cfbe37786e49518755132f73ded2c" category="paragraph"><block ref="070cfbe37786e49518755132f73ded2c" category="inline-image-macro-rx" type="image"></block></block>
-  <block id="e40e4e443af5090e1039aebba0a6cd24" category="paragraph">BeeGFS文件节点</block>
-  <block id="05323ece1df24d4488db57fd326597c0" category="cell">E-Series块节点(EF600阵列)</block>
-  <block id="06fc3bd2748fbbf8f16ce893ede22214" category="paragraph">*内存：* 256 GB (每个控制器128 GB)。*适配器：* 2端口200GB/HDR (NVMe/IB)。*驱动器：*配置为匹配所需元数据和存储容量。</block>
-  <block id="1e3cea12222d4b63badbe998ef00b55d" category="cell">InfiniBand主机卡适配器(适用于文件节点)。</block>
-  <block id="0594ef398f6882c7d1d98994e3906850" category="paragraph">*从块节点直接连接到文件节点。*</block>
-  <block id="b38917fef1efbb1471841f7a026c98c3" category="paragraph">*从文件节点连接到存储网络交换机。*根据您的InfiniBand存储交换机、从下表中选择适当的缆线选项。+建议的电缆长度为2米；但是、这可能会因客户环境而异。</block>
   <block id="a00d274d551f6b74718d44ea2bb6e6c3" category="sidebar">更新HA集群组件</block>
   <block id="67f62a9c37bde591abc850b5a2b22b02" category="list-text">为集群密码创建子目录，并通过使用Ans可 存储对文件进行加密来保护文件(请参见<block ref="69d38d4b5deda302461f6461c5317006" category="inline-link-rx"></block>)：</block>
   <block id="8e7f7bdc10cb596910cce6b79c2e2ed6" category="list-text">创建子目录<block ref="fc7cb0a7b647c6ff35b553a10d616c4b" prefix=" " category="inline-code"></block>。</block>
@@ -1894,7 +1859,6 @@
   <block id="53fff94cbca4161cd31d168451033f2e" category="cell">MFP7E20-Nxxx (多模式、4通道到2通道分路器光缆)</block>
   <block id="804e83e6974e7f6076f940326b985a83" category="cell">MMA1Z00-NS400 (多模式、IB/ETH、400 Gb/秒单端口QP-112)</block>
   <block id="b2f1f9abf8117b3cde0475d1adf7a64f" category="cell">NVIDIA 7Y40-N002 (InfiniBand无源铜缆分路器电缆、InfiniBand 800Gb/s到4个200Gb/s、OSFP到4个QSFP112)</block>
-  <block id="6c3a5f2fbe0e1eb20af96ccd813c89b0" category="cell">N6000-890834-D02.DLP</block>
   <block id="088914339db9effda3ac57ec2e9439b6" category="cell">Fence Agent (红鱼/APC)</block>
   <block id="f8b6aa2ae96c25a05a0cc6e26a9236d7" category="sidebar">升级PacMaker和Corosync软件包</block>
   <block id="5a2c09ccb6952069726dcfb2e92a5573" category="paragraph">一种用于运行Ands得以 命令行界面的物理机或虚拟机。</block>
@@ -1925,12 +1889,7 @@
   <block id="e1024b07dc0ac4ec1b8c15255d2b7975" category="list-text">使用<block ref="d69ec72bf0ba3250c61993db3810f97e" category="inline-link-macro-rx"></block>指南将所有HCA固件更新到中建议的版本<block ref="27ecbcefd12957257b84a6d4c5608591" category="inline-link-macro-rx"></block>。</block>
   <block id="848b1c364446f81000a150ab3996f166" category="paragraph">有关配置端口的说明，请转到<block ref="98ec84f5a45223dfc7ed1f4ec5ef436f" category="inline-link-rx"></block>。</block>
   <block id="4e667bcd22eef3e9620c534781a563ea" category="paragraph">通过设置名称、可以更轻松地在后续章节中引用每个系统。有关设置阵列名称的说明，请转到<block ref="2617f8aa7c55cffc3912e0de8d2af7d2" category="inline-link-rx"></block>。</block>
-  <block id="3c5c0f41bab0c547cd353ca56b505d33" category="section-title">软件和固件要求</block>
-  <block id="d72c6977d4f8f0d9276e0483c1e643ab" category="paragraph">为了确保可预测的性能和可靠性、基于NetApp的BeeGFS解决方案版本会使用特定版本的软件和固件组件进行测试。实施该解决方案需要这些版本。</block>
-  <block id="6b5b0d6dfb6af2b4c98938bb01cbeea1" category="cell">10.x</block>
   <block id="f82f58377452476d1d96442db364a64d" category="cell">Ansore-core</block>
-  <block id="f850f5faa66f6a7ca2ac7f33f7eba944" category="cell">&gt; 2.13.0</block>
-  <block id="bd03200a597eed96961a6907dc36cfbd" category="cell">3.10</block>
   <block id="48858ce4570016a1f8e1d1a8b871d328" category="admonition">下次运行 Ansible 剧本时，此设置将被覆盖。</block>
   <block id="49b54ab3b1445f79ca94c7085cad41ef" category="list-text">重新启动<block ref="00e28a828e75d362a33f4cdabec833b1" prefix=" " category="inline-code"></block> 。</block>
   <block id="08386a651a8ef93e4bc0df7cf35d9b70" category="list-text">验证 E 系列存储阵列的卷是否存在。</block>
@@ -1951,21 +1910,10 @@
   <block id="fc891ddcf642031b14500d5761030e91" category="list-text">安装 Red Hat Enterprise Linux (RHEL) 9.4 并配置用于管理操作系统的主机名和网络端口，包括来自 Ansible 控制节点的 SSH 连接。</block>
   <block id="a0db142b527f78501de6b4acdba9d576" category="list-text">使用 Red Hat Subscription Manager 注册并订阅系统，以允许从官方 Red Hat 存储库安装所需的软件包，并将更新限制在受支持的 Red Hat 版本上： <block ref="cb1f5d026a59f18bc71d16899248bf06" prefix=" " category="inline-code"></block> 。有关说明，请参阅<block ref="2e2e1be81972e19947d90393d5319b6e" category="inline-link-rx"></block> 和 <block ref="bbd834e2960f33a50fb102fd4d31a6d9" category="inline-link-rx"></block>。</block>
   <block id="7efcb442cda3c6a9d2e39278301df6f2" category="paragraph">系统设置因用作文件节点的服务器型号而异。必须根据所使用的服务器型号手动配置这些设置。要了解如何配置已验证的 Lenovo SR665 V3 文件节点的系统设置，请参阅<block ref="891cfd1f8dbb99c09432be0144a5be81" category="inline-link-macro-rx"></block> 。</block>
-  <block id="8e22d5f83cc5d97bd5e5cfcebeca5f15" category="paragraph">主机卡适配器可能根据文件节点的服务器型号而有所不同。针对经验证的文件节点的建议包括：</block>
-  <block id="eb13ea1edb52f2f7cdf4b15544892c06" category="cell">Red Hat Enterprise Linux (RHEL)</block>
-  <block id="33b7125f0da71f5f4c0d1adb2490c32d" category="cell">RHEL 9.4 高可用性物理服务器（双插槽）。*注：*文件节点需要有效的 Red Hat Enterprise Linux Server 订阅和 Red Hat Enterprise Linux 高可用性附加组件。</block>
-  <block id="6e2ccf2574232a4db553354b8bf2b912" category="cell">5.14.0-427.42.1.el9_4.x86_64</block>
-  <block id="564eb0bfa4895a5fed3372708aea6e59" category="paragraph">*ConnectX-6 HCA固件* FW 20.43.2566 + PXE 3.7.0500 + UEFI 14.37.0013</block>
-  <block id="7670b29ec4dc7aed23b236d72df9dc4e" category="cell">适用于所用驱动器型号的最新版本。请参见<block ref="dc6c914f008159d5969a25304ddfb479" category="inline-link-macro-rx"></block>。</block>
   <block id="90a84b80b2ae4bb2a14bb18a1c790012" category="cell">7.4.6</block>
   <block id="06ee37e4e06f2a68feca0b0922e9af9e" category="cell">3.1.8-1.</block>
   <block id="3bbfa6ddcf5f2fb724a35ef7dc4b370a" category="cell">2.1.7-5.2.</block>
-  <block id="ffa9c6553bd093c43628899a2b5008b0" category="cell">件</block>
-  <block id="23df4986c6f31aaed7db4752a96b620b" category="cell">0.11.7-2.</block>
   <block id="ddf60efdd8bc8468bc0a5502f1b51c47" category="cell">4.10.0-62.</block>
-  <block id="c83be155e8adea701991eeba59a9d048" category="cell">MLNX_OFED_LINUX-23.10-3.2.2.1-LTS</block>
-  <block id="7cd5ec19f90bf866b287afecf9a8cce0" category="paragraph">*ConnectX-7 HCA 固件* FW：28.45.1200 + PXE：3.7.0500 + UEFI：14.38.0016</block>
-  <block id="f86fe0da10c1b039adc0c656c6fe10a1" category="cell">11.90R3</block>
   <block id="62c1c24659da4c1307a1aec4e9fa9dd7" category="summary">BeeGFS CSI 驱动程序的部署说明。</block>
   <block id="affb21f82a5248780841be74507689d4" category="doc">BeeGFS CSI 驱动程序的部署</block>
   <block id="bd415b54a1a35e3fb2eec195775a2f4f" category="paragraph">在 Kubernetes 环境中部署 BeeGFS CSI 驱动程序的说明。</block>
@@ -2121,72 +2069,27 @@
   <block id="ea355214fd4bc7c57f471bd92918879b" category="sidebar">部署</block>
   <block id="52b8ffce119fe77b28034f2fdd35eb5f" category="sidebar">验证</block>
   <block id="231cf4c70d866b616c21baddaeed0696" category="sidebar">故障排除</block>
-  <block id="720bac136ee5fe87e8258350874bf889" category="summary">从 BeeGFS v7.4.6 更新到 BeeGFS v8。</block>
-  <block id="255484f83e6b352461aab996293af037" category="doc">升级到 BeeGFS v8</block>
-  <block id="e9d543718892f9e943f9b0ec1e0b26dd" category="paragraph">按照下面的步骤将您的 BeeGFS HA 集群从版本 7.4.6 升级到 BeeGFS v8。</block>
-  <block id="56eaaf7e94c66b6b87b9a706020a46fc" category="paragraph">BeeGFS v8 引入了一些重大更改，这些更改需要在从 BeeGFS v7 升级之前进行其他设置。本文档指导您为 BeeGFS v8 的新要求准备集群，然后升级到 BeeGFS v8。</block>
-  <block id="a356d762be0fd360b305904483df7926" category="inline-link-macro">升级到版本 7.4.6</block>
-  <block id="0060d53c43069b79f60e877c28653e93" category="admonition">在升级到 BeeGFS v8 之前，请确保您的系统至少运行 BeeGFS 7.4.6。任何运行 BeeGFS 7.4.6 之前版本的群集必须首先<block ref="b76ae852ce0983e72cb97bd11b461ddd" category="inline-link-macro-rx"></block>，然后再继续此 BeeGFS v8 升级过程。</block>
-  <block id="2fb9aed2a7234a39d149a09c6958b5b2" category="section-title">BeeGFS v8 的主要变化</block>
-  <block id="76854d554aa050f31068bc61d41a84a8" category="paragraph">BeeGFS v8 引入了以下主要更改：</block>
   <block id="7aa24acc38e7f72925e21c2a645ddcc2" category="inline-link-macro">BeeGFS 许可证门户</block>
-  <block id="0fb13041d480c6bcf0851c0147562634" category="list-text">**许可证强制：** BeeGFS v8 需要许可证才能使用高级功能，如存储池、远程存储目标、BeeOND 等。在升级之前为您的 BeeGFS 集群获取有效的许可证。如果需要，您可以从 <block ref="45463b3c38760d5d45ce59919bf1b841" category="inline-link-macro-rx"></block> 获取临时 BeeGFS v8 评估许可证。</block>
-  <block id="61f3294d545224292f24d20e5784b1b8" category="list-text">**管理服务数据库迁移：**要在 BeeGFS v8 中启用基于 TOML 的新格式配置，您必须手动将 BeeGFS v7 管理服务数据库迁移到更新的 BeeGFS v8 格式。</block>
-  <block id="ae3515b57277c8fe0f00cea1adda0d4d" category="list-text">**TLS 加密：** BeeGFS v8 引入 TLS 以实现服务之间的安全通信。您需要为 BeeGFS 管理服务和<block ref="fc175616be221be5011002280876bbd0" prefix=" " category="inline-code"></block>命令行实用程序生成和分发 TLS 证书，作为升级的一部分。</block>
-  <block id="0c9877c90f0d9079a4d989e2e4566397" category="inline-link-macro">BeeGFS v8.0.0 升级指南</block>
-  <block id="0344b455523b3a852f61e590039ac8f4" category="paragraph">有关 BeeGFS 8 中的详细信息和其他更改，请参见 <block ref="12fcc9d746625edc76d466d9accca102" category="inline-link-macro-rx"></block>。</block>
-  <block id="193037230a4888af56b46ce1e6f2c26a" category="paragraph">升级到 BeeGFS v8 需要集群停机时间。此外，BeeGFS v7 客户端无法连接到 BeeGFS v8 集群。仔细协调集群和客户端之间的升级时间，以尽量减少对操作的影响。</block>
   <block id="123c241e1aed4b253defe16fb1bc8d13" category="section-title">为升级准备 BeeGFS 集群</block>
   <block id="b24218c9c302301fecde7134486fbc07" category="paragraph">在开始升级之前，请仔细准备您的环境，以确保平稳过渡并最大限度地减少停机时间。</block>
   <block id="9fd91481b38272f5b26649ad0cf8a76b" category="list-text">确保集群处于健康状态，所有 BeeGFS 服务都在其首选节点上运行。从运行 BeeGFS 服务的文件节点中，验证所有 Pacemaker 资源都在其首选节点上运行：</block>
-  <block id="c4f85ea7f20d79515f9ac7f21bf86dae" category="list-text">记录并备份集群配置。</block>
-  <block id="04b2ead37075b79030dc1155347d4308" category="inline-link-macro">BeeGFS Backup 文档</block>
-  <block id="c20c9d8c0ab82be10b7d6e1990c6b250" category="list-text">有关备份群集配置的说明，请参见 <block ref="40fce5bd2b72a748d9d52a6e6616bc38" category="inline-link-macro-rx"></block>。</block>
-  <block id="6308b60ed0c6b505ccdfdbb7163957ab" category="list-text">备份现有管理数据目录：</block>
-  <block id="fc4859fea776a05e57ac1eb61fdf28fc" category="list-text">从 beegfs 客户端运行以下命令并保存其输出以供参考：</block>
-  <block id="0ad9f882415b7d38e0f0e8b48b7c3f3f" category="list-text">如果使用镜像，请收集详细的状态信息：</block>
-  <block id="d43c35dc5b6adda146324cc71f0c9db3" category="list-text">让您的客户为停机和停止<block ref="976bae16a27bdb18aba01a29b5cc2d4e" prefix=" " category="inline-code"></block>服务做好准备。对于每个客户端，运行：</block>
-  <block id="eccb96f67f72fcd43d30cdce198bd874" category="list-text">对于每个 Pacemaker 集群，禁用 STONITH。这将允许您在升级后验证集群的完整性，而不会触发不必要的节点重新启动。</block>
-  <block id="f66bef6d792fa5f9b2aee434ba3064d2" category="list-text">对于 BeeGFS 命名空间中的所有 Pacemaker 集群，使用 PCS 停止集群：</block>
-  <block id="e3c30ceb207010fe07a97763b954522a" category="section-title">升级 BeeGFS 包</block>
   <block id="f25f967cb4e420dcfa1a8c13c8c44083" category="inline-link-macro">BeeGFS 下载页面</block>
-  <block id="21a87c1ae9c445f37c63ae4efbcf34cd" category="paragraph">在集群中的所有文件节点上，为您的 Linux 发行版添加 BeeGFS v8 包存储库。有关使用官方 BeeGFS 存储库的说明，请参阅 <block ref="8e84e2db8ba21bb6829cde407c9405a0" category="inline-link-macro-rx"></block>。否则，请相应地配置本地 beegfs 镜像存储库。</block>
-  <block id="1bf865e6e0e73c3367cf143dcd9302cb" category="paragraph">以下步骤演示如何在 RHEL 9 文件节点上使用官方 BeeGFS 8.2 存储库。在集群中的所有文件节点上执行以下步骤：</block>
-  <block id="cf403b9b34d74b4641e47669b5f5d1c4" category="list-text">导入 BeeGFS GPG 密钥：</block>
-  <block id="8316925af8bab1614333a81520c1dd23" category="list-text">导入 BeeGFS 存储库：</block>
-  <block id="c4bb0b2009d20e23efdcc9e5a4ad8646" category="paragraph">删除任何先前配置的 BeeGFS 存储库，以避免与新的 BeeGFS v8 存储库发生冲突。</block>
-  <block id="bc87d0eec71d40385410e9ab1190255d" category="list-text">清理您的包管理器缓存：</block>
-  <block id="489af5ddd3507c44ba6eafcec2580475" category="list-text">在所有文件节点上，将 BeeGFS 包更新为 BeeGFS 8.2。</block>
-  <block id="f61d3e6e81cf34ad788fa14a2e7193da" category="paragraph">在标准集群中，<block ref="973c8e6117483c73f2930aa71593d20e" prefix=" " category="inline-code"></block> 包将仅在前两个文件节点上更新。</block>
   <block id="f43cac02da4e3b2af3270e6d8ccfaeec" category="section-title">升级管理数据库</block>
-  <block id="3d91e54c4f115edfb28c67283863962b" category="paragraph">在运行 BeeGFS 管理服务的其中一个文件节点上，执行以下步骤来将管理数据库从 BeeGFS v7 迁移到 v8。</block>
-  <block id="596b726e82df1bc90236c98468274cf5" category="list-text">列出所有 NVMe 设备并筛选管理目标：</block>
-  <block id="29cd4568a3c842134f8c9de90c8ae282" category="list-text">请注意输出中的设备路径。</block>
   <block id="b7f4c9a8e0f59df867027f931cb8a370" category="list-text">将管理目标设备装载到现有管理目标装载点（将 <block ref="bfa5022fa2a135155356c86af66dcec1" prefix=" " category="inline-code"></block> 替换为您的设备路径）：</block>
   <block id="4dd4665d38ff7543df522205725e8092" category="list-text">通过运行以下命令，将您的 BeeGFS 7 管理数据导入到新的数据库格式：</block>
   <block id="d15e02bf0c54e008af2e8212aa7c7d4f" category="paragraph">预期输出：</block>
-  <block id="2786413795c911d46dba56f322a5e6ce" category="paragraph">由于 BeeGFS v8 中更严格的验证要求，自动导入并非在所有情况下都能成功。例如，如果目标分配给不存在的存储池，则导入将失败。如果迁移失败，请勿继续升级。请联系 NetApp 支持人员以获得解决数据库迁移问题的帮助。作为临时解决方案，您可以降级 BeeGFS v8 包，并在解决问题的同时继续运行 BeeGFS v7。</block>
   <block id="5ac1acae53013849794bb1c2ea31d0df" category="list-text">将生成的 SQLite 文件移动到管理服务装载：</block>
   <block id="674d3e01b788f36f1bbd61782d03f44f" category="list-text">将生成的 <block ref="6b99a83e5fac72ae948428a59578af2f" prefix=" " category="inline-code"></block> 移动到管理服务装载：</block>
-  <block id="127878bd1bf3c9908d96669e49751f73" category="paragraph">准备 <block ref="6b99a83e5fac72ae948428a59578af2f" prefix=" " category="inline-code"></block> 配置文件将在完成下一节中的许可和 TLS 配置步骤后完成。</block>
   <block id="accb4b9a5edced3379ca15730edf8658" category="section-title">配置许可</block>
-  <block id="673dca42c0c1e8d361f54553accc026b" category="list-text">在运行 beegfs 管理服务的所有节点上安装 beegfs 许可证包。这通常是集群的前两个节点：</block>
-  <block id="50a2a878befa19d7880da026b6926523" category="list-text">将您的 BeeGFS v8 许可证文件下载到管理节点并将其放在：</block>
   <block id="cc274b40044167bc2c2fb90468ab9a1c" category="section-title">配置 TLS 加密</block>
-  <block id="131e7dfcb171b5922ee5475e43a765f5" category="paragraph">BeeGFS v8 需要 TLS 加密来实现管理服务和客户端之间的安全通信。在管理服务和客户端服务之间的网络通信上配置 TLS 加密有三个选项。推荐且最安全的方法是使用由受信任的证书颁发机构签名的证书。或者，您可以创建自己的本地 CA 来为 BeeGFS 群集签名证书。对于不需要加密或用于故障排除的环境，可以完全禁用 TLS，但不建议这样做，因为它会将敏感信息暴露给网络。</block>
   <block id="c2f552ec417373dd1a03d2614f6d8b1f" category="inline-link-macro">为 BeeGFS 8 配置 TLS 加密</block>
-  <block id="feff32ab4e011bc4f21c8c85082a986a" category="paragraph">在继续之前，请按照<block ref="e3c7ea953a175f52b03d1d2c1e8cb9ae" category="inline-link-macro-rx"></block>指南中的说明为您的环境设置 TLS 加密。</block>
   <block id="31495a019abcd4b64758fd124e775743" category="section-title">更新管理服务配置</block>
-  <block id="a91413ba5a90016a17313e720ff2d787" category="paragraph">通过将设置从 BeeGFS v7 配置文件手动传输到<block ref="72236c874d89b43c28121363169fbad7" prefix=" " category="inline-code"></block>文件中来准备 BeeGFS v8 管理服务配置文件。</block>
-  <block id="81285c64189efa321022b98f01702e3b" category="list-text">在已装入管理目标的管理节点上，引用 <block ref="eaa3ac0f6fad8fb99f543716d1ae91f4" prefix=" " category="inline-code"></block> BeeGFS 7 的管理服务文件，然后将所有设置传输到 <block ref="72236c874d89b43c28121363169fbad7" prefix=" " category="inline-code"></block> 文件。对于基本设置，您的 <block ref="6b99a83e5fac72ae948428a59578af2f" prefix=" " category="inline-code"></block> 可能如下所示：</block>
   <block id="d64fe64bd4c112966dc3694117efadd9" category="paragraph">根据需要调整所有路径，以匹配您的环境和 TLS 配置。</block>
   <block id="287433f8c4fab6dd5bc60fad2f460a15" category="list-text">在运行管理服务的每个文件节点上，修改 systemd 服务文件以指向新的配置文件位置。</block>
   <block id="760227a7004e496325b2f514c87bac85" category="list-text">重新加载 systemd：</block>
   <block id="646e4bd8a5a1e652f70a596665ff0bb6" category="list-text">对于运行管理服务的每个文件节点，为管理服务的 gRPC 通信打开端口 8010。</block>
-  <block id="41f3c09bab0f85c94d11644c293642a3" category="list-text">将端口 8010/tcp 添加到 beegfs 区域：</block>
   <block id="ec2670f7d6113bbfe60f842eeab5c05f" category="list-text">重新加载防火墙以应用更改：</block>
   <block id="64bb116e2e1b9499ef38ffc848a01cf0" category="section-title">更新 BeeGFS 监控脚本</block>
-  <block id="d455873557f60c6cf58e02cd25da85af" category="paragraph">Pacemaker<block ref="2aa0098b2c775ff5e1bd67c26714b0dd" prefix=" " category="inline-code"></block> OCF 脚本需要更新以支持新的 TOML 配置格式和 systemd 服务管理。更新集群中一个节点上的脚本，然后将更新后的脚本复制到所有其他节点。</block>
   <block id="ac00f8115d590b3190d3952574454348" category="list-text">创建当前脚本的备份：</block>
   <block id="cb7f1e2621a8924bc83c17974a2fe605" category="list-text">将管理配置文件路径从<block ref="a2b11a8323f2bacebd54851aea409219" prefix=" " category="inline-code"></block>更新为<block ref="86431a16259f2b9f3e0c7768bba1815e" prefix=" " category="inline-code"></block>：</block>
   <block id="738b30b0ea984e1171e42cc34529c94a" category="paragraph">或者，在脚本中手动找到以下块：</block>
@@ -2197,39 +2100,22 @@
   <block id="1582f7bd6a974d5b9680a0fc3528a717" category="list-text">删除两个完整函数，从 <block ref="ff1fb61ee10ea25a52900ed05c17849f" prefix=" " category="inline-code"></block> 开始到 <block ref="636aed53699178358bbb8d148298dcb8" prefix=" " category="inline-code"></block> 结束。</block>
   <block id="41a24f00bb79b71db9b44b2efc455643" category="list-text">复制并粘贴以下更新的函数来替换它们：</block>
   <block id="80bba508098aacc750ddaa8172a65343" category="list-text">保存并退出文本编辑器。</block>
-  <block id="d8aa91bc96dc8186d9a6d75f337a2afc" category="list-text">运行以下命令来检查脚本是否存在语法错误，然后再继续。无输出表示脚本语法正确。</block>
-  <block id="2fbb5e6ece83043935263a0d8b2686ad" category="list-text">将更新的<block ref="2aa0098b2c775ff5e1bd67c26714b0dd" prefix=" " category="inline-code"></block> OCF 脚本复制到集群中的所有其他节点，以确保一致性：</block>
   <block id="273e9623e44e84dba0a057ef5ea26468" category="section-title">使集群恢复联机</block>
-  <block id="e16aadf99e427f29bd70c469ce4f4888" category="list-text">完成所有之前的升级步骤后，通过在所有节点上启动 BeeGFS 服务，使集群重新联机。</block>
   <block id="d72f640684af03f7ffab3c61a2c12e4a" category="list-text">验证 <block ref="973c8e6117483c73f2930aa71593d20e" prefix=" " category="inline-code"></block> 服务是否已成功启动：</block>
   <block id="be9cee3096dadc2de039a245f83d09b6" category="paragraph">预期输出包括以下行：</block>
-  <block id="53f6f7d21d71044bd2a6b988acf192a4" category="paragraph">如果日志中出现错误，请检查管理配置文件路径，并确保所有值都已从 BeeGFS 7 配置文件正确传输。</block>
   <block id="e00e840efc23d41d6ef10d9a2b7eda68" category="list-text">运行<block ref="fcad1c87c23363c990849a7aaf9d6cd9" prefix=" " category="inline-code"></block>并验证集群是否正常运行，服务是否在其首选节点上启动。</block>
   <block id="93e1fb6324daa48368310bc44c4bdb40" category="list-text">验证集群是否正常后，重新启用 STONITH：</block>
-  <block id="9d61344b9327fac9664d92d10ec0e2ed" category="list-text">继续下一节以升级群集中的 BeeGFS 客户端，并检查 BeeGFS 群集的运行状况。</block>
   <block id="a32dbb23626ff6e462a56006c1c24e69" category="section-title">升级 BeeGFS 客户端</block>
-  <block id="9d78f8c4b2d3fbdb574d3b9ee5760b8a" category="paragraph">成功将群集升级到 BeeGFS v8 后，还必须升级所有 BeeGFS 客户端。</block>
-  <block id="c04a695b8ad5bd22a3885bbf63315acb" category="paragraph">以下步骤概述了在基于 Ubuntu 的系统上升级 BeeGFS 客户端的过程。</block>
-  <block id="54f2b22e4c99c0380f12fd41fb0d32ab" category="list-text">如果尚未完成，请停止 BeeGFS 客户端服务：</block>
-  <block id="0ff7f525a25c19f71e75f4fe013e6803" category="inline-link-macro">^BeeGFS 下载页面</block>
-  <block id="f64e8e78e5b1233ad13f02d61407dad4" category="list-text">为您的 Linux 发行版添加 BeeGFS v8 包存储库。有关使用官方 BeeGFS 存储库的说明，请参阅<block ref="7f199dac39af63df53ff837e50409d64" category="inline-link-macro-rx"></block>。否则，请相应地配置本地 BeeGFS 镜像存储库。</block>
-  <block id="760a15dae0d80dcb7a99cb5d5a1e6273" category="paragraph">以下步骤在基于 Ubuntu 的系统上使用官方 BeeGFS 8.2 存储库：</block>
-  <block id="f0505292a1882adade77b3183f3cd65f" category="list-text">下载存储库文件：</block>
   <block id="9c836ceb608a4bcb8873f8f3d258baa9" category="list-text">升级 BeeGFS 客户端软件包：</block>
-  <block id="b50b5520bd361f399321c6f8d9150d1d" category="list-text">为客户端配置 TLS。使用 BeeGFS CLI 需要 TLS。请参阅<block ref="8bc1b693654da46b4eca0c41a6289247" category="inline-link-macro-rx"></block>过程在客户端上配置 TLS。</block>
   <block id="10aac1aa74c5ccff3f536bca41b37a72" category="list-text">启动 BeeGFS 客户端服务：</block>
   <block id="814374feea0e9220b1cc03515aff046f" category="section-title">验证升级</block>
-  <block id="0764a11d9a8006e930e299cd1f32908b" category="paragraph">完成升级到 BeeGFS v8 后，运行以下命令以验证升级是否成功。</block>
   <block id="8c1b5d38a2fdb9976b52271dd7bafcfb" category="list-text">验证根 inode 是否由与之前相同的元数据节点所有。如果您使用了管理服务中的<block ref="053892c553ba90a8f8e6f6c5c5fa6bda" prefix=" " category="inline-code"></block>功能，则应自动执行此操作：</block>
-  <block id="525503125442ab6ea3c885ff56ded67f" category="list-text">验证所有节点和目标均处于联机状态且状态良好：</block>
   <block id="57f7fb5574ece7538f5300530b750eba" category="paragraph">如果"Available Capacity"检查警告目标可用空间不足，您可以调整 <block ref="6b99a83e5fac72ae948428a59578af2f" prefix=" " category="inline-code"></block> 文件中定义的"capacity pool"阈值，使其更适合您的环境。</block>
   <block id="154e9d0e8841f77bbfae34e380ea800e" category="doc">升级 BeeGFS 服务</block>
   <block id="01fc91c8305e212c539f48bdf3273343" category="paragraph">使用 Ansible 更新 HA 集群上运行的 BeeGFS 版本。</block>
   <block id="8a90adccef7e4be8404c3ce2b6a81f2e" category="paragraph">所有 BeeGFS 升级都应使用 Ansible，包括在 BeeGFS 的主要、次要和补丁版本之间切换。要更新 BeeGFS，您首先需要更新 BeeGFS Ansible 集合，该集合还将引入部署/管理自动化和底层 HA 集群的最新修复和增强功能。即使更新到最新版本的集合，在运行<block ref="6afa1ad605a4192ba2e50e8be9966e68" prefix=" " category="inline-code"></block>并设置<block ref="1c5a0082b7b70fba66dc89c5dcadda70" prefix=" " category="inline-code"></block>之前，BeeGFS 也不会升级。有关每次升级的其他详细信息，请参阅当前版本的<block ref="8574fc3a2a061b998ddd0369208f121a" category="inline-link-macro-rx"></block>。</block>
-  <block id="d98fd4c1aba10a753c44be5f3d61c861" category="admonition">如果要升级到 BeeGFS v8，请参见<block ref="a7db7e2d74c4b50caf08bcd6139f45fb" category="inline-link-macro-rx"></block>过程。</block>
   <block id="df5b59dd5d3368fecd78324de057e2d1" category="paragraph">已测试和验证以下升级路径：</block>
   <block id="585375c1448bfa3494298bdd79408081" category="cell">8.0</block>
-  <block id="09afc55dc9f238ad88da176b5d6a4311" category="cell">使用<block ref="a7db7e2d74c4b50caf08bcd6139f45fb" category="inline-link-macro-rx"></block>过程中的说明进行升级。</block>
   <block id="d6422a625045167156b3c0d85ca23ebf" category="cell">8.1</block>
   <block id="2a568439f8e6ff92daa9925ce8a03adf" category="cell">8.2</block>
   <block id="596d14e0a94e096fde31c3366ba09817" category="paragraph">对集群的 Ansible 清单文件进行任何必需的或所需的更新。请参阅以下 <block ref="0be8127854ff2098fdbb2033e853b823" category="inline-xref-macro-rx"></block> 部分，了解有关特定升级要求的详细信息。有关配置 BeeGFS HA 清单的一般信息，请参阅 <block ref="f7bda10e421919e9d8ced89dacaba34f" category="inline-link-macro-rx"></block> 部分。</block>
@@ -2244,30 +2130,13 @@
   <block id="95712f9054006b049af0552764f21b2c" category="admonition">如果未使用<block ref="84f7933b4ff9fefcfc60fd5fff4b3b54" prefix=" " category="inline-code"></block>角色配置客户端，则必须向每个客户端手动分发身份验证文件并在<block ref="1b33ed41c854e3144951352c24ab4653" prefix=" " category="inline-code"></block>文件中配置<block ref="6097b6e95af2579f2147a330c21f7b59" prefix=" " category="inline-code"></block>设置。从没有基于连接的身份验证的 BeeGFS 版本升级时，除非您在升级期间通过在<block ref="4003590e6e5408f8e5272e50f909dfac" prefix=" " category="inline-code"></block>中设置<block ref="2ff6bdfeb6b3a41d28029b9ff7bdb93c" prefix=" " category="inline-code"></block>来禁用基于连接的身份验证（不推荐），否则客户端将失去访问权限。</block>
   <block id="d8d8fb7a9efc68485c1ad2cda7b256df" category="paragraph">有关其他详细信息和备用配置选项，请参见 <block ref="dc7fd2b3ea1b2b4a060b953a1b281371" category="inline-link-macro-rx"></block> 节中的连接身份验证配置步骤。</block>
   <block id="5e830405a8a4b99931749f47bce6b884" category="summary">为 BeeGFS 服务和客户端之间的安全通信配置 TLS 加密。</block>
-  <block id="7e9af7bb9a905e218e0b4c18e6f4bba3" category="doc">为 BeeGFS v8 配置 TLS 加密</block>
-  <block id="0b080bc1eddf74111ec1399e1da75a61" category="paragraph">配置 TLS 加密以保护 BeeGFS v8 管理服务和客户端之间的通信。</block>
-  <block id="f7c03076ecc1b9d63be8a044cea808b6" category="paragraph">BeeGFS v8 引入了 TLS 支持，用于加密管理工具（如<block ref="fc175616be221be5011002280876bbd0" prefix=" " category="inline-code"></block>命令行实用程序）和 BeeGFS 服务器服务（如 Management 或 Remote）之间的网络通信。本指南介绍了使用三种 TLS 配置方法在 BeeGFS 集群中配置 TLS 加密：</block>
-  <block id="0983a151653aa2ddcf26a1193b213e5e" category="list-text">**使用受信任的证书颁发机构：** 在 BeeGFS 集群上使用现有 CA 签名的证书。</block>
-  <block id="a26c922e2bbf8053362c1f6d2b697eb0" category="list-text">**创建本地证书颁发机构：** 创建本地证书颁发机构，并使用它为您的 BeeGFS 服务签名证书。此方法适用于希望在不依赖外部 CA 的情况下管理自己的信任链的环境。</block>
-  <block id="96dbe913665e5975ca1331a5139eddfc" category="list-text">**禁用 TLS：**对于不需要加密或用于故障排除的环境，完全禁用 TLS。不建议这样做，因为它会以明文形式暴露有关内部文件系统结构和配置的潜在敏感信息。</block>
   <block id="cf6b910ca739d55b95e514c4bc34bf30" category="inline-link-macro">BeeGFS TLS</block>
   <block id="13fe86fc8186dca1068e89bfe1e1787e" category="paragraph">选择最适合您的环境和组织策略的方法。有关其他详细信息，请参见 <block ref="48ecd83e15b4ebe67cc1ae0ffc0d7d9a" category="inline-link-macro-rx"></block> 文档。</block>
-  <block id="222d9cfd1fb6407d8b79705cdfd1323b" category="paragraph">运行 <block ref="976bae16a27bdb18aba01a29b5cc2d4e" prefix=" " category="inline-code"></block> 服务的计算机不需要 TLS 来挂载 BeeGFS 文件系统。必须设置 TLS 以利用 BeeGFS CLI 和其他 beegfs 服务，例如远程和同步。</block>
   <block id="3c7e30930d5d380b05de397eaf8d2414" category="section-title">使用受信任的证书颁发机构</block>
-  <block id="6d40e36ff6b83793db2e082cb19a5145" category="paragraph">如果您具有受信任的证书颁发机构 (CA) 颁发的证书（无论是来自内部企业 CA 还是第三方提供商）的访问权限，则可以将 BeeGFS v8 配置为使用这些 CA 签名的证书而不是生成自签名证书。</block>
-  <block id="46898ba1e2ae09d92111277bc80b4fc9" category="section-title">部署新的 BeeGFS v8 群集</block>
-  <block id="c7a4b0f78b3429d7391701776b295f1d" category="paragraph">对于新的 BeeGFS v8 群集部署，配置 Ansible 清单的<block ref="c7135bdf90abac7415c772ec8dcfeba9" prefix=" " category="inline-code"></block>文件以引用您的 CA 签名证书：</block>
   <block id="57f218bf1d9272c392ff8de89601aa7c" category="paragraph">如果<block ref="3fba26881c129c7a61c1355ee283e007" prefix=" " category="inline-code"></block>不为空，Ansible 将使用提供的 alt_names 作为证书中的使用者备用名称 (SAN)，自动生成自签名 TLS 证书和密钥。要使用您自己的自定义 TLS 证书和密钥（由<block ref="8c63fee4ff0266eda34ba71cc0137dbb" prefix=" " category="inline-code"></block>和<block ref="cdc68b3e3f2fb7764759f777a63b2c58" prefix=" " category="inline-code"></block>指定），您必须注释掉或删除整个<block ref="d17aaec84437019fc2fc4d8542822c21" prefix=" " category="inline-code"></block>部分。否则，将优先生成自签名证书，并且不会使用您的自定义证书和密钥。</block>
-  <block id="bc46d344cb17649a24c28a55096101ec" category="section-title">配置现有 BeeGFS v8 集群</block>
-  <block id="7221232e564dd67df3114fb900fc7473" category="paragraph">对于现有的 BeeGFS v8 群集，将 BeeGFS 管理服务配置文件中的路径设置为文件节点的 CA 签名证书：</block>
-  <block id="8c30ce25b82a79e3e34b56b48b2091b3" category="section-title">使用 CA 签名的证书配置 BeeGFS v8 客户端</block>
-  <block id="e0fb1f001c3b49be06450c70ccaa0531" category="paragraph">要将 BeeGFS v8 客户端配置为使用系统的证书池信任 CA 签名的证书，请在每个客户端的配置中设置 tls-cert-file = "。如果未使用系统证书池，请通过设置 tls-cert-file = &lt;local cert&gt; 提供本地证书的路径。此设置允许客户端对 BeeGFS 管理服务提供的证书进行身份验证。</block>
   <block id="c8ee2c6fdd4785c4e97bcd5d41f9a648" category="section-title">创建本地证书颁发机构</block>
-  <block id="58c0329017216fbff4d9ca37b5c1ac86" category="paragraph">如果您的组织希望为 BeeGFS 群集创建自己的证书基础架构，则可以创建一个本地证书颁发机构 (CA) 以颁发和签署 BeeGFS 群集的证书。这种方法涉及创建一个 CA，为 BeeGFS 管理服务签名证书，然后分发给客户端以建立信任链。按照以下说明设置本地 CA 并在现有或新的 BeeGFS v8 群集上部署证书。</block>
-  <block id="ca8128c267d1f68ccc95bf0b06eadea1" category="paragraph">对于新的 BeeGFS v8 部署，<block ref="ec892555a981d412f5bdffa7fba2b850" prefix=" " category="inline-code"></block> Ansible 角色将处理在控制节点上创建本地 CA 并为管理服务生成必要的证书。可以通过在 Ansible 库存<block ref="c7135bdf90abac7415c772ec8dcfeba9" prefix=" " category="inline-code"></block>文件中设置以下参数来启用此功能：</block>
   <block id="2e070f2245424e2c92740fdea81fccb5" category="paragraph">如果未提供 <block ref="3fba26881c129c7a61c1355ee283e007" prefix=" " category="inline-code"></block>，则 Ansible 将尝试在指定的证书/密钥路径中使用现有证书。</block>
   <block id="b1c3f1eef9e5337689500b8f6dd1a137" category="paragraph">对于现有的 BeeGFS 群集，您可以通过创建本地证书颁发机构并为管理服务生成必要的证书来集成 TLS。更新 BeeGFS 管理服务配置文件中的路径，以指向新创建的证书。</block>
-  <block id="054548cd00d0e25b7cf0d74b2262672a" category="paragraph">本节中的说明将用作参考。处理私钥和证书时应采取适当的安全预防措施。</block>
   <block id="5c1fb02f00efe137a3625f359ffb0696" category="section-title">创建证书颁发机构</block>
   <block id="620ea7c3489e9142406af99086204787" category="paragraph">在受信任的计算机上，创建本地证书颁发机构以签署 BeeGFS 管理服务的证书。CA 证书将分发给客户端，以建立信任并实现与 BeeGFS 服务的安全通信。</block>
   <block id="7541f8c8863f08c95773067864d52dd9" category="paragraph">以下说明是在基于 RHEL 的系统上创建本地证书颁发机构的参考。</block>
@@ -2275,14 +2144,12 @@
   <block id="e192af73f76222565af30fe3b9e294d3" category="list-text">创建工作目录以存储证书文件：</block>
   <block id="54fff92d24feb15755beaac9e2822488" category="list-text">生成 CA 私钥：</block>
   <block id="404ee651d3818333d1eba62af4f325fa" category="list-text">创建名为 <block ref="408a8c53c3c88f2197b1a8998e2ea742" prefix=" " category="inline-code"></block> 的 CA 配置文件，并调整可分辨名称字段以匹配您的组织：</block>
-  <block id="fd3d00f7fdab63a01ec90d0de5d79f31" category="list-text">生成 CA 证书。此证书应在系统的有效期内有效，否则您需要计划在证书过期之前重新生成证书。证书过期后，某些组件之间将无法进行通信，更新 TLS 证书通常需要重新启动服务才能完成。</block>
   <block id="48eee0bfce30bf8015335f6def531efb" category="paragraph">以下命令生成有效期为 1 年的 CA 证书：</block>
   <block id="32566669ae66a44b6cc80a04d7168f54" category="admonition">虽然此示例使用 1 年的有效期以简化操作，但应根据组织的安全要求调整 <block ref="4087869cd68f54510d4827e54488a4dc" prefix=" " category="inline-code"></block> 参数并建立证书续订流程。</block>
   <block id="f4e3903d8bf4731fec22ce51123ad389" category="section-title">创建管理服务证书</block>
   <block id="390143f21beb27194badab58238eb471" category="paragraph">为您的 BeeGFS 管理服务生成证书，并使用您创建的 CA 对其进行签名。这些证书将安装在运行 BeeGFS 管理服务的文件节点上。</block>
   <block id="e46e12d5c75d7b2dfbff51cff876cdcc" category="list-text">生成管理服务私钥：</block>
   <block id="9a640017cb4f5d6a79f4689650ba7bfa" category="list-text">创建一个名为<block ref="76235dd3c42097e32f5c158ec7080f5b" prefix=" " category="inline-code"></block>的证书配置文件，为所有管理服务 IP 地址添加 Subject Alternative Names (SANs)：</block>
-  <block id="2d514407c5add21e2d757972ab6d2ed4" category="paragraph">更新可分辨名称字段以匹配您的 CA 配置，并将 <block ref="5cb62dfdaa16bd51f4f1b7a738a0f210" prefix=" " category="inline-code"></block> 和 <block ref="4eb2ee17c10e6b738537e69e439e9bf6" prefix=" " category="inline-code"></block> 值更新为您的管理服务 IP 地址。</block>
   <block id="3b94b40b121cb65329db7bfd2370b11e" category="list-text">生成证书签名请求 (CSR)：</block>
   <block id="10a743991d2e5ff63353d0575b2d404e" category="list-text">使用您的 CA 签署证书（有效期为 1 年）：</block>
   <block id="b33c9f683103e39f04d0b38a1c011d9f" category="admonition">根据组织的安全策略调整证书有效期<block ref="ceb6ef24743816071de4a908ace84143" prefix="(" category="inline-code"></block>）。许多组织要求每 1-2 年轮换一次证书。</block>
@@ -2294,18 +2161,152 @@
   <block id="e24baf1eae9e037ef707fe54ef7f821b" category="section-title">将管理服务指向 TLS 证书</block>
   <block id="fe059abb6aa5084fa032d24415009679" category="paragraph">更新 BeeGFS 管理服务配置以启用 TLS 并引用创建的 TLS 证书。</block>
   <block id="e0ad10deb7d112ce2d0fd225743c4a78" category="list-text">从运行 BeeGFS 管理服务的文件节点中，编辑管理服务配置文件，例如<block ref="72236c874d89b43c28121363169fbad7" prefix=" " category="inline-code"></block>。添加或更新以下与 TLS 相关的参数：</block>
-  <block id="1d073d3a4e0489b82cade621b6f667b8" category="list-text">采取适当措施安全地重新启动 BeeGFS 管理服务以使更改生效：</block>
   <block id="daa0ecf1b3b5ad49a3db9e49064ef338" category="list-text">验证管理服务已成功启动：</block>
   <block id="14ac4331b033636a7b6591335549c611" category="paragraph">查找指示成功 TLS 初始化和证书加载的日志条目。</block>
-  <block id="8689a08f1beea73bd145fed7d7109beb" category="section-title">为 BeeGFS v8 客户端配置 TLS</block>
-  <block id="7ad16729d3544a2421669dd740d85bac" category="paragraph">创建并分发由本地 CA 签名的证书到所有需要与 BeeGFS 管理服务通信的 BeeGFS 客户端。</block>
-  <block id="588299d2800c3308acbd2e9beb760d1d" category="list-text">使用与上述管理服务证书相同的过程为客户端生成证书，但在使用者备用名称 (SAN) 字段中使用客户端的 IP 地址或主机名。</block>
-  <block id="7e149778506ad674e9167e6a9ede4c50" category="list-text">安全远程将客户端的证书复制到客户端，并在客户端上将证书重命名为 <block ref="691869bca85baab2f31b7f268617f791" prefix=" " category="inline-code"></block>：</block>
   <block id="9a8f498ef2f8533780a49bdb44bb0454" category="list-text">在所有客户端上重新启动 BeeGFS 客户端服务：</block>
-  <block id="fa1d20e2b4fca12fce86d5372a0621e2" category="list-text">通过执行<block ref="75d0bc4c4ec9c5f71d6f1455a6f8e277" prefix=" " category="inline-code"></block>命令验证客户端连接，例如：</block>
   <block id="44a2fcbbf437fc6826e6360bc761605f" category="section-title">禁用 TLS</block>
-  <block id="a243eee09ea504b9a1b1e0e8b93843e5" category="paragraph">可以禁用 TLS 进行故障排除，或者如果用户需要的话。不鼓励这样做，因为它以明文形式暴露了有关内部文件系统结构和配置的潜在敏感信息。按照以下说明在现有或新的 BeeGFS v8 群集上禁用 TLS。</block>
-  <block id="75fcac7cefc40e8fed5deeae5aabf145" category="paragraph">对于新的 BeeGFS 集群部署，可以通过在 Ansible 库存<block ref="c7135bdf90abac7415c772ec8dcfeba9" prefix=" " category="inline-code"></block>文件中设置以下参数，在禁用 TLS 的情况下部署集群：</block>
-  <block id="4878cc75036d357f750a8f351d09c5bb" category="paragraph">对于现有的 BeeGFS v8 群集，请编辑管理服务配置文件。例如，在 <block ref="72236c874d89b43c28121363169fbad7" prefix=" " category="inline-code"></block> 编辑文件并设置：</block>
-  <block id="4db72f0968cf45cd9184a3db764f16e1" category="paragraph">采取适当措施，安全地重新启动管理服务以使更改生效。</block>
+  <block id="72253fa321ba87c867bef62316da9c27" category="summary">从 BeeGFS 7.4 更新到 BeeGFS 8。</block>
+  <block id="8e96631d30847a878d1fd0c115dc2648" category="doc">升级到 BeeGFS 8</block>
+  <block id="487ba15adaaba126338aaa7dbcd5f2db" category="paragraph">按照下面的步骤将您的 BeeGFS HA 集群从 BeeGFS 7.4 升级到 BeeGFS 8。</block>
+  <block id="7b50f0fcc5d414b350635116192b1637" category="paragraph">BeeGFS 8 引入了一些重大更改，这些更改需要在从 BeeGFS 7 升级之前进行其他设置。本文档指导您为 BeeGFS 8 的新要求准备集群，然后升级到 BeeGFS 8。</block>
+  <block id="8e50e2820ee60dbe7a5700b68534623b" category="inline-link-macro">升级到 BeeGFS 7.4</block>
+  <block id="f3e3e62a255a3c2e763f6ca630077a08" category="admonition">在升级到 BeeGFS 8 之前，请确保您的系统至少运行 BeeGFS 7.4。任何运行早于 BeeGFS 7.4 版本的群集必须先<block ref="91a6f7fdd1bd61acca223807d3b77638" category="inline-link-macro-rx"></block>，然后再升级到 BeeGFS 8。</block>
+  <block id="bc45e6a4accbe1005ca99695d3b703ff" category="section-title">BeeGFS 8 的主要变化</block>
+  <block id="7f1a2167b15e6b93fd9a5189bad4a53f" category="paragraph">BeeGFS 8 引入了以下主要更改：</block>
+  <block id="0293a1414ea4be36f3890e608e258076" category="list-text">**许可证强制：** BeeGFS 8 需要许可证才能使用高级功能，如存储池、远程存储目标、BeeOND 等。在升级之前为您的 BeeGFS 集群获取有效的许可证。如果需要，您可以从 <block ref="45463b3c38760d5d45ce59919bf1b841" category="inline-link-macro-rx"></block> 获取临时 BeeGFS 8 评估许可证。</block>
+  <block id="aecd925640dac505f71763cdbaca5a7d" category="list-text">**管理服务数据库迁移：**要使用 BeeGFS 8 中新的基于 TOML 的格式启用配置，您必须手动将 BeeGFS 7 管理服务数据库迁移到更新的 BeeGFS 8 格式。</block>
+  <block id="dfe55ffdf5dd132f14e527cc47412cee" category="list-text">**TLS 加密：** BeeGFS 8 引入 TLS 用于服务之间的安全通信。您需要为 BeeGFS 管理服务和<block ref="fc175616be221be5011002280876bbd0" prefix=" " category="inline-code"></block>命令行实用程序生成和分发 TLS 证书，作为升级的一部分。</block>
+  <block id="973bf53b2e146c728409e109a7e8c6ea" category="inline-link-macro">BeeGFS 8.0.0 升级指南</block>
+  <block id="2ff73e03792971e750c326cb9bd1a8ba" category="paragraph">有关 BeeGFS 8 中的详细信息和其他更改，请参见 <block ref="5a86e8ec6681433abb7812184707bc7f" category="inline-link-macro-rx"></block>。</block>
+  <block id="d347bb229366d2cd39d8268b7979c440" category="paragraph">升级到 BeeGFS 8 需要群集停机时间，并且 BeeGFS 7 客户端无法连接到 BeeGFS 8 群集。仔细协调升级时间，以尽量减少对运营的影响。</block>
+  <block id="e70cdaccb10a5ae6b1e9e3819990c388" category="inline-link-macro">支持的 Linux 发行版和内核版本</block>
+  <block id="03c709b2357165dd01344d247dfff304" category="list-text">验证所有服务器和客户端是否都在使用 <block ref="90e5931eb52b4a894ab726deaac9e6c3" category="inline-link-macro-rx"></block> 用于 BeeGFS 8。</block>
+  <block id="619c5c28e4d8acedcbb630b98da47455" category="list-text">记录并备份集群配置。BeeGFS 管理服务数据将在稍后作为管理数据库升级过程的一部分进行备份。</block>
+  <block id="3dc6d3cb4d8ab68ff293bf6c6bb25ccb" category="list-text">在 BeeGFS 客户端上运行以下命令并保存输出以供参考：</block>
+  <block id="8921161ba5183711ee64033dc857fbe1" category="list-text">如果使用镜像，则收集详细的状态信息，以便在两个镜像成员都进入"needs-resync"状态时识别原始主目标：</block>
+  <block id="76d4c0df335a6e6c36c38392b0ea1d0e" category="list-text">如果使用镜像，请在继续升级之前验证所有好友组都处于 <block ref="45802158e78dd9584161629098018fe8" prefix=" " category="inline-code"></block> 状态。</block>
+  <block id="68a0d3efc72114ee4f244894d95f383a" category="list-text">按以下顺序停止 BeeGFS 系统：</block>
+  <block id="3deddcac68f3d763246b32b6548c4362" category="list-text">在每个客户端上，卸载 BeeGFS 文件系统并停止 <block ref="976bae16a27bdb18aba01a29b5cc2d4e" prefix=" " category="inline-code"></block> 服务。对于每个客户端，运行：</block>
+  <block id="60e4d9dc6105a05d39d2c268e7cefd68" category="list-text">对于每个 Pacemaker 集群，禁用 STONITH，以便您可以在升级后验证集群完整性，而不会触发不必要的节点重启：</block>
+  <block id="7e79adae590f71b278e4eb8ef314e346" category="list-text">在所有 Pacemaker 集群上，停止集群：</block>
+  <block id="17eafe0d1cb91108ed6d807530b492e8" category="section-title">升级 BeeGFS 管理包</block>
+  <block id="61280aa1ae3b91eeea817a5957fbd463" category="paragraph">在集群中的所有文件节点上，为您的 Linux 发行版添加 BeeGFS 8 包存储库。有关为您的 Linux 发行版添加官方 BeeGFS 存储库的说明，请参阅 <block ref="8e84e2db8ba21bb6829cde407c9405a0" category="inline-link-macro-rx"></block>。否则，请相应地配置本地 BeeGFS 镜像存储库。</block>
+  <block id="05344b8c4b6a7c32c9cd1626e8181e01" category="list-text">在集群的前两个文件节点上，仅将 BeeGFS 管理守护程序包更新为 BeeGFS 8：</block>
+  <block id="ae4947080edc0d293d37b0648c83a267" category="paragraph">对于 RHEL，配置 BeeGFS 存储库后，运行以下命令：</block>
+  <block id="91ab38a502484bc59e054a71e469c62a" category="paragraph">在运行 BeeGFS 管理服务的其中一个文件节点上，按照以下步骤将管理数据库从 BeeGFS 7 迁移到 BeeGFS 8。</block>
+  <block id="a60d64a20c659165cf4e992505615a93" category="list-text">列出所有 NVMe 设备并标识管理目标：</block>
+  <block id="60d9acf76d55f05b287ee9f15d9cf6eb" category="paragraph">注意输出中的设备路径（例如，<block ref="bfa5022fa2a135155356c86af66dcec1" prefix=" " category="inline-code"></block>）。</block>
+  <block id="a46e3e4e2ebf534395d2f9672e9b878a" category="list-text">执行管理数据目录的备份：</block>
+  <block id="3c987359ca72b9c0e08c87935c635064" category="paragraph">由于 BeeGFS 8 中更严格的验证要求，自动导入并非在所有情况下都能成功。例如，如果目标分配给不存在的存储池，则导入失败。如果迁移失败，请不要继续升级。联系 NetApp 支持人员以获得解决数据库迁移问题的帮助。您可以降级 BeeGFS 8 管理包，并在解决问题的同时继续运行 BeeGFS 7。</block>
+  <block id="603d83581d54d474792b0477e4f3d6ea" category="paragraph">您将在完成以下各节中的许可和 TLS 配置步骤后准备<block ref="6b99a83e5fac72ae948428a59578af2f" prefix=" " category="inline-code"></block>配置文件。</block>
+  <block id="b33b3524c7d5f9f7273201fa2f379e0d" category="section-title">升级剩余的 BeeGFS 包</block>
+  <block id="7caf087ac23fad2c3d1329943412ac95" category="paragraph">完成管理数据库迁移后，升级集群中所有文件节点上的剩余 BeeGFS 包。对于 RHEL，配置 BeeGFS 存储库后，运行以下命令：</block>
+  <block id="8f7ccc70867bdcb06bb8acbaf7cb0ca8" category="list-text">在运行 BeeGFS 管理服务的所有节点上安装 BeeGFS 许可证包。这通常是集群的前两个文件节点：</block>
+  <block id="8d8cec241b3edacf096ebaa37339f828" category="list-text">将您的 BeeGFS 8 许可证文件下载到管理节点并将其放在：</block>
+  <block id="9799d69d7fb5e11e638f64935f27974b" category="paragraph">BeeGFS 8 需要 TLS 加密以实现管理服务与 BeeGFS CLI 工具之间的安全通信<block ref="fc175616be221be5011002280876bbd0" prefix="(" category="inline-code"></block>）。从三种配置方法中选择一种：使用由受信任的证书颁发机构签名的证书，创建自己的本地 CA 以对 BeeGFS 群集的证书进行签名，或完全禁用 TLS 以进行故障排除（不推荐用于生产）。</block>
+  <block id="414c4d2cf650dac4794db6f1cce9f4e6" category="paragraph">使用 <block ref="e3c7ea953a175f52b03d1d2c1e8cb9ae" category="inline-link-macro-rx"></block> 指南为文件节点上的管理服务配置 TLS 加密。</block>
+  <block id="9ebd0e647c42510b28d125669b844857" category="paragraph">客户端 TLS 配置将在升级 BeeGFS 客户端后稍后完成。在此阶段，仅在文件节点上为管理服务和 beegfs-tool 配置 TLS。</block>
+  <block id="ce499b67cd2459e0ee3565b552f21436" category="paragraph">通过将设置从 BeeGFS 7 配置文件手动传输到<block ref="72236c874d89b43c28121363169fbad7" prefix=" " category="inline-code"></block>文件中来准备 BeeGFS 8 管理服务配置文件。</block>
+  <block id="ef94f29e33889f2fcf9fa365d6d12729" category="list-text">在装载了管理目标的管理节点上，引用 <block ref="eaa3ac0f6fad8fb99f543716d1ae91f4" prefix=" " category="inline-code"></block> BeeGFS 7 的管理服务文件，并将所有设置传输到 <block ref="72236c874d89b43c28121363169fbad7" prefix=" " category="inline-code"></block> 文件。对于基本设置，您的 <block ref="6b99a83e5fac72ae948428a59578af2f" prefix=" " category="inline-code"></block> 可能如下所示：</block>
+  <block id="b799b9cba47e213306792774b923941f" category="list-text">将 TCP 端口 8010 添加到 beegfs 区域：</block>
+  <block id="32f19259d232262285179ae72e6587b3" category="paragraph">Pacemaker<block ref="2aa0098b2c775ff5e1bd67c26714b0dd" prefix=" " category="inline-code"></block> Open Cluster Framework (OCF) 脚本需要更新，以支持新的 TOML 配置格式和 systemd 服务管理。更新集群中一个节点上的脚本，然后将更新后的脚本复制到所有其他节点。</block>
+  <block id="ea388b4ca424bcbc3897bc1825c1cb04" category="list-text">运行以下命令来检查脚本是否存在语法错误，然后再继续。如果没有显示输出，则脚本在语法上是正确的。</block>
+  <block id="698f27c1e497d30737c19616610810f5" category="list-text">将更新的<block ref="2aa0098b2c775ff5e1bd67c26714b0dd" prefix=" " category="inline-code"></block> OCF 脚本复制到集群中的所有其他节点：</block>
+  <block id="ecfec930ef8f44608329e77872f9b9d7" category="list-text">完成之前的所有升级步骤后，通过在所有节点上启动 BeeGFS 服务，使集群恢复联机状态。</block>
+  <block id="382e1191fe70f75ab56fe71ed6cd44b1" category="paragraph">如果日志中出现错误，请检查管理配置文件路径，并验证您是否正确地从 BeeGFS 7 配置文件传输了所有值。</block>
+  <block id="f0881e86a89427ef3c69efc3a7dd7424" category="list-text">继续下一节以升级 BeeGFS 客户端并验证群集的运行状况。</block>
+  <block id="62a0d88b5dfd4415e5aa2db6cb3ebc6b" category="paragraph">将群集升级到 BeeGFS 8 后，还必须升级所有 BeeGFS 客户端。</block>
+  <block id="dee3defe9fbfb48125695f924fa113c7" category="list-text">如果您尚未停止 BeeGFS 客户端服务，请立即停止：</block>
+  <block id="b9d6ce4eced944cff6cda0825445eb27" category="list-text">为您的 Linux 发行版添加 BeeGFS 8 包存储库。有关添加官方 BeeGFS 存储库的说明，请参阅 <block ref="8e84e2db8ba21bb6829cde407c9405a0" category="inline-link-macro-rx"></block>。否则，请相应地配置本地 BeeGFS 镜像存储库。</block>
+  <block id="15c708dae6016499ca8bb40defa88de0" category="paragraph">对于 Ubuntu/Debian：</block>
+  <block id="cdf7e1686dc1f1a54dbd96f243f13e04" category="inline-link-macro">为 BeeGFS 8 客户端配置 TLS</block>
+  <block id="7eccc333ed2b2a63b6ef04af78507bb3" category="list-text">为客户端配置 TLS。要从客户端节点使用 BeeGFS CLI，需要使用 TLS。请参阅 TLS 部署指南中的<block ref="ff98af96113fffbeab7c963b2f698c8b" category="inline-link-macro-rx"></block>部分。</block>
+  <block id="f76d790b691c2b5909c5fb2375c02430" category="paragraph">TLS 不是 <block ref="976bae16a27bdb18aba01a29b5cc2d4e" prefix=" " category="inline-code"></block> 服务装载 BeeGFS 文件系统所必需的。TLS 仅在使用 BeeGFS CLI 工具和其他管理服务时才需要。</block>
+  <block id="793b08502db5ac83374b9c9f149e4bf8" category="paragraph">如果安装 BeeGFS 失败，请检查系统日志是否有错误。如果您看到"Unable to proceed without a working root metadata node"或"Remote I/O error"等消息，则 BeeGFS 7 导入可能尚未成功完成。请联系 NetApp 支持以获得帮助。</block>
+  <block id="c346e24b2fd9ba14619c772ed8c19676" category="list-text">（可选）在要运行 BeeGFS 管理命令的客户端节点或其他系统上安装和配置新的<block ref="fc175616be221be5011002280876bbd0" prefix=" " category="inline-code"></block> CLI 工具：</block>
+  <block id="07d530180bfae42a4e9f934dcd407b50" category="list-text">安装 <block ref="115fa7c26bd8ea199e43b9f59792679b" prefix=" " category="inline-code"></block> 软件包：</block>
+  <block id="f97aee806483e960f62084493a6d95a4" category="list-text">为<block ref="fc175616be221be5011002280876bbd0" prefix=" " category="inline-code"></block> 工具配置 TLS。要从客户端节点使用 BeeGFS CLI，需要使用 TLS。请参阅 TLS 部署指南中的<block ref="ff98af96113fffbeab7c963b2f698c8b" category="inline-link-macro-rx"></block>部分。</block>
+  <block id="f410ef6363be732849ed5e3dbd027b17" category="paragraph">完成升级到 BeeGFS 8 后，运行以下命令以验证升级是否成功。</block>
+  <block id="8b42a518a5292afc8e0145ee5294bf23" category="list-text">验证所有节点和目标均处于联机状态并处于正常状态：</block>
+  <block id="1167fcb1143e77c4f2ea67e9f5a674e3" category="admonition">如果要升级到 BeeGFS 8，请参见<block ref="554c069750f22866df129b110bbafec1" category="inline-link-macro-rx"></block>过程。</block>
+  <block id="373eee0000ce2875462c27810b26b166" category="cell">使用<block ref="554c069750f22866df129b110bbafec1" category="inline-link-macro-rx"></block>过程中的说明进行升级。</block>
+  <block id="2b6f6409e949b4de2a4d8346be522b48" category="paragraph">配置 TLS 加密以保护 BeeGFS 8 管理服务和客户端之间的通信。</block>
+  <block id="954750d4740ace3318d7adb7b79dbcca" category="paragraph">BeeGFS 8 引入了 TLS 支持，用于加密管理工具（如 <block ref="fc175616be221be5011002280876bbd0" prefix=" " category="inline-code"></block> 命令行实用程序）和 BeeGFS 服务器服务（如 Management 或 Remote）之间的网络通信。使用以下三种方法之一在 BeeGFS 集群中配置 TLS 加密：</block>
+  <block id="673eb205082d0eb91b1b5786b274211c" category="list-text">*使用受信任的证书颁发机构：* 在 BeeGFS 集群上使用现有 CA 签名的证书。</block>
+  <block id="ed34b503bbe2a3eee3232d65d05c25fe" category="list-text">*创建本地证书颁发机构：* 创建本地证书颁发机构，并使用它来签署 BeeGFS 服务的证书。此方法适用于希望在不依赖外部 CA 的情况下管理自己的信任链的环境。</block>
+  <block id="737927a6e6034067fd15a2021053c565" category="list-text">*TLS 已禁用：* 对于不需要加密或用于故障排除的环境，完全禁用 TLS。在生产环境中避免使用此选项，因为它会以明文形式公开有关文件系统结构和配置的潜在敏感信息。</block>
+  <block id="862f711cf6d5d20d52d0627a1e10dcda" category="paragraph">运行 <block ref="976bae16a27bdb18aba01a29b5cc2d4e" prefix=" " category="inline-code"></block> 服务的客户端不需要 TLS 来挂载 BeeGFS 文件系统。要使用 BeeGFS CLI 和其他 BeeGFS 服务（如 Remote 和 Sync），需要使用 TLS。</block>
+  <block id="aa2a5b840fe0c679fe38202f937b3107" category="paragraph">如果您具有受信任的证书颁发机构 (CA) 颁发的证书（无论是来自内部企业 CA 还是第三方提供商）的访问权限，则可以将 BeeGFS 8 配置为使用这些 CA 签名的证书而不是生成自签名证书。</block>
+  <block id="61e951d08f0a05993867e0bf9a2f1322" category="section-title">部署新的 BeeGFS 8 集群</block>
+  <block id="3fb2817111189db4a8e6ee85190a07cb" category="paragraph">对于新的 BeeGFS 8 集群部署，请配置 Ansible 清单的 <block ref="c7135bdf90abac7415c772ec8dcfeba9" prefix=" " category="inline-code"></block> 文件以引用您的 CA 签名证书：</block>
+  <block id="f9ce69a9dd4eedff93db8898166a5f54" category="section-title">配置现有 BeeGFS 8 集群</block>
+  <block id="84387864bc1fc6ab2e4935c32924d6a2" category="paragraph">对于现有的 BeeGFS 8 群集，将 BeeGFS 管理服务配置文件中的路径设置为文件节点的 CA 签名证书：</block>
+  <block id="4e1df9b78a0f5614be074aecc19d6433" category="section-title">使用 CA 签名证书配置 BeeGFS 8 客户端</block>
+  <block id="f1b9839a9365e95cb687403cb8d37044" category="paragraph">如果要将现有 BeeGFS 7 群集升级到 BeeGFS 8，请按照<block ref="76d184c6fdb20afaf15fe2ab8037ab93" category="inline-link-macro-rx"></block>过程进行操作。在升级过程中指示之前，请勿配置客户端 TLS。</block>
+  <block id="f8de778bc9cbc5b8095e2fe165c8d2f9" category="paragraph">要将 BeeGFS 8 客户端配置为使用系统的证书池信任 CA 签名的证书，请在每个客户端的配置中设置 tls-cert-file = "。如果未使用系统证书池，请通过设置 tls-cert-file = &lt;local cert&gt; 提供本地证书的路径。此设置允许客户端对 BeeGFS 管理服务提供的证书进行身份验证。</block>
+  <block id="6f96126337b5fc563fd3b0362bb62f4f" category="paragraph">如果您的组织希望为 BeeGFS 群集创建自己的证书基础架构，则可以创建一个本地证书颁发机构 (CA) 以颁发和签署 BeeGFS 群集的证书。这种方法涉及创建一个 CA，为 BeeGFS 管理服务签名证书，然后分发给客户端以建立信任链。</block>
+  <block id="bf80a924574ce14834987121182cfb36" category="paragraph">对于新的 BeeGFS 8 部署，<block ref="ec892555a981d412f5bdffa7fba2b850" prefix=" " category="inline-code"></block> Ansible 角色（包含在 BeeGFS HA 集合中）在控制节点上创建本地 CA，并为管理服务生成必要的证书。通过在 Ansible 库存的 <block ref="c7135bdf90abac7415c772ec8dcfeba9" prefix=" " category="inline-code"></block> 文件中设置以下参数来启用此功能：</block>
+  <block id="a384a46ebf47985236c178f873078aba" category="paragraph">请参考这些说明。在处理私钥和证书时采取适当的安全预防措施。</block>
+  <block id="89f77c68f3de67e825c22d30f26ce860" category="list-text">生成 CA 证书。此证书应在系统生命周期内有效。计划在证书过期前重新生成证书。证书过期后，某些组件之间的通信失败。更新 TLS 证书通常需要重新启动服务。</block>
+  <block id="e4397441a347f06497cfe052ec878197" category="paragraph">更新可分辨名称字段以匹配您的 CA 配置，并将 <block ref="5cb62dfdaa16bd51f4f1b7a738a0f210" prefix=" " category="inline-code"></block> 和 <block ref="4eb2ee17c10e6b738537e69e439e9bf6" prefix=" " category="inline-code"></block> 值替换为您的管理服务 IP 地址。</block>
+  <block id="c4581ee7a54bd38e5809c49fb22426ae" category="list-text">重新启动 BeeGFS 管理服务：</block>
+  <block id="41b869a664d853be32188b055da18994" category="paragraph">创建并分发由本地 CA 签名的证书到所有需要与 BeeGFS 管理服务通信的 BeeGFS 客户端。</block>
+  <block id="40faa4e394e25939a84f7a4af84e210e" category="list-text">使用 <block ref="122ac6d6f39e0a068dca0c04a36892a7" category="inline-xref-macro-rx"></block> 中所述的相同过程生成客户端证书，在 Subject Alternative Name (SAN) 字段中替换客户端的 IP 地址或主机名。</block>
+  <block id="03036b756bd8bf1285fbe7cf5d593a4c" category="list-text">将客户端证书复制到客户端节点并将其重命名为<block ref="691869bca85baab2f31b7f268617f791" prefix=" " category="inline-code"></block>：</block>
+  <block id="d58f14aa5a632979dea0fe80d7f21d75" category="list-text">通过运行 BeeGFS CLI 命令验证客户端连接，例如：</block>
+  <block id="aa5666a197918e61cf83bf2ec2bbc4dd" category="paragraph">禁用 TLS 进行故障排除或您的环境不需要加密。在生产环境中避免使用此选项，因为它会以明文形式暴露有关文件系统结构和配置的潜在敏感信息。</block>
+  <block id="6ba6045a6a127818d1a8a2cc4425c72b" category="paragraph">对于新的 BeeGFS 集群部署，通过在 Ansible 库存<block ref="c7135bdf90abac7415c772ec8dcfeba9" prefix=" " category="inline-code"></block>文件中设置以下参数来禁用 TLS：</block>
+  <block id="0c9adf6b0565c1d4304a5a5a88a44780" category="paragraph">对于现有的 BeeGFS 8 群集，编辑管理服务配置文件。例如，在 <block ref="72236c874d89b43c28121363169fbad7" prefix=" " category="inline-code"></block> 编辑文件并设置：</block>
+  <block id="972c9c876288f75240fbe7504363d427" category="paragraph">重新启动管理服务以使更改生效。</block>
+  <block id="e67619627e47cd216196235b1a0f2669" category="section-title">要求概述</block>
+  <block id="b0bd6012e99dc036bc7b9a7733b52448" category="paragraph">本页面详细介绍在 NetApp 构建模块上实施 BeeGFS 的硬件、软件和固件要求。要求分为以下几个部分：</block>
+  <block id="2e4750ad5b034d585cf9cda6ab0274fc" category="list-text"><block ref="9ff533a308c0ff498b54a0f37e1b561b" category="inline-xref-macro-rx"></block> - 文件节点（硬件/软件/固件）、块节点（硬件/固件）、网络和布线</block>
+  <block id="17fef7322c7d63e44bec1b8d162a71ed" category="list-text"><block ref="1d6d93c917cd7c598919c2db6fbe9c43" category="inline-xref-macro-rx"></block> - Ansible 部署的组件</block>
+  <block id="ca5e93c0d1c69cb3e012459b9816be56" category="list-text"><block ref="be0065c7761ef2b223096998be6ad266" category="inline-xref-macro-rx"></block> - 控制节点软件版本</block>
+  <block id="64213f806dbb3535ceada7e44b199e6d" category="paragraph">在开始之前，请确保您的硬件符合 BeeGFS on NetApp 解决方案的单个构建块设计的以下规范。根据客户要求，特定部署的确切组件可能会有所不同。每个文件节点应满足或超过这些规范，以实现预期性能。</block>
+  <block id="b36d2184563e1bcc51472085da9e4a72" category="cell">规格</block>
+  <block id="2af805027d0e366bdf84789ed4597621" category="paragraph">*硬件：*</block>
+  <block id="940cc4b439cc0d7c479f5b63c6ba0193" category="list-text">*处理器：* 2x AMD EPYC 9124 16C 3.0 GHz（配置为两个 NUMA 区域）</block>
+  <block id="5f17ba443899aeb352517da2953b3a9e" category="list-text">*HCA 卡：* 4x MCX755106AS-HEAT ConnectX-7, NDR200, QSFP112, 2-port, PCIe Gen5 x16, InfiniBand Adapter</block>
+  <block id="4eb8a12cb113dbaf2c64b7c7c3200cbd" category="list-text">*存储：* 用于操作系统的 RAID 1 中的两个驱动器（1TB 7.2K SATA 或更高）</block>
+  <block id="f9056d8c14964eb81b45438cf782d034" category="list-text">*管理：* 1GbE 端口，用于带内 OS 管理</block>
+  <block id="c7f88301e585c9464204935159e7ddd9" category="list-text">*BMC：* 带有 Redfish API 的 1GbE BMC，用于带外服务器管理</block>
+  <block id="e5ee8dc94acd119da3076f38a47eec81" category="list-text">*电源：* 双热插拔电源和性能风扇</block>
+  <block id="62a335d848ecec1fb772b590af02bbdd" category="paragraph">*软件和固件：*</block>
+  <block id="e07fd8d767f1c119203e0faf12a8c506" category="list-text">*操作系统：* Red Hat 9.4 Server Physical with High Availability (2 socket)</block>
+  <block id="db535ed6f35edd0ef13295f8de092004" category="list-text">*Linux 内核：* 5.14.0-427.42.1.el9_4.x86_64</block>
+  <block id="000cdd92b9cd009a3caac741716dbb2a" category="list-text">*HCA 固件：* FW：28.46.1006，PXE：3.8.0100，UEFI：14.39.0013</block>
+  <block id="359b85bdaa40813abfcf68136e436422" category="admonition">文件节点需要有效的 Red Hat Enterprise Linux Server 订阅和 Red Hat Enterprise Linux High Availability Add-On。</block>
+  <block id="aa8884b6bbe0d714ded5b1498defb4d6" category="section-title">块节点要求</block>
+  <block id="868087ec71be4b3eadc720c493a93a63" category="paragraph">每个构建模块需要两个相同型号的 E-Series 阵列。请勿在同一构建模块中混合阵列型号。</block>
+  <block id="a559b87068921eec05086ce5485e9784" category="cell">型号</block>
+  <block id="8c2572494cd8e2b146b24821b42e7fbe" category="cell">EF80</block>
+  <block id="47afcbee406934178b3a46d7784f3c8e" category="list-text">*内存：* 128GB（每个控制器 64GB）</block>
+  <block id="67b11734faa34133649bc65b7e11c281" category="list-text">*适配器：* 2x 2 端口 200Gb/NDR (NVMe/IB)</block>
+  <block id="5aedf4de6b8ec88d24c739d67bef73c2" category="list-text">*驱动器：*配置以匹配所需的元数据和存储容量</block>
+  <block id="ac256a0dbe7e552ca052ec7fb099aa33" category="paragraph">*固件：*</block>
+  <block id="b9eef6b8a532e155dc104f96f4ad1c86" category="list-text">*SANtricity 操作系统：* 12.00</block>
+  <block id="d9b7e1de7caa03957dbc662965b2ff88" category="list-text">*NVSRAM：* NEF80-200834-D00</block>
+  <block id="35b6e7d8c6d4e6c3921f12c7d3c5a66a" category="list-text">*驱动器固件：* 最新可用于您的驱动器型号（请参阅 <block ref="dc6c914f008159d5969a25304ddfb479" category="inline-link-macro-rx"></block>）</block>
+  <block id="ae149e14affd7d147aaaac4e778a78b9" category="cell">EF600</block>
+  <block id="93b110f46914a05daac9aea23fc3d2ed" category="list-text">*内存：* 256GB（每个控制器 128GB）</block>
+  <block id="8db28be59a9d835b543adcfbc5bff0c1" category="list-text">*适配器：* 2 端口 200Gb/HDR (NVMe/IB)</block>
+  <block id="eee833cef48ecf29f71b13b60f696a30" category="list-text">*SANtricity 操作系统：* 11.90R5</block>
+  <block id="4630012110960ebde581b84f69d6bdff" category="list-text">*NVSRAM：* N6000-890834-D02</block>
+  <block id="2618dac0ed09460ae4b3991e9cf26f4b" category="section-title">存储网络交换机要求</block>
+  <block id="be220d8fe159330d95cef788d5a315b2" category="paragraph">*NVIDIA QM9700 Quantum 2 NDR InfiniBand 交换机*</block>
+  <block id="757b798ba877c3623266d13b08a44ec0" category="paragraph">存储网络交换机必须能够达到 200Gb/s InfiniBand 速度。NVIDIA QM9700 是集群推荐的交换机。</block>
+  <block id="8deaae22d76453b17a29b5833b362b40" category="admonition">可以使用 NVIDIA MQM8700 Quantum 等替代交换机，但需要不同的电缆。</block>
+  <block id="15c648a5d5dbf82c158e6c48e82994d7" category="section-title">块节点到文件节点电缆</block>
+  <block id="c57532676b04d14214d3d2a89b1e90d4" category="paragraph">从块节点到文件节点的直接连接需要以下电缆：</block>
+  <block id="5c8883d2963443d7244bd81a1e110519" category="cell">电缆规格</block>
+  <block id="74c47af9384006b279a923b5d7a78d53" category="cell">MCP1650-H001E30 - NVIDIA 无源铜缆，QSFP56，200Gb/s</block>
+  <block id="d3402f558c2f4a0c522c4374c40173dd" category="section-title">文件节点到存储交换机电缆</block>
+  <block id="b6d7c30a41e805e17ff0ce4bde483c55" category="paragraph">建议为 NVIDIA QM9700 Quantum 2 交换机使用以下电缆类型。根据您的要求选择有源光纤或无源铜缆。数量按构建块计算。</block>
+  <block id="c1ca36cf48f6569dac617b418f94f9da" category="cell">8.2.2</block>
+  <block id="d1d90da11d99e32fc537b57f80cbcf54" category="cell">DOCA-OFED-25.04-0.6.1</block>
+  <block id="7faeec3d272571635e8c36c41572e3bd" category="cell">&gt;= 2.19.0</block>
+  <block id="a2bf67683e2950dfa2205ae8f12469f9" category="cell">3.12</block>
+  <block id="a723d09c4a79d2251b5f988c605243d1" category="cell">Cryptography-46.0.3，netaddr-1.3.0，ipaddr-2.2.0</block>
+  <block id="495063beeac89309a2247ce9c13ed292" category="cell">4.0.0</block>
 </blocks>

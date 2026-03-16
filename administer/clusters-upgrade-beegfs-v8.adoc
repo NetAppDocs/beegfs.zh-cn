@@ -1,10 +1,10 @@
 ---
 sidebar: sidebar 
 permalink: administer/clusters-upgrade-beegfs-v8.html 
-keywords: BeeGFS on NetApp, HA, Cluster, Administration, update, upgrade, BeeGFS 8, BeeGFS v8 
-summary: 从 BeeGFS v7.4.6 更新到 BeeGFS v8。 
+keywords: BeeGFS on NetApp, HA, Cluster, Administration, update, upgrade, BeeGFS 8 
+summary: 从 BeeGFS 7.4 更新到 BeeGFS 8。 
 ---
-= 升级到 BeeGFS v8
+= 升级到 BeeGFS 8
 :hardbreaks:
 :allow-uri-read: 
 :nofooter: 
@@ -14,33 +14,33 @@ summary: 从 BeeGFS v7.4.6 更新到 BeeGFS v8。
 
 
 [role="lead"]
-按照下面的步骤将您的 BeeGFS HA 集群从版本 7.4.6 升级到 BeeGFS v8。
+按照下面的步骤将您的 BeeGFS HA 集群从 BeeGFS 7.4 升级到 BeeGFS 8。
 
 
 
 == 概述
 
-BeeGFS v8 引入了一些重大更改，这些更改需要在从 BeeGFS v7 升级之前进行其他设置。本文档指导您为 BeeGFS v8 的新要求准备集群，然后升级到 BeeGFS v8。
+BeeGFS 8 引入了一些重大更改，这些更改需要在从 BeeGFS 7 升级之前进行其他设置。本文档指导您为 BeeGFS 8 的新要求准备集群，然后升级到 BeeGFS 8。
 
 
-IMPORTANT: 在升级到 BeeGFS v8 之前，请确保您的系统至少运行 BeeGFS 7.4.6。任何运行 BeeGFS 7.4.6 之前版本的群集必须首先link:clusters-upgrade-beegfs.html["升级到版本 7.4.6"]，然后再继续此 BeeGFS v8 升级过程。
+IMPORTANT: 在升级到 BeeGFS 8 之前，请确保您的系统至少运行 BeeGFS 7.4。任何运行早于 BeeGFS 7.4 版本的群集必须先link:clusters-upgrade-beegfs.html["升级到 BeeGFS 7.4"]，然后再升级到 BeeGFS 8。
 
 
 
-== BeeGFS v8 的主要变化
+== BeeGFS 8 的主要变化
 
-BeeGFS v8 引入了以下主要更改：
+BeeGFS 8 引入了以下主要更改：
 
-* **许可证强制：** BeeGFS v8 需要许可证才能使用高级功能，如存储池、远程存储目标、BeeOND 等。在升级之前为您的 BeeGFS 集群获取有效的许可证。如果需要，您可以从 link:https://beegfs.io/license/["BeeGFS 许可证门户"^] 获取临时 BeeGFS v8 评估许可证。
-* **管理服务数据库迁移：**要在 BeeGFS v8 中启用基于 TOML 的新格式配置，您必须手动将 BeeGFS v7 管理服务数据库迁移到更新的 BeeGFS v8 格式。
-* **TLS 加密：** BeeGFS v8 引入 TLS 以实现服务之间的安全通信。您需要为 BeeGFS 管理服务和 `beegfs`命令行实用程序生成和分发 TLS 证书，作为升级的一部分。
+* **许可证强制：** BeeGFS 8 需要许可证才能使用高级功能，如存储池、远程存储目标、BeeOND 等。在升级之前为您的 BeeGFS 集群获取有效的许可证。如果需要，您可以从 link:https://beegfs.io/license/["BeeGFS 许可证门户"^] 获取临时 BeeGFS 8 评估许可证。
+* **管理服务数据库迁移：**要使用 BeeGFS 8 中新的基于 TOML 的格式启用配置，您必须手动将 BeeGFS 7 管理服务数据库迁移到更新的 BeeGFS 8 格式。
+* **TLS 加密：** BeeGFS 8 引入 TLS 用于服务之间的安全通信。您需要为 BeeGFS 管理服务和 `beegfs`命令行实用程序生成和分发 TLS 证书，作为升级的一部分。
 
 
-有关 BeeGFS 8 中的详细信息和其他更改，请参见 link:https://doc.beegfs.io/8.0/advanced_topics/upgrade.html["BeeGFS v8.0.0 升级指南"^]。
+有关 BeeGFS 8 中的详细信息和其他更改，请参见 link:https://doc.beegfs.io/8.0/advanced_topics/upgrade.html["BeeGFS 8.0.0 升级指南"^]。
 
 [IMPORTANT]
 ====
-升级到 BeeGFS v8 需要集群停机时间。此外，BeeGFS v7 客户端无法连接到 BeeGFS v8 集群。仔细协调集群和客户端之间的升级时间，以尽量减少对操作的影响。
+升级到 BeeGFS 8 需要群集停机时间，并且 BeeGFS 7 客户端无法连接到 BeeGFS 8 群集。仔细协调升级时间，以尽量减少对运营的影响。
 
 ====
 
@@ -49,49 +49,46 @@ BeeGFS v8 引入了以下主要更改：
 
 在开始升级之前，请仔细准备您的环境，以确保平稳过渡并最大限度地减少停机时间。
 
+. 验证所有服务器和客户端是否都在使用 link:https://doc.beegfs.io/8.2/release_notes.html#supportedlinuxdistributionsandkernels["支持的 Linux 发行版和内核版本"^] 用于 BeeGFS 8。
 . 确保集群处于健康状态，所有 BeeGFS 服务都在其首选节点上运行。从运行 BeeGFS 服务的文件节点中，验证所有 Pacemaker 资源都在其首选节点上运行：
 +
 [source, console]
 ----
 pcs status
 ----
-. 记录并备份集群配置。
+. 记录并备份集群配置。BeeGFS 管理服务数据将在稍后作为管理数据库升级过程的一部分进行备份。
 +
-.. 有关备份群集配置的说明，请参见 link:https://doc.beegfs.io/7.4.6/advanced_topics/backup.html["BeeGFS Backup 文档"^]。
-.. 备份现有管理数据目录：
-+
-[source, console]
-----
-cp -r /mnt/mgmt_tgt_mgmt01/data /mnt/mgmt_tgt_mgmt01/data_beegfs_v7_backup_$(date +%Y%m%d)
-----
-.. 从 beegfs 客户端运行以下命令并保存其输出以供参考：
+.. 在 BeeGFS 客户端上运行以下命令并保存输出以供参考：
 +
 [source, console]
 ----
 beegfs-ctl --getentryinfo --verbose /path/to/beegfs/mountpoint
 ----
-.. 如果使用镜像，请收集详细的状态信息：
+.. 如果使用镜像，则收集详细的状态信息，以便在两个镜像成员都进入"needs-resync"状态时识别原始主目标：
 +
 [source, console]
 ----
 beegfs-ctl --listtargets --longnodes --state --spaceinfo --mirrorgroups --nodetype=meta
 beegfs-ctl --listtargets --longnodes --state --spaceinfo --mirrorgroups --nodetype=storage
 ----
+.. 如果使用镜像，请在继续升级之前验证所有好友组都处于  `GOOD` 状态。
 
 
-. 让您的客户为停机和停止 `beegfs-client`服务做好准备。对于每个客户端，运行：
+. 按以下顺序停止 BeeGFS 系统：
++
+.. 在每个客户端上，卸载 BeeGFS 文件系统并停止  `beegfs-client` 服务。对于每个客户端，运行：
 +
 [source, console]
 ----
 systemctl stop beegfs-client
 ----
-. 对于每个 Pacemaker 集群，禁用 STONITH。这将允许您在升级后验证集群的完整性，而不会触发不必要的节点重新启动。
+.. 对于每个 Pacemaker 集群，禁用 STONITH，以便您可以在升级后验证集群完整性，而不会触发不必要的节点重启：
 +
 [source, console]
 ----
 pcs property set stonith-enabled=false
 ----
-. 对于 BeeGFS 命名空间中的所有 Pacemaker 集群，使用 PCS 停止集群：
+.. 在所有 Pacemaker 集群上，停止集群：
 +
 [source, console]
 ----
@@ -101,63 +98,40 @@ pcs cluster stop --all
 
 
 
-== 升级 BeeGFS 包
 
-在集群中的所有文件节点上，为您的 Linux 发行版添加 BeeGFS v8 包存储库。有关使用官方 BeeGFS 存储库的说明，请参阅 link:https://www.beegfs.io/c/download/["BeeGFS 下载页面"^]。否则，请相应地配置本地 beegfs 镜像存储库。
 
-以下步骤演示如何在 RHEL 9 文件节点上使用官方 BeeGFS 8.2 存储库。在集群中的所有文件节点上执行以下步骤：
+== 升级 BeeGFS 管理包
 
-. 导入 BeeGFS GPG 密钥：
+在集群中的所有文件节点上，为您的 Linux 发行版添加 BeeGFS 8 包存储库。有关为您的 Linux 发行版添加官方 BeeGFS 存储库的说明，请参阅 link:https://www.beegfs.io/c/download/["BeeGFS 下载页面"^]。否则，请相应地配置本地 BeeGFS 镜像存储库。
+
+. 在集群的前两个文件节点上，仅将 BeeGFS 管理守护程序包更新为 BeeGFS 8：
 +
-[source, console]
-----
-rpm --import https://www.beegfs.io/release/beegfs_8.2/gpg/GPG-KEY-beegfs
-----
-. 导入 BeeGFS 存储库：
-+
-[source, console]
-----
-curl -L -o /etc/yum.repos.d/beegfs-rhel9.repo https://www.beegfs.io/release/beegfs_8.2/dists/beegfs-rhel9.repo
-----
-+
-[NOTE]
-====
-删除任何先前配置的 BeeGFS 存储库，以避免与新的 BeeGFS v8 存储库发生冲突。
+对于 RHEL，配置 BeeGFS 存储库后，运行以下命令：
 
-====
-. 清理您的包管理器缓存：
 +
 [source, console]
 ----
 dnf clean all
-----
-. 在所有文件节点上，将 BeeGFS 包更新为 BeeGFS 8.2。
-+
-[source, console]
-----
-dnf update beegfs-mgmtd beegfs-storage beegfs-meta libbeegfs-ib
+dnf update beegfs-mgmtd
 ----
 
 
-[NOTE]
-====
-在标准集群中， `beegfs-mgmtd` 包将仅在前两个文件节点上更新。
-
-====
 
 
 == 升级管理数据库
 
-在运行 BeeGFS 管理服务的其中一个文件节点上，执行以下步骤来将管理数据库从 BeeGFS v7 迁移到 v8。
+在运行 BeeGFS 管理服务的其中一个文件节点上，按照以下步骤将管理数据库从 BeeGFS 7 迁移到 BeeGFS 8。
 
-. 列出所有 NVMe 设备并筛选管理目标：
+. 列出所有 NVMe 设备并标识管理目标：
 +
 [source, console]
 ----
 nvme netapp smdevices | grep mgmt_tgt
 ----
 +
-.. 请注意输出中的设备路径。
+注意输出中的设备路径（例如， `/dev/nvmeXnY`）。
+
++
 .. 将管理目标设备装载到现有管理目标装载点（将  `/dev/nvmeXnY` 替换为您的设备路径）：
 +
 [source, console]
@@ -166,6 +140,12 @@ mount /dev/nvmeXnY /mnt/mgmt_tgt_mgmt01/
 ----
 
 
+. 执行管理数据目录的备份：
++
+[source, console]
+----
+tar --force-local -cpzf /mnt/mgmt_tgt_mgmt01/data_beegfs_7_backup_$(date +'%F_%T').tar.gz /mnt/mgmt_tgt_mgmt01/data
+----
 . 通过运行以下命令，将您的 BeeGFS 7 管理数据导入到新的数据库格式：
 +
 [source, console]
@@ -183,7 +163,7 @@ Created new database version 3 at "/var/lib/beegfs/mgmtd.sqlite". Successfully i
 +
 [IMPORTANT]
 ====
-由于 BeeGFS v8 中更严格的验证要求，自动导入并非在所有情况下都能成功。例如，如果目标分配给不存在的存储池，则导入将失败。如果迁移失败，请勿继续升级。请联系 NetApp 支持人员以获得解决数据库迁移问题的帮助。作为临时解决方案，您可以降级 BeeGFS v8 包，并在解决问题的同时继续运行 BeeGFS v7。
+由于 BeeGFS 8 中更严格的验证要求，自动导入并非在所有情况下都能成功。例如，如果目标分配给不存在的存储池，则导入失败。如果迁移失败，请不要继续升级。联系 NetApp 支持人员以获得解决数据库迁移问题的帮助。您可以降级 BeeGFS 8 管理包，并在解决问题的同时继续运行 BeeGFS 7。
 
 ====
 . 将生成的 SQLite 文件移动到管理服务装载：
@@ -199,21 +179,32 @@ mv /var/lib/beegfs/mgmtd.sqlite /mnt/mgmt_tgt_mgmt01/data/
 mv /etc/beegfs/beegfs-mgmtd.toml /mnt/mgmt_tgt_mgmt01/mgmt_config/
 ----
 +
-准备  `beegfs-mgmtd.toml` 配置文件将在完成下一节中的许可和 TLS 配置步骤后完成。
+您将在完成以下各节中的许可和 TLS 配置步骤后准备 `beegfs-mgmtd.toml`配置文件。
 
 
 
+
+
+== 升级剩余的 BeeGFS 包
+
+完成管理数据库迁移后，升级集群中所有文件节点上的剩余 BeeGFS 包。对于 RHEL，配置 BeeGFS 存储库后，运行以下命令：
+
+[source, console]
+----
+dnf clean all
+dnf update beegfs-storage beegfs-meta libbeegfs-ib
+----
 
 
 == 配置许可
 
-. 在运行 beegfs 管理服务的所有节点上安装 beegfs 许可证包。这通常是集群的前两个节点：
+. 在运行 BeeGFS 管理服务的所有节点上安装 BeeGFS 许可证包。这通常是集群的前两个文件节点：
 +
 [source, console]
 ----
 dnf install libbeegfs-license
 ----
-. 将您的 BeeGFS v8 许可证文件下载到管理节点并将其放在：
+. 将您的 BeeGFS 8 许可证文件下载到管理节点并将其放在：
 +
 [listing]
 ----
@@ -225,17 +216,22 @@ dnf install libbeegfs-license
 
 == 配置 TLS 加密
 
-BeeGFS v8 需要 TLS 加密来实现管理服务和客户端之间的安全通信。在管理服务和客户端服务之间的网络通信上配置 TLS 加密有三个选项。推荐且最安全的方法是使用由受信任的证书颁发机构签名的证书。或者，您可以创建自己的本地 CA 来为 BeeGFS 群集签名证书。对于不需要加密或用于故障排除的环境，可以完全禁用 TLS，但不建议这样做，因为它会将敏感信息暴露给网络。
+BeeGFS 8 需要 TLS 加密以实现管理服务与 BeeGFS CLI 工具之间的安全通信(`beegfs`）。从三种配置方法中选择一种：使用由受信任的证书颁发机构签名的证书，创建自己的本地 CA 以对 BeeGFS 群集的证书进行签名，或完全禁用 TLS 以进行故障排除（不推荐用于生产）。
 
-在继续之前，请按照link:../deploy-features-integration/beegfs-tls/beegfs-tls-deploy.html["为 BeeGFS 8 配置 TLS 加密"]指南中的说明为您的环境设置 TLS 加密。
+使用 link:../deploy-features-integration/beegfs-tls/beegfs-tls-deploy.html["为 BeeGFS 8 配置 TLS 加密"] 指南为文件节点上的管理服务配置 TLS 加密。
 
+[NOTE]
+====
+客户端 TLS 配置将在升级 BeeGFS 客户端后稍后完成。在此阶段，仅在文件节点上为管理服务和 beegfs-tool 配置 TLS。
+
+====
 
 
 == 更新管理服务配置
 
-通过将设置从 BeeGFS v7 配置文件手动传输到 `/mnt/mgmt_tgt_mgmt01/mgmt_config/beegfs-mgmtd.toml`文件中来准备 BeeGFS v8 管理服务配置文件。
+通过将设置从 BeeGFS 7 配置文件手动传输到 `/mnt/mgmt_tgt_mgmt01/mgmt_config/beegfs-mgmtd.toml`文件中来准备 BeeGFS 8 管理服务配置文件。
 
-. 在已装入管理目标的管理节点上，引用  `/mnt/mgmt_tgt_mgmt01/mgmt_config/beegfs-mgmtd.conf` BeeGFS 7 的管理服务文件，然后将所有设置传输到  `/mnt/mgmt_tgt_mgmt01/mgmt_config/beegfs-mgmtd.toml` 文件。对于基本设置，您的  `beegfs-mgmtd.toml` 可能如下所示：
+. 在装载了管理目标的管理节点上，引用  `/mnt/mgmt_tgt_mgmt01/mgmt_config/beegfs-mgmtd.conf` BeeGFS 7 的管理服务文件，并将所有设置传输到  `/mnt/mgmt_tgt_mgmt01/mgmt_config/beegfs-mgmtd.toml` 文件。对于基本设置，您的  `beegfs-mgmtd.toml` 可能如下所示：
 +
 [source, toml]
 ----
@@ -273,13 +269,13 @@ systemctl daemon-reload
 
 
 . 对于运行管理服务的每个文件节点，为管理服务的 gRPC 通信打开端口 8010。
-+
-.. 将端口 8010/tcp 添加到 beegfs 区域：
+. 将 TCP 端口 8010 添加到 beegfs 区域：
 +
 [source, console]
 ----
 sudo firewall-cmd --zone=beegfs --permanent --add-port=8010/tcp
 ----
++
 .. 重新加载防火墙以应用更改：
 +
 [source, console]
@@ -294,7 +290,7 @@ sudo firewall-cmd --reload
 
 == 更新 BeeGFS 监控脚本
 
-Pacemaker `beegfs-monitor` OCF 脚本需要更新以支持新的 TOML 配置格式和 systemd 服务管理。更新集群中一个节点上的脚本，然后将更新后的脚本复制到所有其他节点。
+Pacemaker `beegfs-monitor` Open Cluster Framework (OCF) 脚本需要更新，以支持新的 TOML 配置格式和 systemd 服务管理。更新集群中一个节点上的脚本，然后将更新后的脚本复制到所有其他节点。
 
 . 创建当前脚本的备份：
 +
@@ -323,7 +319,7 @@ case $type in
 并将其替换为：
 
 +
-[source, bash]
+[source, console]
 ----
 case $type in
   management)
@@ -342,7 +338,7 @@ vi /usr/lib/ocf/resource.d/eseries/beegfs-monitor
 .. 删除两个完整函数，从  `get_interfaces()` 开始到  `get_subnet_ips()` 结束。
 .. 复制并粘贴以下更新的函数来替换它们：
 +
-[source, bash]
+[source, console]
 ----
 # Return network communication interface name(s) from the BeeGFS resource's connInterfaceFile
 get_interfaces() {
@@ -384,7 +380,7 @@ get_subnet_ips() {
 }
 ----
 .. 保存并退出文本编辑器。
-.. 运行以下命令来检查脚本是否存在语法错误，然后再继续。无输出表示脚本语法正确。
+.. 运行以下命令来检查脚本是否存在语法错误，然后再继续。如果没有显示输出，则脚本在语法上是正确的。
 +
 [source, bash]
 ----
@@ -392,9 +388,9 @@ bash -n /usr/lib/ocf/resource.d/eseries/beegfs-monitor
 ----
 
 
-. 将更新的 `beegfs-monitor` OCF 脚本复制到集群中的所有其他节点，以确保一致性：
+. 将更新的 `beegfs-monitor` OCF 脚本复制到集群中的所有其他节点：
 +
-[source, bash]
+[source, console]
 ----
 scp /usr/lib/ocf/resource.d/eseries/beegfs-monitor user@node:/usr/lib/ocf/resource.d/eseries/beegfs-monitor
 ----
@@ -404,9 +400,9 @@ scp /usr/lib/ocf/resource.d/eseries/beegfs-monitor user@node:/usr/lib/ocf/resour
 
 == 使集群恢复联机
 
-. 完成所有之前的升级步骤后，通过在所有节点上启动 BeeGFS 服务，使集群重新联机。
+. 完成之前的所有升级步骤后，通过在所有节点上启动 BeeGFS 服务，使集群恢复联机状态。
 +
-[source, bash]
+[source, console]
 ----
 pcs cluster start --all
 ----
@@ -433,7 +429,7 @@ Serving gRPC requests on [::]:8010
 +
 [NOTE]
 ====
-如果日志中出现错误，请检查管理配置文件路径，并确保所有值都已从 BeeGFS 7 配置文件正确传输。
+如果日志中出现错误，请检查管理配置文件路径，并验证您是否正确地从 BeeGFS 7 配置文件传输了所有值。
 
 ====
 . 运行 `pcs status`并验证集群是否正常运行，服务是否在其首选节点上启动。
@@ -443,66 +439,69 @@ Serving gRPC requests on [::]:8010
 ----
 pcs property set stonith-enabled=true
 ----
-. 继续下一节以升级群集中的 BeeGFS 客户端，并检查 BeeGFS 群集的运行状况。
+. 继续下一节以升级 BeeGFS 客户端并验证群集的运行状况。
 
 
 
 
 == 升级 BeeGFS 客户端
 
-成功将群集升级到 BeeGFS v8 后，还必须升级所有 BeeGFS 客户端。
+将群集升级到 BeeGFS 8 后，还必须升级所有 BeeGFS 客户端。
 
-以下步骤概述了在基于 Ubuntu 的系统上升级 BeeGFS 客户端的过程。
-
-. 如果尚未完成，请停止 BeeGFS 客户端服务：
+. 如果您尚未停止 BeeGFS 客户端服务，请立即停止：
 +
 [source, console]
 ----
 systemctl stop beegfs-client
 ----
-. 为您的 Linux 发行版添加 BeeGFS v8 包存储库。有关使用官方 BeeGFS 存储库的说明，请参阅link:https://www.beegfs.io/c/download/["^BeeGFS 下载页面"^]。否则，请相应地配置本地 BeeGFS 镜像存储库。
-+
-以下步骤在基于 Ubuntu 的系统上使用官方 BeeGFS 8.2 存储库：
-
-. 导入 BeeGFS GPG 密钥：
-+
-[source, console]
-----
-wget https://www.beegfs.io/release/beegfs_8.2/gpg/GPG-KEY-beegfs -O /etc/apt/trusted.gpg.d/beegfs.asc
-----
-. 下载存储库文件：
-+
-[source, console]
-----
-wget https://www.beegfs.io/release/beegfs_8.2/dists/beegfs-noble.list -O /etc/apt/sources.list.d/beegfs.list
-----
-+
-[NOTE]
-====
-删除任何先前配置的 BeeGFS 存储库，以避免与新的 BeeGFS v8 存储库发生冲突。
-
-====
+. 为您的 Linux 发行版添加 BeeGFS 8 包存储库。有关添加官方 BeeGFS 存储库的说明，请参阅 link:https://www.beegfs.io/c/download/["BeeGFS 下载页面"^]。否则，请相应地配置本地 BeeGFS 镜像存储库。
 . 升级 BeeGFS 客户端软件包：
++
+对于 Ubuntu/Debian：
+
 +
 [source, console]
 ----
 apt-get update
 apt-get install --only-upgrade beegfs-client
 ----
-. 为客户端配置 TLS。使用 BeeGFS CLI 需要 TLS。请参阅link:../deploy-features-integration/beegfs-tls/beegfs-tls-deploy.html["为 BeeGFS 8 配置 TLS 加密"^]过程在客户端上配置 TLS。
+. 为客户端配置 TLS。要从客户端节点使用 BeeGFS CLI，需要使用 TLS。请参阅 TLS 部署指南中的link:../deploy-features-integration/beegfs-tls/beegfs-tls-deploy.html#configure-tls-for-beegfs-8-clients["为 BeeGFS 8 客户端配置 TLS"]部分。
++
+[NOTE]
+====
+TLS 不是  `beegfs-client` 服务装载 BeeGFS 文件系统所必需的。TLS 仅在使用 BeeGFS CLI 工具和其他管理服务时才需要。
+
+====
 . 启动 BeeGFS 客户端服务：
 +
 [source, console]
 ----
 systemctl start beegfs-client
 ----
++
+如果安装 BeeGFS 失败，请检查系统日志是否有错误。如果您看到"Unable to proceed without a working root metadata node"或"Remote I/O error"等消息，则 BeeGFS 7 导入可能尚未成功完成。请联系 NetApp 支持以获得帮助。
+
+. （可选）在要运行 BeeGFS 管理命令的客户端节点或其他系统上安装和配置新的 `beegfs` CLI 工具：
++
+.. 安装  `beegfs-tools` 软件包：
++
+对于 Ubuntu/Debian：
+
++
+[source, console]
+----
+apt-get install beegfs-tools
+----
+.. 为 `beegfs` 工具配置 TLS。要从客户端节点使用 BeeGFS CLI，需要使用 TLS。请参阅 TLS 部署指南中的link:../deploy-features-integration/beegfs-tls/beegfs-tls-deploy.html#configure-tls-for-beegfs-8-clients["为 BeeGFS 8 客户端配置 TLS"]部分。
+
+
 
 
 
 
 == 验证升级
 
-完成升级到 BeeGFS v8 后，运行以下命令以验证升级是否成功。
+完成升级到 BeeGFS 8 后，运行以下命令以验证升级是否成功。
 
 . 验证根 inode 是否由与之前相同的元数据节点所有。如果您使用了管理服务中的 `import-from-v7`功能，则应自动执行此操作：
 +
@@ -510,7 +509,7 @@ systemctl start beegfs-client
 ----
 beegfs entry info /mnt/beegfs
 ----
-. 验证所有节点和目标均处于联机状态且状态良好：
+. 验证所有节点和目标均处于联机状态并处于正常状态：
 +
 [source, console]
 ----
