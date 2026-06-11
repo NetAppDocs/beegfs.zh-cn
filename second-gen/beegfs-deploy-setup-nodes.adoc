@@ -49,7 +49,7 @@ NOTE: 尽管严格要求不高、但后续章节假定主机名按顺序编号(�
 ....
 subscription-manager repo-override --repo=rhel-9-for-x86_64-highavailability-rpms --add=enabled:1
 ....
-. 使用link:..administer/clusters-update-hca-firmware.html["更新文件节点适配器固件"^]指南将所有HCA固件更新到中建议的版本link:beegfs-technology-requirements.html["技术要求"]。
+. 将所有 HCA 固件更新到 link:beegfs-technology-requirements.html["技术要求"] 中建议的版本，使用 link:../administer/clusters-update-hca-firmware.html["更新文件节点适配器固件"^] 指南。
 
 
 

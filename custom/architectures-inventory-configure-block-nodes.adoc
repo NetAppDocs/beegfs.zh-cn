@@ -132,7 +132,7 @@ eseries_controller_nvme_roce_port_speed: auto            # General interface spe
 
 有关配置HIC端口和主机协议的其他选项、包括配置iSCSI CHAP的功能、请参见 link:https://github.com/netappeseries/santricity/tree/release-1.3.1/roles/nar_santricity_host#role-variables["文档。"^] 包含在SANtricity 集合中。注意在部署BeeGFS时、存储池、卷配置以及配置存储的其他方面将在其他位置进行配置、不应在此文件中定义。
 
-单击 link:https://github.com/netappeseries/beegfs/blob/master/getting_started/beegfs_on_netapp/gen2/host_vars/ictad22a01.yml["此处"^] 表示单个块节点的完整清单文件示例。
+单击 link:https://github.com/NetApp/beegfs/blob/master/getting_started/beegfs_on_netapp/gen2/H2_DAC_IB_A2_EF600/beegfs_cluster_building_blocks/beegfs_ha_building_block_cluster_1/host_vars/netapp_01.yml["此处"^] 以查看代表单个块节点的完整清单文件的示例。
 
 
 

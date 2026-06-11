@@ -165,7 +165,7 @@ beegfs_ha_conn_auth_enabled: false
 
 
 
-有关支持的参数的完整列表和其他详细信息、请参见 link:https://github.com/netappeseries/beegfs/tree/master/roles/beegfs_client["完整的BeeGFS客户端文档"^]。有关客户端清单的完整示例、请单击 link:https://github.com/netappeseries/beegfs/blob/master/getting_started/beegfs_on_netapp/gen2/client_inventory.yml["此处"^]。
+有关受支持参数的完整列表和其他详细信息，请参阅 link:https://github.com/NetApp/beegfs/tree/master/roles/beegfs_client["完整的BeeGFS客户端文档"^]。有关客户清单的完整示例，请单击 link:https://github.com/NetApp/beegfs/blob/master/getting_started/beegfs_on_netapp/gen2/H2_DAC_IB_A2_EF600/beegfs_client/beegfs_client_inventory.yml["此处"^]。
 
 
 
@@ -223,7 +223,7 @@ beegfs_ha_conn_auth_enabled: false
 ----
 
 
-有关客户端攻略手册的完整示例、请单击 link:https://github.com/netappeseries/beegfs/blob/master/getting_started/beegfs_on_netapp/gen2/client_playbook.yml["此处"^]。
+有关客户端 playbook 的完整示例，请单击 link:https://github.com/NetApp/beegfs/blob/master/getting_started/beegfs_on_netapp/gen2/H2_DAC_IB_A2_EF600/beegfs_client/beegfs_client_playbook.yml["此处"^]。
 
 
 

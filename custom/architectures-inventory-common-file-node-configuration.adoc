@@ -202,7 +202,7 @@ CAUTION: 为避免重命名接口时发生冲突(防止重命名接口)、不应
 
 +
 
-NOTE: 如果您使用的是经验证的文件节点型号、请单击 link:https://docs.netapp.com/us-en/beegfs/beegfs-deploy-create-inventory.html#step-4-define-configuration-that-should-apply-to-all-file-nodes["此处"^] PCIe地址到逻辑端口映射示例。
+NOTE: 如果使用的是经过验证的文件节点模型，请单击 link:https://docs.netapp.com/us-en/beegfs/second-gen/beegfs-deploy-create-inventory.html#step-4-define-configuration-that-should-apply-to-all-file-nodes["此处"^] 例如 PCIe 地址到逻辑端口映射。
 
 
 
@@ -255,7 +255,7 @@ beegfs_ha_conn_auth_enabled: false
 
 
 
-单击 link:https://github.com/netappeseries/beegfs/blob/master/getting_started/beegfs_on_netapp/gen2/group_vars/ha_cluster.yml["此处"^] 有关表示通用文件节点配置的完整清单文件的示例。
+单击 link:https://github.com/NetApp/beegfs/blob/master/getting_started/beegfs_on_netapp/gen2/H2_DAC_IB_A2_EF600/beegfs_cluster_building_blocks/beegfs_ha_building_block_cluster_1/group_vars/ha_cluster.yml["此处"^] 以查看表示常见文件节点配置的完整清单文件的示例。
 
 
 
