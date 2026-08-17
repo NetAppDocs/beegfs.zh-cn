@@ -31,6 +31,7 @@ image:beegfs-design-image12.png["BeeGFS验证配置"]
 
 
 
+[[beegfs-file-striping]]
 == BeeGFS文件条带化
 
 并行文件系统的一个优势是能够在多个存储目标之间对各个文件进行条带化、这可能表示同一个或不同底层存储系统上的卷。
@@ -41,6 +42,7 @@ image:beegfs-design-image12.png["BeeGFS验证配置"]
 
 
 
+[[ior-bandwidth-tests-multiple-clients]]
 == IOR带宽测试：多个客户端
 
 IOR带宽测试使用OpenMPI运行合成I/O生成器工具IOR的并行作业(可从获取 https://github.com/hpc/ior["HPC GitHub"^])连接到一个或多个BeeGFS组件。除非另有说明：
@@ -78,6 +80,7 @@ image:beegfs-design-image16.png["BeeGFS的三个组件IOL结果"]
 
 
 
+[[ior-bandwidth-tests-single-client]]
 == IOR带宽测试：单个客户端
 
 IOR带宽测试使用OpenMPI通过一个高性能GPU服务器运行多个IOR进程、以探索单个客户端可实现的性能。
@@ -97,6 +100,7 @@ NOTE: 在这些测试中、BeeGFS条带化设置为1 MB的机克大小、每个�
 
 
 
+[[metadata-performance-test]]
 == 元数据性能测试
 
 元数据性能测试使用MDTest工具(包含在IOR中)测量BeeGFS的元数据性能。这些测试利用OpenMPI在所有十个客户端节点上运行并行作业。
@@ -120,6 +124,7 @@ image:beegfs-design-image19.png["两个BeeGFS元数据和存储组件MDTest结�
 
 
 
+[[functional-validation]]
 == 功能验证
 
 在验证此架构的过程中、NetApp执行了多项功能测试、其中包括：
@@ -137,6 +142,7 @@ NOTE: 存在一个已知的问题描述 (请参见 https://github.com/netappeser
 
 
 
+[[nvidia-dgx-superpod-and-basepod-validation]]
 == NVIDIA DGX SuperPOD和BasePOD验证
 
 NetApp使用一个类似的BeeGFS文件系统验证了用于NVIDIA DGX A100 SuperPOD的存储解决方案 、该文件系统由三个组件组成、并应用了元数据和存储配置文件。资格认定工作涉及使用20台DGX A100 GPU服务器测试此NVA所述的解决方案 、这些服务器运行各种存储、机器学习和深度学习基准。基于NVIDIA DGX A100 SuperPOD的验证、基于NetApp的BeeGFS解决方案已获得批准、可用于DGX SuperPOD H100、8200和B200系统。此扩展基于满足之前建立的基准和系统要求、并已通过NVIDIA DGX A100的验证。

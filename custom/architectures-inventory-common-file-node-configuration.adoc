@@ -18,6 +18,7 @@ summary: '使用组变量(group_vars)指定通用文件节点配置。'
 
 
 
+[[overview]]
 == 概述
 
 应连接到所有文件节点的配置在中进行定义 `group_vars/ha_cluster.yml`。通常包括：
@@ -36,6 +37,7 @@ NOTE: 此外、还可以在各个文件节点上定义此文件中设置的选�
 
 
 
+[[steps]]
 == 步骤
 
 创建文件 `group_vars/ha_cluster.yml` 并按如下所示进行填充：
@@ -259,6 +261,7 @@ beegfs_ha_conn_auth_enabled: false
 
 
 
+[[using-hdr-200gb-infiniband-with-netapp-ef600-block-nodes]]
 === 将HDR (200 GB) InfiniBand与NetApp EF600块节点结合使用：
 
 要将HDR (200 GB) InfiniBand与EF600结合使用、子网管理器必须支持虚拟化。如果使用交换机连接文件和块节点、则需要在子网管理器管理器上为整个网络结构启用此功能。

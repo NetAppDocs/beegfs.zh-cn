@@ -20,6 +20,7 @@ image:high-capacity-rack-diagram.png["高容量机架图"]
 
 
 
+[[controllers]]
 == 控制器
 
 对于高容量组件、EF600控制器应更换为EF300控制器、每个控制器都安装有一个级联HIC、用于SAS扩展。每个块节点将在阵列机箱中为BeeGFS元数据存储填充最少数量的NVMe SSD、并将其连接到为BeeGFS存储卷填充NL-SAS HDD的扩展架。
@@ -28,6 +29,7 @@ image:high-capacity-rack-diagram.png["高容量机架图"]
 
 
 
+[[drive-placement]]
 == 驱动器放置
 
 每个块节点至少需要4个NVMe SSD才能存储BeeGFS元数据。这些驱动器应放置在机箱最外侧的插槽中。
@@ -36,6 +38,7 @@ image:high-capacity-drive-slots-diagram.png["高容量驱动器插槽示意图"]
 
 
 
+[[expansion-trays]]
 == 扩展托盘
 
 高容量组件的大小可以为每个存储阵列配备1到7个60个驱动器扩展托盘。

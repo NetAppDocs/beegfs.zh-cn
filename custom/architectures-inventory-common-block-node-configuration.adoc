@@ -18,6 +18,7 @@ summary: '使用组变量(group_vars)指定通用块节点配置。'
 
 
 
+[[overview]]
 == 概述
 
 应通过定义适用于所有块节点的配置 `group_vars/eseries_storage_systems.yml`。通常包括：
@@ -32,6 +33,7 @@ NOTE: 此外、还可以在各个块节点上定义此文件中设置的选项�
 
 
 
+[[steps]]
 == 步骤
 
 创建文件 `group_vars/eseries_storage_systems.yml` 并按如下所示进行填充：

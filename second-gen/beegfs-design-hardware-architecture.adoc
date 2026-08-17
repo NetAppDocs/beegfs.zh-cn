@@ -18,6 +18,7 @@ NetApp上BeeGFS的硬件配置包括文件节点和网络布线。
 
 
 
+[[file-node-configuration]]
 == 文件节点配置
 
 文件节点具有两个CPU插槽、这些插槽配置为单独的NUMA分区、其中包括对相同数量的PCIe插槽和内存的本地访问。
@@ -32,6 +33,7 @@ BeeGFS进程固定到特定的NUMA区域、以确保使用的接口位于同一�
 
 
 
+[[network-cabling-configuration]]
 == 网络布线配置
 
 在一个构建块中、每个文件节点使用总共四个冗余InfiniBand连接连接连接到两个块节点。此外、每个文件节点还具有四个到InfiniBand存储网络的冗余连接。

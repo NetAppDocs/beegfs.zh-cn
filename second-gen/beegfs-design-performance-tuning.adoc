@@ -20,6 +20,7 @@ BeeGFS解决方案 提供了基于验证测试的性能调整建议。
 
 
 
+[[performance-tuning-for-file-nodes]]
 == 文件节点的性能调整
 
 您可以配置的可用调整参数包括：
@@ -79,6 +80,7 @@ BeeGFS解决方案 提供了基于验证测试的性能调整建议。
 
 
 
+[[performance-tuning-for-block-nodes]]
 == 对块节点进行性能调整
 
 根据应用于特定BeeGFS组件的配置文件、在块节点上配置的卷组会略有变化。例如、对于一个24驱动器EF600块节点：

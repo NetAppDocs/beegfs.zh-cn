@@ -18,6 +18,7 @@ summary: '使用主机变量(host_vars)指定各个块节点的配置。'
 
 
 
+[[overview]]
 == 概述
 
 本节将逐步介绍填充 `host_vars/<BLOCK_NODE_HOSTNAME>.yml` 集群中每个块节点的文件。这些文件只能包含特定块节点特有的配置。这通常包括：
@@ -30,6 +31,7 @@ summary: '使用主机变量(host_vars)指定各个块节点的配置。'
 
 
 
+[[steps]]
 == 步骤
 
 请参考link:architectures-plan-file-system.html["规划文件系统"^]本节中定义的IP寻址方案、为集群中的每个块节点创建一个文件 `host_vars/<BLOCK_NODE_HOSTNAME>/yml`并按如下所示进行填充：
@@ -136,6 +138,7 @@ eseries_controller_nvme_roce_port_speed: auto            # General interface spe
 
 
 
+[[using-hdr-200gb-infiniband-or-200gb-roce-with-netapp-ef600-block-nodes]]
 === 将HDR (200 GB) InfiniBand或200 GB RoCE与NetApp EF600块节点结合使用：
 
 要将HDR (200 GB) InfiniBand与EF600结合使用、必须为每个物理端口配置第二个"虚拟" IP。下面是配置配备双端口InfiniBand HDR HIC的EF600的正确方法示例：

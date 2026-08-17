@@ -18,6 +18,7 @@ summary: '在每个服务器的基板管理控制器(BMC)上配置网络连接�
 
 
 
+[[set-up-file-nodes]]
 == 设置文件节点
 
 . 在每个服务器的基板管理控制器(BMC)上配置网络连接。
@@ -54,6 +55,7 @@ subscription-manager repo-override --repo=rhel-9-for-x86_64-highavailability-rpm
 
 
 
+[[set-up-block-nodes]]
 == 设置块节点
 
 通过在每个控制器上配置管理端口来设置EF600块节点。

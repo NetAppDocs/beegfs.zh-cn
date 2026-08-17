@@ -18,6 +18,7 @@ NetApp上的BeeGFS可以通过将Ansilient与NetApp的BeeGFS组件设计结合�
 
 
 
+[[ansible-collections-and-roles]]
 == Ansible集合和角色
 
 基于NetApp的BeeGFS解决方案使用Andsient进行部署、该引擎是一个可自动执行应用程序部署的常用IT自动化引擎。Ansient使用一系列文件(统称为清单)、这些文件用于为您要部署的BeeGFS文件系统建模。
@@ -31,6 +32,7 @@ NOTE: 由于在NetApp解决方案 上部署BeeGFS涉及许多步骤、因此NetA
 
 
 
+[[configuration-profiles-for-beegfs-building-blocks]]
 == BeeGFS组件的配置配置文件
 
 部署过程包括以下配置文件：
@@ -44,6 +46,7 @@ NOTE: 由于在NetApp解决方案 上部署BeeGFS涉及许多步骤、因此NetA
 
 
 
+[[overview-of-deployment-steps]]
 == 部署步骤概述
 
 部署涉及以下高级任务：

@@ -18,12 +18,14 @@ summary: 使用pcs查看集群的状态。
 
 
 
+[[overview]]
 == 概述
 
 正在运行 `pcs status` 从任何集群节点上、都是查看集群整体状态和每个资源(例如BeeGFS服务及其依赖关系)状态的最简单方法。本节将介绍的输出内容 `pcs status` 命令：
 
 
 
+[[understanding-the-output-from-pcs-status]]
 == 了解输出 `pcs status`
 
 运行 `pcs status` 在启动了集群服务(Pacemaker和Corosync)的任何集群节点上。输出顶部将显示集群的摘要：

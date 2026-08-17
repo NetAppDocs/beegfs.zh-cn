@@ -18,6 +18,7 @@ summary: 在NetApp解决方案 上部署BeeGFS时、请遵循最佳实践准则�
 
 
 
+[[standard-conventions]]
 == 标准约定
 
 在物理组装和创建Ansible清单文件时、请遵循以下标准约定(有关详细信息、请参见 link:beegfs-deploy-create-inventory.html["创建Ansible清单"]）。
@@ -45,12 +46,14 @@ summary: 在NetApp解决方案 上部署BeeGFS时、请遵循最佳实践准则�
 
 
 
+[[infiniband-storage-network-configuration]]
 == InfiniBand存储网络配置
 
 每个文件节点上一半的InfiniBand端口用于直接连接到块节点。另一半连接到InfiniBand交换机、并用于BeeGFS客户端-服务器连接。在确定用于BeeGFS客户端和服务器的IPoIB子网的大小时、您必须考虑计算/GPU集群和BeeGFS文件系统的预期增长。如果您必须偏离建议的IP范围、请注意、一个构建块中的每个直接连接都有一个唯一的子网、并且与用于客户端-服务器连接的子网没有重叠。
 
 
 
+[[direct-connects]]
 === 直接连接
 
 每个构建块中的文件和块节点始终使用下表中的IP进行直接连接。
@@ -87,6 +90,7 @@ NOTE: 此寻址方案遵循以下规则：第三个八位字节始终为奇数�
 |===
 
 
+[[beegfs-client-server-ipoib-addressing-schemes]]
 === BeeGFS客户端-服务器IPoIB寻址方案
 
 每个文件节点都运行多个BeeGFS服务器服务(管理、元数据或存储)。为了使每个服务能够独立故障转移到另一个文件节点、每个服务都配置了唯一的IP地址、这些地址可以在两个节点之间浮动(有时称为逻辑接口或LIF)。

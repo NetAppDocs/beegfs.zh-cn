@@ -18,12 +18,14 @@ summary: 在HA集群中升级PacMaker和Corosync软件包的步骤。
 
 
 
+[[overview]]
 == 概述
 
 升级PacMaker和Corosync可确保集群受益于新功能、安全修补程序和性能改进。
 
 
 
+[[upgrade-approach]]
 == 升级方法
 
 建议使用两种方法升级集群：滚动升级或完全关闭集群。每种方法都有自己的优缺点。升级过程可能因您的PacMaker版本而异。请参见ClusterLabslink:https://clusterlabs.org/projects/pacemaker/doc/3.0/Pacemaker_Administration/html/upgrading.html["升级PacMaker集群"^]文档以确定使用哪种方法。在执行升级方法之前、请验证：
@@ -35,6 +37,7 @@ summary: 在HA集群中升级PacMaker和Corosync软件包的步骤。
 
 
 
+[[rolling-upgrade]]
 === 滚动升级
 
 此方法包括从集群中删除每个节点、对其进行升级、然后将其重新引入集群、直到所有节点都运行新版本为止。这种方法可以使集群保持正常运行、这是大型HA集群的理想选择、但会带来在此过程中运行混合版本的风险。在双节点集群中应避免使用此方法。
@@ -129,6 +132,7 @@ NOTE: 如果 `Current DC`报告"mxy-version"、则表示集群中的某个节点
 
 
 
+[[complete-cluster-shutdown]]
 === 完全关闭集群
 
 在这种方法中、所有集群节点和资源都会关闭、节点会升级、然后集群会重新启动。如果PacMaker和Corosync版本不支持混合版本配置、则必须使用此方法。

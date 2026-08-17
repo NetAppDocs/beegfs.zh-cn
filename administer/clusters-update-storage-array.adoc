@@ -18,6 +18,7 @@ summary: 升级HA集群的E-Series存储阵列的步骤。
 
 
 
+[[overview]]
 == 概述
 
 确保HA集群的NetApp E-Series存储阵列始终使用最新固件、以确保最佳性能和更高的安全性。存储阵列的固件更新可通过SANtricity操作系统、NVSRAID和驱动器固件文件应用。
@@ -27,6 +28,7 @@ NOTE: 虽然可以在HA集群联机的情况下升级存储阵列、但建议在
 
 
 
+[[block-node-upgrade-steps]]
 == 块节点升级步骤
 
 以下步骤概述了如何使用 `Netapp_Eseries.Santricity`Ands得以 收集来更新存储阵列的固件。在继续操作之前、请查看link:https://docs.netapp.com/us-en/e-series/upgrade-santricity/overview-upgrade-consider-task.html["升级注意事项"^]以更新E-Series系统。

@@ -18,6 +18,7 @@ NetApp解决方案 上的BeeGFS包括用于确定支持经验证的工作负载�
 
 
 
+[[building-block-architecture]]
 == 构建块架构
 
 根据存储要求、可以使用不同的方式部署和扩展BeeGFS文件系统。例如、以大量小文件为主要特征的使用情形将受益于额外的元数据性能和容量、而大文件较少的使用情形则可能有利于提高实际文件内容的存储容量和性能。这些多种注意事项会影响并行文件系统部署的不同维度、从而增加了文件系统设计和部署的复杂性。
@@ -35,6 +36,7 @@ NetApp解决方案 上的BeeGFS包括用于确定支持经验证的工作负载�
 
 
 
+[[file-system-services]]
 == 文件系统服务
 
 BeeGFS文件系统包括以下主要服务：
@@ -55,6 +57,7 @@ image:beegfs-components.png["BeeGFS组件"]
 
 
 
+[[ha-architecture]]
 == HA架构
 
 NetApp上的BeeGFS通过创建与NetApp硬件完全集成的解决方案 来扩展BeeGFS企业版的功能、从而实现共享磁盘高可用性(HA)架构。
@@ -70,6 +73,7 @@ image:beegfs-design-image1.png["HA架构比较"]
 
 
 
+[[verified-nodes]]
 == 已验证节点
 
 NetApp上的BeeGFS解决方案已验证以下节点。
@@ -89,6 +93,7 @@ NetApp上的BeeGFS解决方案已验证以下节点。
 |===
 
 
+[[verified-hardware-design]]
 == 经验证的硬件设计
 
 该解决方案的组件(如下图所示)使用经过验证的文件节点服务器作为BeeGFS文件层、并使用两个EF600存储系统作为块层。
@@ -106,6 +111,7 @@ image:beegfs-design-image3.png["BeeGFS HA集群扩展"]
 
 
 
+[[ansible]]
 == Ansible
 
 NetApp上的BeeGFS是使用Ansible自动化交付和部署的、Ansible自动化托管在GitHub和Ansible GALAXY上(BeeGFS集合可从获取 https://galaxy.ansible.com/netapp_eseries/beegfs["Ansible Galax河"^] 和 https://github.com/netappeseries/beegfs/["NetApp的E系列GitHub"^]）。虽然Ansible主要是使用用于组装BeeGFS组件的硬件进行测试的、但您可以将其配置为使用受支持的Linux版本在几乎任何基于x86的服务器上运行。

@@ -18,16 +18,19 @@ summary: 在集群节点之间移动BeeGFS服务。
 
 
 
+[[overview]]
 == 概述
 
 BeeGFS服务可以在集群中的节点之间进行故障转移、以确保客户端能够在节点发生故障或您需要执行计划内维护时继续访问文件系统。本节介绍管理员在从故障中恢复后修复集群或在节点之间手动移动服务的各种方法。
 
 
 
+[[steps]]
 == 步骤
 
 
 
+[[failover-and-failback]]
 === 故障转移和故障恢复
 
 
@@ -89,6 +92,7 @@ pcs resource relocate run
 ----
 
 
+[[moving-individual-beegfs-services-to-alternate-file-nodes]]
 === 将单个BeeGFS服务移动到备用文件节点
 
 

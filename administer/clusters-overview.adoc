@@ -18,12 +18,14 @@ summary: 了解如何在部署BeeGFS HA集群后对其进行管理。
 
 
 
+[[overview]]
 == 概述
 
 本节面向需要在部署BeeGFS HA集群后对其进行管理的集群管理员。即使是熟悉Linux HA集群的用户也应阅读本指南、因为在管理集群方面存在许多差异、尤其是在使用Ansible进行重新配置方面。
 
 
 
+[[key-concepts]]
 == 关键概念
 
 虽然其中一些概念已在主link:../get-started/beegfs-terms.html["术语和概念"]页上介绍、但在BeeGFS HA集群环境中重新介绍它们会很有帮助：
@@ -50,6 +52,7 @@ summary: 了解如何在部署BeeGFS HA集群后对其进行管理。
 
 
 
+[[common-terminology]]
 == 通用术语
 
 **故障转移：*每个BeeGFS服务都有一个首选文件节点、除非该节点发生故障。当BeeGFS服务在非首选/二级文件节点上运行时、该服务称为处于故障转移状态。

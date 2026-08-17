@@ -18,6 +18,7 @@ BeeGFS服务使用组变量(group_vars)进行配置。
 
 
 
+[[overview]]
 == 概述
 
 本节将介绍如何定义BeeGFS元数据服务。对于特定文件系统、HA集群中应至少存在一个此类型的服务。配置此服务包括定义：
@@ -30,6 +31,7 @@ BeeGFS服务使用组变量(group_vars)进行配置。
 
 
 
+[[steps]]
 == 步骤
 
 参考link:architectures-plan-file-system.html["规划文件系统"^]部分、 `group_vars/meta_<ID>.yml`为集群中的每个元数据服务创建一个位于的文件、然后按如下所示填充它们：

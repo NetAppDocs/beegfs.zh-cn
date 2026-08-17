@@ -18,6 +18,7 @@ summary: 使用Ansible更新BeeGFS和HA集群。
 
 
 
+[[overview]]
 == 概述
 
 BeeGFS采用 `major.minor.patch`版本控制方案。每个受支持的 `major.minor`版本(例如 `beegfs_ha_7_2`和 `beegfs_ha_7_3`)都提供了BeeGFS HA Ansient角色。每个HA角色都固定为在发布此Ansient集合时提供的最新BeeGFS修补程序版本。
@@ -29,6 +30,7 @@ NOTE: 如果要升级到 BeeGFS 8，请参见link:clusters-upgrade-beegfs-v8.htm
 
 
 
+[[tested-upgrade-paths]]
 == 已测试升级路径
 
 已测试和验证以下升级路径：
@@ -69,12 +71,14 @@ NOTE: 如果要升级到 BeeGFS 8，请参见link:clusters-upgrade-beegfs-v8.htm
 |===
 
 
+[[beegfs-upgrade-steps]]
 == BeeGFS升级步骤
 
 以下各节介绍了更新BeeGFS的Ansient集合和BeeGFS本身的步骤。请特别注意更新BeeGFS主要或次要版本的任何额外步骤。
 
 
 
+[[step-1-upgrade-beegfs-collection]]
 === 第1步：升级BeeGFS集合
 
 用于升级可访问的集合 link:https://galaxy.ansible.com/netapp_eseries/beegfs["Ansible Galax河"^]下，运行以下命令：
@@ -93,12 +97,14 @@ ansible-galaxy collection install netapp_eseries-beegfs-<VERSION>.tar.gz --upgra
 
 
 
+[[step-2-update-ansible-inventory]]
 === 第2步：更新Ands处理 清单
 
 对集群的 Ansible 清单文件进行任何必需的或所需的更新。请参阅以下 <<版本升级说明>> 部分，了解有关特定升级要求的详细信息。有关配置 BeeGFS HA 清单的一般信息，请参阅 link:../custom/architectures-inventory-overview.html["Ansible清单概述"^] 部分。
 
 
 
+[[step-3-update-ansible-playbook-when-updating-major-or-minor-versions-only]]
 === 第3步：更新《Ands维修 手册》(仅在更新主要或次要版本时)
 
 如果要在主要版本或次要版本之间切换、请在用于部署和维护集群的文件中 `playbook.yml` 更新角色名称、 `beegfs_ha_<VERSION>` 以反映所需的版本。例如，如果您要部署BeeGFS 7.4，则该文件为 `beegfs_ha_7_4`：
@@ -119,6 +125,7 @@ ansible-galaxy collection install netapp_eseries-beegfs-<VERSION>.tar.gz --upgra
 
 
 
+[[step-4-run-the-beegfs-upgrade]]
 === 第4步：运行BeeGFS升级
 
 要应用BeeGFS更新、请执行以下操作：
@@ -144,10 +151,12 @@ BeeGFS HA角色将在后台处理：
 
 
 
+[[version-upgrade-notes]]
 == 版本升级说明
 
 
 
+[[upgrading-from-beegfs-version-7-2-6-or-7-3-0]]
 === 从BeeGFS 7.2.6或7.3.0版升级
 
 

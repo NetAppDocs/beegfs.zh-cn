@@ -18,6 +18,7 @@ summary: '使用主机变量(host_vars)指定各个文件节点的配置。'
 
 
 
+[[overview]]
 == 概述
 
 本节将逐步介绍填充 `host_vars/<FILE_NODE_HOSTNAME>.yml` 集群中每个文件节点的文件。这些文件只能包含特定文件节点独有的配置。这通常包括：
@@ -33,6 +34,7 @@ summary: '使用主机变量(host_vars)指定各个文件节点的配置。'
 
 
 
+[[steps]]
 == 步骤
 
 请参考link:architectures-plan-file-system.html["规划文件系统"]本节中定义的IP寻址方案、为集群中的每个文件节点创建一个文件 `host_vars/<FILE_NODE_HOSTNAME>/yml`并按如下所示进行填充：
@@ -141,9 +143,10 @@ eseries_nvme_roce_interfaces:
 
 
 
+[[advanced-toggling-nvidia-connectx-vpi-adapters-between-ethernet-and-infiniband-mode]]
 === 高级：在以太网模式和InfiniBand模式之间切换NVIDIA ConnectX VPI适配器
 
-NVIDIA ConnectX-Virtual Protocol Interconnect & reg；(VPI)适配器既支持InfiniBand、也支持以太网作为传输层。不会自动协商模式之间的切换，必须使用中包含的工具进行配置 `mstconfig` ，该工具 `mstflint`是的一个开放源代码软件包 link:https://docs.nvidia.com/networking/display/mftv4270/mft+supported+configurations+and+parameters["NVIDIA软件工具(MFT)"^]。只需更改一次适配器的模式即可。这可以手动完成、也可以作为使用清单部分配置的任何接口的一部分包含在Ands得以 自动检查/应用的清单中 `eseries-[ib|ib_iser|ipoib|nvme_ib|nvme_roce|roce]_interfaces:` 。
+NVIDIA ConnectX-Virtual Protocol Interconnect&reg; (VPI) 适配器支持将 InfiniBand 和以太网作为传输层。模式之间的切换不是自动协商的，必须使用  `mstflint` 中包含的  `mstconfig` 工具进行配置，该工具是 link:https://network.nvidia.com/products/adapter-software/firmware-tools/["NVIDIA软件工具(MFT)"^] 的一部分。只需更改一次适配器的模式即可。这可以手动完成，也可以作为使用清单的  `eseries-[ib|ib_iser|ipoib|nvme_ib|nvme_roce|roce]_interfaces:` 部分配置的任何接口的一部分包含在 Ansible 清单中，以便自动进行检查/应用。
 
 例如、要将InfiniBand模式下的接口电流更改为以太网、以便用于RoCE：
 

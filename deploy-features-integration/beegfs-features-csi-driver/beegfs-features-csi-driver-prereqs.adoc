@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: deploy-features-integration/beegfs-csi-driver/csi-driver-prereqs.html 
+permalink: deploy-features-integration/beegfs-features-csi-driver/beegfs-features-csi-driver-prereqs.html 
 keywords: BeeGFS Features, CSI, Driver 
 summary: 部署 BeeGFS CSI 驱动程序的前提条件 
 ---
@@ -18,6 +18,7 @@ summary: 部署 BeeGFS CSI 驱动程序的前提条件
 
 
 
+[[verify-kubernetes-setup]]
 == 验证 Kubernetes 设置
 
 运行以下命令检查 Kubernetes 集群中 Pod 的状态：
@@ -37,6 +38,7 @@ No resources found in default namespace.
 
 
 
+[[validate-beegfs-client-and-services]]
 == 验证 BeeGFS 客户端和服务
 
 运行以下命令验证 BeeGFS 集群是否运行正常且所有服务均可访问：

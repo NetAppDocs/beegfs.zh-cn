@@ -18,12 +18,14 @@ summary: 使用Ansible部署和管理BeeGFS HA集群。
 
 
 
+[[overview]]
 == 概述
 
 前面几节介绍了构建表示BeeGFS HA集群的Ansible清单所需的步骤。本节介绍由NetApp开发的用于部署和管理集群的Ansible自动化功能。
 
 
 
+[[ansible-key-concepts]]
 == Ansible：关键概念
 
 在继续操作之前、熟悉几个关键的Ansible概念会很有帮助：
@@ -53,6 +55,7 @@ summary: 使用Ansible部署和管理BeeGFS HA集群。
 
 
 
+[[beegfs-ha-role-for-ansible-key-concepts]]
 == BeeGFS HA Role for Ansible：关键概念
 
 在NetApp上部署和管理每个版本的BeeGFS所需的所有自动化功能均作为Ansible角色打包、并作为的一部分进行分发 link:https://galaxy.ansible.com/netapp_eseries/beegfs["适用于BeeGFS的NetApp E系列Ansible资料集"^]：

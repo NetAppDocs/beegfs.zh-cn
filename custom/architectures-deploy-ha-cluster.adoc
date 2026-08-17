@@ -18,16 +18,19 @@ summary: 使用攻略手册指定部署BeeGFS HA集群时应运行的任务。
 
 
 
+[[overview]]
 == 概述
 
 本节介绍如何组合用于在NetApp上部署/管理BeeGFS的标准攻略手册。
 
 
 
+[[steps]]
 == 步骤
 
 
 
+[[create-the-ansible-playbook]]
 === 创建Ansible攻略手册
 
 创建文件 `playbook.yml` 并按如下所示进行填充：
@@ -124,6 +127,7 @@ NOTE: 每个受支持的BeeGFS主要版本都会保留一个BeeGFS HA角色。�
 
 
 
+[[install-the-netapp-ansible-collections]]
 === 安装NetApp Ansible Collections
 
 Ansible和所有依赖关系的BeeGFS收集将在上进行维护 link:https://galaxy.ansible.com/netapp_eseries/beegfs["Ansible Galax河"^]。在Ansible控制节点上、运行以下命令以安装最新版本：
@@ -140,6 +144,7 @@ ansible-galaxy collection install netapp_eseries.beegfs:==<MAJOR>.<MINOR>.<PATCH
 ----
 
 
+[[run-the-playbook]]
 === 运行攻略手册
 
 位于包含的Ansible控制节点上的目录中 `inventory.yml` 和 `playbook.yml` 文件、请按如下所示运行攻略手册：

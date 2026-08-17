@@ -18,6 +18,7 @@ summary: 要在NetApp解决方案 上实施BeeGFS、请确保您的环境满足�
 
 
 
+[[requirements-overview]]
 == 要求概述
 
 本页面详细介绍在 NetApp 构建模块上实施 BeeGFS 的硬件、软件和固件要求。要求分为以下几个部分：
@@ -29,12 +30,14 @@ summary: 要在NetApp解决方案 上实施BeeGFS、请确保您的环境满足�
 
 
 
+[[hardware-requirements]]
 == 硬件要求
 
 在开始之前，请确保您的硬件符合 BeeGFS on NetApp 解决方案的单个构建块设计的以下规范。根据客户要求，特定部署的确切组件可能会有所不同。每个文件节点应满足或超过这些规范，以实现预期性能。
 
 
 
+[[file-node-requirements]]
 === 文件节点要求
 
 [cols="10%,90%"]
@@ -70,6 +73,7 @@ IMPORTANT: 文件节点需要有效的 Red Hat Enterprise Linux Server 订阅和
 
 
 
+[[block-node-requirements]]
 === 块节点要求
 
 每个构建模块需要两个相同型号的 E-Series 阵列。请勿在同一构建模块中混合阵列型号。
@@ -97,6 +101,7 @@ IMPORTANT: 文件节点需要有效的 Red Hat Enterprise Linux Server 订阅和
 |===
 
 
+[[storage-network-switch-requirements]]
 === 存储网络交换机要求
 
 [cols="10%,90%"]
@@ -115,12 +120,14 @@ NOTE: 可以使用 NVIDIA MQM8700 Quantum 等替代交换机，但需要不同�
 
 
 
+[[cabling-requirements]]
 === 布线要求
 
 
 
 ==== 块节点到文件节点电缆
 
+[[block-file-cables]]
 从块节点到文件节点的直接连接需要以下电缆：
 
 [cols="15%,60%,25%"]
@@ -134,6 +141,7 @@ NOTE: 可以使用 NVIDIA MQM8700 Quantum 等替代交换机，但需要不同�
 
 ==== 文件节点到存储交换机电缆
 
+[[file-switch-cables]]
 建议为 NVIDIA QM9700 Quantum 2 交换机使用以下电缆类型。根据您的要求选择有源光纤或无源铜缆。数量按构建块计算。
 
 [cols="20%,15%,10%,55%"]
@@ -154,6 +162,7 @@ NOTE: 可以使用 NVIDIA MQM8700 Quantum 等替代交换机，但需要不同�
 |===
 
 
+[[software-deployment-requirements]]
 === 软件部署要求
 
 下表列出了在基于Ansible的BeeGFS部署中自动部署的软件要求。
@@ -179,6 +188,7 @@ NOTE: 可以使用 NVIDIA MQM8700 Quantum 等替代交换机，但需要不同�
 |===
 
 
+[[ansible-control-node-requirements]]
 === Ansible控制节点要求
 
 NetApp解决方案 上的BeeGFS可从Ansible控制节点进行部署和管理。有关详细信息，请参见 https://docs.ansible.com/ansible/latest/network/getting_started/basic_concepts.html["Ansible文档"^]。

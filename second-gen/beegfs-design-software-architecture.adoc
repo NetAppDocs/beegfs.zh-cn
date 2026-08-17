@@ -18,6 +18,7 @@ NetApp上的BeeGFS软件配置包括BeeGFS网络组件、EF600块节点、BeeGFS
 
 
 
+[[beegfs-network-configuration]]
 == BeeGFS网络配置
 
 BeeGFS网络配置由以下组件组成。
@@ -68,6 +69,7 @@ Stripe pattern details:
 ....
 
 
+[[ef600-block-node-configuration]]
 == EF600块节点配置
 
 块节点由两个主动/主动RAID控制器组成、这些控制器可共享访问同一组驱动器。通常、每个控制器拥有系统上配置的一半卷、但可以根据需要接管另一个控制器。
@@ -86,6 +88,7 @@ image:beegfs-design-image10.png["BeeGFS服务卷所有权"]
 
 
 
+[[beegfs-file-node-configuration]]
 == BeeGFS文件节点配置
 
 BeeGFS文件节点配置到高可用性(HA)集群中、以便于在多个文件节点之间对BeeGFS服务进行故障转移。
@@ -96,6 +99,7 @@ NetApp编写并扩展了多个开放式集群框架(Open Cluster Framework、OCF
 
 
 
+[[beegfs-ha-clusters]]
 == BeeGFS HA集群
 
 通常、在启动BeeGFS服务(无论是否具有HA)时、必须具备一些资源：

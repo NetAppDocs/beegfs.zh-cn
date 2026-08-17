@@ -18,6 +18,7 @@ summary: 安装用于在NetApp上运行BeeGFS的硬件并为其布线所需的�
 
 
 
+[[plan-the-installation]]
 == 规划安装
 
 每个BeeGFS文件系统将包含一些文件节点、这些文件节点运行BeeGFS服务、并使用由某些数量的块节点提供的后端存储。文件节点配置为一个或多个高可用性集群、以便为BeeGFS服务提供容错功能。每个块节点都已是一个主动/主动HA对。每个HA集群中支持的文件节点的最小数量为3个、每个集群中支持的文件节点的最大数量为10个。BeeGFS文件系统可以通过部署多个独立的HA集群来扩展到10个以上节点、这些集群可以协同工作来提供一个文件系统命名空间。
@@ -31,6 +32,7 @@ CAUTION: 在继续安装之前、请确保已充分了解特定BeeGFS部署所�
 
 
 
+[[rack-hardware]]
 == 机架硬件
 
 在规划安装时、每个组件中的所有设备都必须安装在相邻的机架单元中。最佳实践是、将文件节点直接机架安装在每个构建块中的块节点上方。按照文件和型号对应的文档进行操作 link:https://docs.netapp.com/us-en/e-series/getting-started/getup-run-concept.html["块"^] 在机架中安装导轨和硬件时所使用的节点。
@@ -45,6 +47,7 @@ image:beegfs-design-image3-small.png["BeeGFS部署示例"]
 
 
 
+[[cable-file-and-block-nodes]]
 == 为文件和块节点布线
 
 通常、您会将E系列块节点的HIC端口直接连接到文件节点的指定主机通道适配器(对于InfiniBand协议)或主机总线适配器(对于光纤通道和其他协议)端口。建立这些连接的确切方法取决于所需的文件系统架构，下面是一个示例link:../second-gen/beegfs-design-hardware-architecture.html["基于经过NetApp验证的第二代BeeGFS架构"^]：
@@ -53,6 +56,7 @@ image:buildingblock-sr665v3.png["示例BeeGFS文件到块节点的布线"]
 
 
 
+[[cable-file-nodes-to-the-client-network]]
 == 使用缆线将文件节点连接到客户端网络
 
 每个文件节点都将为BeeGFS客户端流量指定一定数量的InfiniBand或以太网端口。根据架构的不同、每个文件节点将有一个或多个连接到高性能客户端/存储网络、也可能连接到多个交换机以实现冗余并增加带宽。以下是使用冗余网络交换机进行客户端布线的示例、其中以深绿色和浅绿色突出显示的端口连接到不同的交换机：
@@ -61,6 +65,7 @@ image:networkcable-sr665v3.png["BeeGFS客户端布线示例"]
 
 
 
+[[connect-management-networking-and-power]]
 == 连接管理网络和电源
 
 建立带内和带外网络所需的任何网络连接。

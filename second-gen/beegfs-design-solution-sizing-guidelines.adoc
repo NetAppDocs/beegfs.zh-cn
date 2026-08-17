@@ -22,6 +22,7 @@ BeeGFS解决方案 提供了基于验证测试的性能和容量规模估算建�
 
 
 
+[[performance-sizing]]
 == 性能规模估算
 
 下表提供了建议的性能规模估算。
@@ -41,6 +42,7 @@ BeeGFS解决方案 提供了基于验证测试的性能和容量规模估算建�
 
 
 
+[[capacity-sizing-for-metadata-storage-building-blocks]]
 == 元数据+存储组件的容量规模估算
 
 下表提供了元数据和存储组件的建议容量大小调整。
@@ -65,6 +67,7 @@ NOTE: 在估算元数据和存储组件的规模时、您可以使用较小的�
 
 
 
+[[capacity-sizing-for-storage-only-building-blocks]]
 == 仅存储组件的容量规模估算
 
 下表提供了仅存储组件的容量规模估算规则。

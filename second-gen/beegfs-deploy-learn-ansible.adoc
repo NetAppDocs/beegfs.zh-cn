@@ -20,6 +20,7 @@ summary: 开始部署之前、请确保了解如何使用Ansible使用第二代B
 
 
 
+[[ansible-modules-and-roles]]
 == Ansible模块和角色
 
 要应用在"Ands还是"清单中描述的配置，请使用NetApp E系列的"Ands还是"集合中提供的各种"Ands还是"模块和角色(可从获取 https://github.com/netappeseries/beegfs/tree/master/roles/beegfs_ha_7_4["NetApp E系列BeeGFS GitHub"^])来部署端到端解决方案。
@@ -33,6 +34,7 @@ NOTE: 尽管部署步骤会尝试提供足够详细的信息、以便事先使�
 
 
 
+[[inventory-layout-for-a-beegfs-ha-cluster]]
 == BeeGFS HA集群的清单布局
 
 使用Ansient清单结构定义BeeGFS HA集群。

@@ -48,7 +48,7 @@ image:driveslots.png["EF600驱动器插槽"]
 
 
 
-. 使用连接块节点和文件节点 link:beegfs-technology-requirements.html#block-file-cables["1米InfiniBand HDR 200 GB直连铜缆"]，使它们与下图所示的拓扑相匹配。
+. 使用 link:beegfs-technology-requirements.html#file-node-requirements["1米InfiniBand HDR 200 GB直连铜缆"] 连接块节点和文件节点，使其与下图所示的拓扑相匹配。
 +
 image:directattachcable-sr665v3.png["SR665V3直连布线"]
 
@@ -56,7 +56,7 @@ image:directattachcable-sr665v3.png["SR665V3直连布线"]
 
 NOTE: 多个组件中的节点不会直接连接。每个组件都应视为一个独立单元、并且各个组件之间的所有通信都通过网络交换机进行。
 
-. 使用特定于InfiniBand存储交换机的将文件节点上的其余InfiniBand端口连接到存储网络的InfiniBand交换机 link:beegfs-technology-requirements.html#file-switch-cables["2米InfiniBand缆线"] 。
+. 使用适用于您的 InfiniBand 存储交换机的link:beegfs-technology-requirements.html#storage-network-switch-requirements["2米InfiniBand缆线"]，将文件节点上的其余 InfiniBand 端口连接到存储网络的 InfiniBand 交换机。
 +
 在使用分路器缆线将存储交换机连接到文件节点时、应从交换机分支出一根缆线、并连接到浅绿色所示的端口。另一根分离器电缆应从交换机分支出来、并连接到深绿色所示的端口。
 

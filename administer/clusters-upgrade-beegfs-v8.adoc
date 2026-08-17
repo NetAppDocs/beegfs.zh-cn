@@ -18,6 +18,7 @@ summary: 从 BeeGFS 7.4 更新到 BeeGFS 8。
 
 
 
+[[overview]]
 == 概述
 
 BeeGFS 8 引入了一些重大更改，这些更改需要在从 BeeGFS 7 升级之前进行其他设置。本文档指导您为 BeeGFS 8 的新要求准备集群，然后升级到 BeeGFS 8。
@@ -27,6 +28,7 @@ IMPORTANT: 在升级到 BeeGFS 8 之前，请确保您的系统至少运行 BeeG
 
 
 
+[[key-changes-in-beegfs-8]]
 == BeeGFS 8 的主要变化
 
 BeeGFS 8 引入了以下主要更改：
@@ -45,6 +47,7 @@ BeeGFS 8 引入了以下主要更改：
 ====
 
 
+[[prepare-your-beegfs-cluster-for-the-upgrade]]
 == 为升级准备 BeeGFS 集群
 
 在开始升级之前，请仔细准备您的环境，以确保平稳过渡并最大限度地减少停机时间。
@@ -100,6 +103,7 @@ pcs cluster stop --all
 
 
 
+[[upgrade-the-beegfs-management-package]]
 == 升级 BeeGFS 管理包
 
 在集群中的所有文件节点上，为您的 Linux 发行版添加 BeeGFS 8 包存储库。有关为您的 Linux 发行版添加官方 BeeGFS 存储库的说明，请参阅 link:https://www.beegfs.io/c/download/["BeeGFS 下载页面"^]。否则，请相应地配置本地 BeeGFS 镜像存储库。
@@ -118,6 +122,8 @@ dnf update beegfs-mgmtd
 
 
 
+[[upgrade-the-management-database]]
+[[upgrade-management-database]]
 == 升级管理数据库
 
 在运行 BeeGFS 管理服务的其中一个文件节点上，按照以下步骤将管理数据库从 BeeGFS 7 迁移到 BeeGFS 8。
@@ -185,6 +191,7 @@ mv /etc/beegfs/beegfs-mgmtd.toml /mnt/mgmt_tgt_mgmt01/mgmt_config/
 
 
 
+[[upgrade-remaining-beegfs-packages]]
 == 升级剩余的 BeeGFS 包
 
 完成管理数据库迁移后，升级集群中所有文件节点上的剩余 BeeGFS 包。对于 RHEL，配置 BeeGFS 存储库后，运行以下命令：
@@ -196,6 +203,7 @@ dnf update beegfs-storage beegfs-meta libbeegfs-ib
 ----
 
 
+[[configure-licensing]]
 == 配置许可
 
 . 在运行 BeeGFS 管理服务的所有节点上安装 BeeGFS 许可证包。这通常是集群的前两个文件节点：
@@ -214,6 +222,7 @@ dnf install libbeegfs-license
 
 
 
+[[configure-tls-encryption]]
 == 配置 TLS 加密
 
 BeeGFS 8 需要 TLS 加密以实现管理服务与 BeeGFS CLI 工具之间的安全通信(`beegfs`）。从三种配置方法中选择一种：使用由受信任的证书颁发机构签名的证书，创建自己的本地 CA 以对 BeeGFS 群集的证书进行签名，或完全禁用 TLS 以进行故障排除（不推荐用于生产）。
@@ -227,6 +236,7 @@ BeeGFS 8 需要 TLS 加密以实现管理服务与 BeeGFS CLI 工具之间的安
 ====
 
 
+[[update-management-service-configuration]]
 == 更新管理服务配置
 
 通过将设置从 BeeGFS 7 配置文件手动传输到 `/mnt/mgmt_tgt_mgmt01/mgmt_config/beegfs-mgmtd.toml`文件中来准备 BeeGFS 8 管理服务配置文件。
@@ -288,6 +298,7 @@ sudo firewall-cmd --reload
 
 
 
+[[update-the-beegfs-monitor-script]]
 == 更新 BeeGFS 监控脚本
 
 Pacemaker `beegfs-monitor` Open Cluster Framework (OCF) 脚本需要更新，以支持新的 TOML 配置格式和 systemd 服务管理。更新集群中一个节点上的脚本，然后将更新后的脚本复制到所有其他节点。
@@ -398,6 +409,7 @@ scp /usr/lib/ocf/resource.d/eseries/beegfs-monitor user@node:/usr/lib/ocf/resour
 
 
 
+[[bring-the-cluster-back-online]]
 == 使集群恢复联机
 
 . 完成之前的所有升级步骤后，通过在所有节点上启动 BeeGFS 服务，使集群恢复联机状态。
@@ -444,6 +456,7 @@ pcs property set stonith-enabled=true
 
 
 
+[[upgrade-beegfs-clients]]
 == 升级 BeeGFS 客户端
 
 将群集升级到 BeeGFS 8 后，还必须升级所有 BeeGFS 客户端。
@@ -499,6 +512,7 @@ apt-get install beegfs-tools
 
 
 
+[[verify-the-upgrade]]
 == 验证升级
 
 完成升级到 BeeGFS 8 后，运行以下命令以验证升级是否成功。

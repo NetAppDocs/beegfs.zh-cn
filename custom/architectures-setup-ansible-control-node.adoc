@@ -18,6 +18,7 @@ summary: 设置Ansible控制节点以部署和管理文件系统。
 
 
 
+[[overview]]
 == 概述
 
 Ansible控制节点是用于管理集群的物理或虚拟Linux计算机。它必须满足以下要求：

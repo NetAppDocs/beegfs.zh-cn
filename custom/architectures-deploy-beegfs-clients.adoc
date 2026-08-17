@@ -18,16 +18,19 @@ summary: 也可以使用Ansible配置BeeGFS客户端并挂载文件系统。
 
 
 
+[[overview]]
 == 概述
 
 要访问BeeGFS文件系统、需要在需要挂载文件系统的每个节点上安装和配置BeeGFS客户端。本节介绍如何使用可用执行这些任务 link:https://github.com/netappeseries/beegfs/tree/master/roles/beegfs_client["Ansible角色"^]。
 
 
 
+[[steps]]
 == 步骤
 
 
 
+[[create-the-client-inventory-file]]
 === 创建客户端清单文件
 
 . 如果需要、请从Ansible控制节点向要配置为BeeGFS客户端的每个主机设置无密码SSH：
@@ -169,6 +172,7 @@ beegfs_ha_conn_auth_enabled: false
 
 
 
+[[create-the-beegfs-client-playbook-file]]
 === 创建BeeGFS客户端攻略手册文件
 
 . 创建新文件 `client_playbook.yml`
@@ -227,6 +231,7 @@ beegfs_ha_conn_auth_enabled: false
 
 
 
+[[run-the-beegfs-client-playbook]]
 === 运行BeeGFS客户端攻略手册
 
 要安装/构建客户端并挂载BeeGFS、请运行以下命令：

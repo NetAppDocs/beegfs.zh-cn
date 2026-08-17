@@ -18,12 +18,14 @@ summary: 更新文件节点的ConnectX-7适配器固件的步骤。
 
 
 
+[[overview]]
 == 概述
 
 要支持新的MLNX_OFED驱动程序、启用新功能或修复错误、可能需要更新ConnectX-7适配器固件。本指南将使用NVIDIA的 `mlxfwmanager`实用程序进行适配器更新、因为它易于使用且效率高。
 
 
 
+[[upgrade-considerations]]
 == 升级注意事项
 
 本指南介绍更新ConnectX-7适配器固件的两种方法：滚动更新和双节点集群更新。根据集群大小选择适当的更新方法。在执行固件更新之前、请验证：
@@ -35,6 +37,7 @@ summary: 更新文件节点的ConnectX-7适配器固件的步骤。
 
 
 
+[[firmware-update-preparation]]
 == 固件更新准备
 
 建议使用NVIDIA的 `mlxfwmanager`实用程序更新节点的适配器固件、该固件与NVIDIA的MLNR_OFED驱动程序捆绑在一起。开始更新之前、请从下载适配器的固件映像link:https://network.nvidia.com/support/firmware/firmware-downloads/["NVIDIA的支持站点"^]、并将其存储在每个文件节点上。
@@ -44,6 +47,7 @@ TIP: 对于联想ConnectX-7适配器、请使用 `mlxfwmanager_LES`NVIDIA页面�
 
 
 
+[[rolling-update-approach]]
 == 滚动更新方法
 
 对于具有两个以上节点的任何HA集群、建议使用此方法。此方法涉及一次更新一个文件节点上的适配器固件、以使HA集群能够继续处理请求、但建议避免在此期间处理I/O。
@@ -80,7 +84,7 @@ NOTE: 根据集群大小、BeeGFS服务可能需要几秒钟或几分钟才能�
 . 使用实用程序重置每个适配器 `mlxfwreset`以应用新固件。
 +
 
-NOTE: 某些固件更新可能需要重新启动才能应用更新。有关指导、请参见。link:https://docs.nvidia.com/networking/display/mftv4310/mlxfwreset+%E2%80%93+loading+firmware+on+5th+generation+devices+tool#src-3566627427_safe-id-bWx4ZndyZXNldOKAk0xvYWRpbmdGaXJtd2FyZW9uNXRoR2VuZXJhdGlvbkRldmljZXNUb29sLW1seGZ3cmVzZXRMaW1pdGF0aW9ucw["NVIDIA的mxfwreset限制"^]如果需要重新启动、请执行重新启动、而不是重置适配器。
+NOTE: 某些固件更新可能需要重新启动才能应用更新。有关指导，请参阅 link:https://networking-docs.nvidia.com/mftswum/4201/mlxfwreset-loading-firmware-on-5th-generation-devices-tool#id-(4.20.1)mlxfwreset–LoadingFirmwareon5thGenerationDevicesTool-mlxfwresetLimitations["NVIDIA的mxfwreset限制"^]。如果需要重新启动，请执行重新启动，而不是重置适配器。
 
 +
 .. 停止opensm服务：
@@ -146,6 +150,7 @@ pcs resource relocate run
 
 
 
+[[two-node-cluster-update-approach]]
 == 双节点集群更新方法
 
 对于仅包含两个节点的HA集群、建议使用此方法。此方法类似于滚动更新、但还包括一些额外的步骤、以防止在一个节点的集群服务停止时出现服务停机。
@@ -188,7 +193,7 @@ pcs property set maintenance-mode=true
 . 使用实用程序重置每个适配器 `mlxfwreset`以应用新固件。
 +
 
-NOTE: 某些固件更新可能需要重新启动才能应用更新。有关指导、请参见。link:https://docs.nvidia.com/networking/display/mftv4310/mlxfwreset+%E2%80%93+loading+firmware+on+5th+generation+devices+tool#src-3566627427_safe-id-bWx4ZndyZXNldOKAk0xvYWRpbmdGaXJtd2FyZW9uNXRoR2VuZXJhdGlvbkRldmljZXNUb29sLW1seGZ3cmVzZXRMaW1pdGF0aW9ucw["NVIDIA的mxfwreset限制"^]如果需要重新启动、请执行重新启动、而不是重置适配器。
+NOTE: 某些固件更新可能需要重新启动才能应用更新。有关指导，请参阅 link:https://networking-docs.nvidia.com/mftswum/4201/mlxfwreset-loading-firmware-on-5th-generation-devices-tool#id-(4.20.1)mlxfwreset–LoadingFirmwareon5thGenerationDevicesTool-mlxfwresetLimitations["NVIDIA的mxfwreset限制"^]。如果需要重新启动，请执行重新启动，而不是重置适配器。
 
 +
 .. 停止opensm服务：

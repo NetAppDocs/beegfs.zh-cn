@@ -18,16 +18,19 @@ summary: 对BeeGFS HA集群进行故障排除。
 
 
 
+[[overview]]
 == 概述
 
 本节将介绍如何调查各种故障以及在运行BeeGFS HA集群时可能出现的其他情形并对其进行故障排除。
 
 
 
+[[troubleshooting-guides]]
 == 故障排除指南
 
 
 
+[[investigating-unexpected-failovers]]
 === 正在调查意外故障转移
 
 当节点意外隔离并将其服务移至另一个节点时、第一步应是查看集群是否在底部指示任何资源故障 `pcs status`。如果成功完成隔离且资源已在另一节点上重新启动、则通常不会显示任何内容。
@@ -135,6 +138,7 @@ Jul 01 16:18:14 beegfs_01 pacemaker-controld[9247]:  notice: Peer beegfs_02 was 
 
 
 
+[[address-failed-resource-actions-found-at-the-bottom-of-pcs-status]]
 === 解决失败的资源操作(位于pcs状态的底部)
 
 如果运行BeeGFS服务所需的资源发生故障、BeeGFS监控器将触发故障转移。如果发生这种情况，底部可能不会列出“失败的资源操作” `pcs status`，您应参阅有关如何操作的步骤link:clusters-failover-failback.html["计划外故障转移后的故障恢复"^]。
@@ -211,10 +215,12 @@ Jul 01 16:18:14 beegfs_01 pacemaker-controld[9247]:  notice: Peer beegfs_02 was 
 
 
 
+[[common-issues]]
 == 常见问题
 
 
 
+[[beegfs-services-dont-failover-or-failback-when-requested]]
 === BeeGFS服务在请求时不会进行故障转移或故障恢复
 
 *可能的问题描述 ：* `pcs resource relocate` 运行命令已执行、但从未成功完成。
@@ -225,6 +231,7 @@ Jul 01 16:18:14 beegfs_01 pacemaker-controld[9247]:  notice: Peer beegfs_02 was 
 
 
 
+[[one-node-in-pcs-status-shows-standby-on-fail-when-fencing-is-disabled]]
 === 禁用隔离后、处于pcs状态的一个节点将显示"standby (on-fail)"
 
 *可能的问题描述 ：* Pacemaker无法成功确认故障节点上的所有资源均已停止。
@@ -237,6 +244,7 @@ Jul 01 16:18:14 beegfs_01 pacemaker-controld[9247]:  notice: Peer beegfs_02 was 
 
 
 
+[[after-an-unexpected-failover-resources-show-started-on-fail-in-pcs-status-when-fencing-is-enabled]]
 === 在发生意外故障转移后、如果启用了隔离、则资源将以pcs状态显示"started (on-fail)"
 
 *可能的问题描述 ：*发生了一个问题、触发了故障转移、但Pacemaker无法验证节点是否已隔离。发生这种情况的原因可能是隔离配置不当或存在具有隔离代理的问题描述 (例如：PDU已与网络断开连接)。
@@ -255,10 +263,12 @@ CAUTION: 如果您指定的节点实际上未关闭、但正在运行集群服�
 
 
 
+[[common-troubleshooting-tasks]]
 == 常见故障排除任务
 
 
 
+[[restart-individual-beegfs-services]]
 === 重新启动单个BeeGFS服务
 
 通常、如果需要重新启动BeeGFS服务(例如、为了便于更改配置)、应通过更新Ansible清单并重新运行攻略手册来完成此操作。在某些情况下、可能需要重新启动单个服务以加快故障排除速度、例如更改日志记录级别而无需等待整个攻略手册运行。

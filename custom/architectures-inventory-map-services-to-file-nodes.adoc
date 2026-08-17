@@ -18,12 +18,14 @@ summary: 使用inventory.yml文件指定哪些文件节点可以运行每个BeeG
 
 
 
+[[overview]]
 == 概述
 
 本节将介绍如何创建 `inventory.yml` 文件其中包括列出所有块节点并指定可以运行每个BeeGFS服务的文件节点。
 
 
 
+[[steps]]
 == 步骤
 
 创建文件 `inventory.yml` 并按如下所示进行填充：

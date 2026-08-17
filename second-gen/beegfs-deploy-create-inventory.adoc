@@ -18,6 +18,7 @@ summary: 要定义文件和块节点的配置、请创建一个Ansible清单、�
 
 
 
+[[step-1-define-configuration-for-all-building-blocks]]
 == 第1步：定义所有组件的配置
 
 定义适用场景 所有组件的配置、无论您可以单独应用于这些组件的配置文件如何。
@@ -78,6 +79,7 @@ bmc_password: <PASSWORD>
 
 
 
+[[step-2-define-configuration-for-individual-file-and-block-nodes]]
 == 第2步：为单个文件和块节点定义配置
 
 定义适用场景 单个文件节点和单个组件节点的配置。
@@ -174,6 +176,7 @@ eseries_controller_nvme_ib_port:
 
 
 
+[[step-3-define-configuration-that-should-apply-to-all-file-and-block-nodes]]
 == 第3步：定义应应用于所有文件和块节点的配置
 
 您可以使用与组对应的文件名在`group_vars`下定义一组主机的通用配置。这样可以防止在多个位置重复使用共享配置。
@@ -194,6 +197,7 @@ beegfs_ha_ntp_server_pools:  # Modify the NTP server addressess if desired.
 ....
 
 
+[[step-4-define-configuration-that-should-apply-to-all-file-nodes]]
 == 第4步：定义应应用于所有文件节点的配置
 
 文件节点的共享配置在名为`ha_cluster`的组中定义。本节中的步骤将构建应包含在`group_vars/ha_cluster.yml`文件中的配置。
@@ -366,6 +370,7 @@ NOTE: 在验证测试中、通常会使用`Randomrobin`来确保测试文件在�
 
 
 
+[[step-5-define-the-configuration-for-the-common-block-node]]
 == 第5步：定义通用块节点的配置
 
 块节点的共享配置在名为`Eseries_storage_systems`的组中定义。本节中的步骤构建了应包含在`group_vars/ eseries_storage_systems.yml`文件中的配置。
