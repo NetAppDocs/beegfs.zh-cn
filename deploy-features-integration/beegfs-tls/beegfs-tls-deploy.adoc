@@ -10,7 +10,7 @@ summary: 为 BeeGFS 服务和客户端之间的安全通信配置 TLS 加密。
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ../../media/
+:imagesdir: ../media/
 
 
 [role="lead"]
