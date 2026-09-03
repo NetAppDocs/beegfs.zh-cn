@@ -25,7 +25,7 @@ summary: 高容量组件的设计变体。
 
 部署高容量构建块设计的客户可能仅使用基础构建块模式配置、该配置包含每个节点的BeeGFS管理、元数据和存储服务。为了节省成本、高容量存储节点应在EF300控制器机箱中的NVMe驱动器上配置元数据卷、并为扩展托盘中的NL-SAS驱动器配置存储卷。
 
-image:high-capacity-rack-diagram.png[""]
+image:high-capacity-rack-diagram.png["显示带有 EF300 NVMe 和 NL-SAS IOM 扩展托盘的 BeeGFS 高容量机架的示意图"]
 
 
 

@@ -798,7 +798,6 @@
   <block id="800f7da804cf784ad962d085fbc70486" category="section-title">硬件和软件配置</block>
   <block id="90f177623f1131fc7f45e82db6189a1b" category="paragraph">高容量组件的硬件和软件配置是标准配置、但EF600控制器应更换为EF300控制器、并可选择在1到7个IOM扩展托盘之间连接、每个存储阵列使用60个驱动器。每个组件总共有2到14个扩展托盘。</block>
   <block id="467fccc62f2ea7630303f15d47a54aa7" category="paragraph">部署高容量构建块设计的客户可能仅使用基础构建块模式配置、该配置包含每个节点的BeeGFS管理、元数据和存储服务。为了节省成本、高容量存储节点应在EF300控制器机箱中的NVMe驱动器上配置元数据卷、并为扩展托盘中的NL-SAS驱动器配置存储卷。</block>
-  <block id="774f4231e5651061791e65cf90314897" category="paragraph"><block ref="774f4231e5651061791e65cf90314897" category="inline-image-macro-rx" type="image"></block></block>
   <block id="267aa4fef181a2097a06345c854cc106" category="paragraph">这些规模估算准则假定高容量组件在基础EF300机箱中配置了一个2+2 NVMe SSD卷组用于元数据、并在每个IOM扩展托盘中配置了6个8+2 NL-SAS卷组用于存储。</block>
   <block id="963320465e8fcfa25188a669a43858c4" category="cell">驱动器大小(容量HDD)</block>
   <block id="55fd8e839de07671a6869fad80279ab9" category="cell">每个BB的容量(1个托盘)</block>
@@ -2304,4 +2303,6 @@
   <block id="39e82490f86540625468057a5c9e178f" category="admonition">卷大小指定为整个存储池（也称为卷组）的百分比。NetApp 强烈建议您在每个池中保留一些可用容量，以便为 SSD 过度配置留出空间（有关详细信息，请参阅<block ref="b9c1bd6e1c1f792f57ed93348fcb8733" category="inline-link-rx"></block>）。存储池<block ref="7ef878b8d47cf2658a8b7e4c1b8f133d" prefix=" " category="inline-code"></block>也将池容量的 1% 分配给管理服务。因此，对于存储池中的元数据卷<block ref="7ef878b8d47cf2658a8b7e4c1b8f133d" prefix=" " category="inline-code"></block>，当使用 1.92 TB 或 3.84 TB 驱动器时，将此值设置为<block ref="6950471ad34ba84d94045961d34ad16b" prefix=" " category="inline-code"></block>；对于 7.65 TB 驱动器，将此值设置为<block ref="6d61e9b2e679326dd5a7a5a155cce414" prefix=" " category="inline-code"></block>；对于 15.3 TB 驱动器，将此值设置为<block ref="c350ffebb2160c4726034bf20ba7520f" prefix=" " category="inline-code"></block>。</block>
   <block id="898b73a1917e274962eb06b63e1f1a15" category="list-text">使用 <block ref="472d38a98c7fba32714d0269e6ad819a" category="inline-link-macro-rx"></block> 连接块节点和文件节点，使其与下图所示的拓扑相匹配。</block>
   <block id="c6c1a150fe2c0ea553b51e7aa7980236" category="list-text">使用适用于您的 InfiniBand 存储交换机的<block ref="6641f55c02ab74028026a655dbf4927b" category="inline-link-macro-rx"></block>，将文件节点上的其余 InfiniBand 端口连接到存储网络的 InfiniBand 交换机。</block>
+  <block id="bba78d7694815dc44320a2e751daa486" category="inline-image-macro">显示带有 EF300 NVMe 和 NL-SAS IOM 扩展托盘的 BeeGFS 高容量机架的示意图</block>
+  <block id="1155b61fff96aa3c1a731c367cdcc208" category="paragraph"><block ref="1155b61fff96aa3c1a731c367cdcc208" category="inline-image-macro-rx" type="image"></block></block>
 </blocks>
