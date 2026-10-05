@@ -2305,4 +2305,5 @@
   <block id="c6c1a150fe2c0ea553b51e7aa7980236" category="list-text">使用适用于您的 InfiniBand 存储交换机的<block ref="6641f55c02ab74028026a655dbf4927b" category="inline-link-macro-rx"></block>，将文件节点上的其余 InfiniBand 端口连接到存储网络的 InfiniBand 交换机。</block>
   <block id="bba78d7694815dc44320a2e751daa486" category="inline-image-macro">显示带有 EF300 NVMe 和 NL-SAS IOM 扩展托盘的 BeeGFS 高容量机架的示意图</block>
   <block id="1155b61fff96aa3c1a731c367cdcc208" category="paragraph"><block ref="1155b61fff96aa3c1a731c367cdcc208" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="5d19eac40cba34daeadf75a699707ab3" category="summary">决定何时使用 Ansible 或 pcs 命令行工具来管理 BeeGFS HA 集群。使用 Ansible 进行部署和配置更改，使用 pcs 进行临时集群状态更改。</block>
 </blocks>
