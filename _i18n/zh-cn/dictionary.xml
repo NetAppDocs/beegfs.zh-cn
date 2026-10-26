@@ -1172,7 +1172,6 @@
   <block id="787446c6f7e5e0f4a50705b5035eba79" category="admonition">此外、还可以在各个文件节点上定义此文件中设置的选项、例如、如果使用的是混合硬件型号、或者每个节点的密码不同。单个文件节点上的配置将优先于此文件中的配置。</block>
   <block id="0971602076ba9dff100f7cfc2d9e6059" category="paragraph">创建文件<block ref="4003590e6e5408f8e5272e50f909dfac" prefix=" " category="inline-code"></block> 并按如下所示进行填充：</block>
   <block id="84531cf8a820148a6599e174baf94979" category="list-text">指示Ansible Control节点应如何向远程主机进行身份验证：</block>
-  <block id="2d33afd54604fb6475c44a1bc47fe2b1" category="admonition">尤其是在生产环境中、不要以纯文本格式存储密码。请改用Ansible Vault (请参见 <block ref="37147a1e5d41497ae56472e8a2868a2a" category="inline-link-macro-rx"></block>)或<block ref="13d87b4892426ec19bdc58a4643d3104" prefix=" " category="inline-code"></block> 运行攻略手册时的选项。如果<block ref="f2bf771afbc16045e1951ded58c56f98" prefix=" " category="inline-code"></block> 已为root用户、则可以选择省略<block ref="424240cd4e5c359372b7f199431603d5" prefix=" " category="inline-code"></block>。</block>
   <block id="0a94da3169c04bc12f2c561654269433" category="list-text">如果要在以太网或InfiniBand接口上配置静态IP (例如集群IP)、并且多个接口位于同一IP子网中(例如、ib0使用192.168.1.10/24、ib1使用192.168.1.11/24)、要使多主机支持正常工作、必须设置其他IP路由表和规则。只需按如下所示启用提供的网络接口配置挂钩：</block>
   <block id="502d35f94d5c17779c9050bbed75f65f" category="list-text">部署集群时、根据存储协议的不同、可能需要重新启动节点、以便于发现远程块设备(E系列卷)或应用配置的其他方面。默认情况下、节点将在重新启动之前进行提示、但您可以通过指定以下内容来允许节点自动重新启动：</block>
   <block id="ff31dc05d095d346c18f3e8f2d758fe0" category="list-text">默认情况下、重新启动后、为确保块设备和其他服务准备就绪、Ansible将等待系统完成<block ref="dbd7cb25a43d1cd2bbc3bac871dad694" prefix=" " category="inline-code"></block> 将在继续部署之前访问。在某些使用NVMe/IB的情况下、此过程可能不够长、无法初始化、发现和连接到远程设备。这可能会导致自动部署过早继续并失败。为避免在使用NVMe/IB时出现这种情况、还应定义以下内容：</block>
@@ -1287,7 +1286,6 @@
   <block id="e520383c76f5e72226ebb572b987380c" category="doc">Ansible清单概述</block>
   <block id="7a1eabc3deb7fd02ceb1e16eafc41073" category="inline-link-macro">清单</block>
   <block id="283c77f47e33325beac16dfcff1fbdc4" category="inline-link-macro">子目录/文件</block>
-  <block id="3a6e55a49a2cdf7c86076b810d565fc2" category="paragraph">建议遵循标准的Ansible实践来组织 <block ref="6c37acba8ff27fe32f3259d928e2df83" category="inline-link-macro-rx"></block>、包括使用 <block ref="0b746a370389b97701184b02d91b44b0" category="inline-link-macro-rx"></block> 而不是将整个清单存储在一个文件中。</block>
   <block id="21c8e198e85188d23c3e8ec1332bc84c" category="paragraph">单个BeeGFS HA集群的Ansible清单组织如下：</block>
   <block id="8c57469570cfaa1ea4910df225230163" category="admonition">由于一个BeeGFS文件系统可以跨越多个HA集群、因此大型安装可能具有多个Ansible清单。通常、不建议尝试将多个HA集群定义为一个Ansible清单以避免出现问题。</block>
   <block id="1b1ad4049313d49cd09961eea7b62a6f" category="list-text">在Ansible控制节点上、创建一个空目录、该目录将包含要部署的BeeGFS集群的Ansible清单。</block>
@@ -2306,4 +2304,6 @@
   <block id="bba78d7694815dc44320a2e751daa486" category="inline-image-macro">显示带有 EF300 NVMe 和 NL-SAS IOM 扩展托盘的 BeeGFS 高容量机架的示意图</block>
   <block id="1155b61fff96aa3c1a731c367cdcc208" category="paragraph"><block ref="1155b61fff96aa3c1a731c367cdcc208" category="inline-image-macro-rx" type="image"></block></block>
   <block id="5d19eac40cba34daeadf75a699707ab3" category="summary">决定何时使用 Ansible 或 pcs 命令行工具来管理 BeeGFS HA 集群。使用 Ansible 进行部署和配置更改，使用 pcs 进行临时集群状态更改。</block>
+  <block id="513599b281713978d80226e0f56f9c0a" category="admonition">特别是对于生产环境，请勿以明文形式存储密码。而是在运行 playbook 时使用 Ansible Vault（请参阅<block ref="4b111299cca4fdd006b43308bd1ab354" category="inline-link-macro-rx"></block>）或<block ref="13d87b4892426ec19bdc58a4643d3104" prefix=" " category="inline-code"></block>选项。如果<block ref="f2bf771afbc16045e1951ded58c56f98" prefix=" " category="inline-code"></block>已经是 root，则可以选择省略<block ref="424240cd4e5c359372b7f199431603d5" prefix=" " category="inline-code"></block>。</block>
+  <block id="85efe1210965d4287331f2ab6df5e168" category="paragraph">建议遵循标准的 Ansible 实践来组织 <block ref="54994086eb4d51da014367d96b838ce1" category="inline-link-macro-rx"></block>，包括使用 <block ref="4e9b100ee0802974cbea117806855df2" category="inline-link-macro-rx"></block>，而不是将整个清单存储在一个文件中。</block>
 </blocks>

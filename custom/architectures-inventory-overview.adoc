@@ -21,7 +21,7 @@ Ansible清单是一组配置文件、用于定义所需的BeeGFS HA集群。
 [[overview]]
 == 概述
 
-建议遵循标准的Ansible实践来组织 link:https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html["清单"]、包括使用 link:https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html#organizing-host-and-group-variables["子目录/文件"] 而不是将整个清单存储在一个文件中。
+建议遵循标准的 Ansible 实践来组织 link:https://docs.ansible.com/projects/ansible/latest/inventory_guide/intro_inventory.html["清单"]，包括使用 link:https://docs.ansible.com/projects/ansible/latest/inventory_guide/intro_inventory.html#organizing-host-and-group-variables["子目录/文件"]，而不是将整个清单存储在一个文件中。
 
 单个BeeGFS HA集群的Ansible清单组织如下：
 

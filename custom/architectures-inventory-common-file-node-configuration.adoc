@@ -51,7 +51,7 @@ ansible_become_password: <PASSWORD>
 ----
 +
 
-WARNING: 尤其是在生产环境中、不要以纯文本格式存储密码。请改用Ansible Vault (请参见 link:https://docs.ansible.com/ansible/latest/vault_guide/index.html["使用Ansible Vault加密内容"^])或 `--ask-become-pass` 运行攻略手册时的选项。如果 `ansible_ssh_user` 已为root用户、则可以选择省略 `ansible_become_password`。
+WARNING: 特别是对于生产环境，请勿以明文形式存储密码。而是在运行 playbook 时使用 Ansible Vault（请参阅link:https://docs.ansible.com/projects/ansible/latest/vault_guide/index.html["使用Ansible Vault加密内容"^]）或 `--ask-become-pass`选项。如果 `ansible_ssh_user`已经是 root，则可以选择省略 `ansible_become_password`。
 
 . 如果要在以太网或InfiniBand接口上配置静态IP (例如集群IP)、并且多个接口位于同一IP子网中(例如、ib0使用192.168.1.10/24、ib1使用192.168.1.11/24)、要使多主机支持正常工作、必须设置其他IP路由表和规则。只需按如下所示启用提供的网络接口配置挂钩：
 +
