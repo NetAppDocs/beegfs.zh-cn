@@ -103,7 +103,7 @@ ansible-playbook -i inventory.yml playbook.yml --forks 20
 ....
 +
 
-NOTE: 尤其是对于大型部署、 `forks`建议使用参数覆盖默认的分叉数(5)、以增加Ans可 并行配置的主机数量。(有关详细信息，请参阅 https://docs.ansible.com/ansible/latest/user_guide/playbooks_strategies.html["控制攻略手册执行"^]。)最大值设置取决于可变控制节点上可用的处理功率。以上示例20是在具有4个CPU (Intel (R) Xeon (R) Gold 6146 CPU @ 3.20GHz)的虚拟Ansible控制节点上运行的。
+NOTE: 特别是对于大型部署，建议使用 `forks`参数覆盖默认的分叉数（5），以增加 Ansible 并行配置的主机数量。（有关详细信息，请参见 https://docs.ansible.com/projects/ansible/latest/playbook_guide/playbooks_strategies.html["控制攻略手册执行"^]。）最大值设置取决于 Ansible 控制节点上可用的处理能力。上面的示例 20 在具有 4 个 CPU（Intel(R) Xeon(R) Gold 6146 CPU @ 3.20GHz）的虚拟 Ansible 控制节点上运行。
 
 +
 根据Ansible控制节点与BeeGFS文件和块节点之间的部署规模和网络性能、部署时间可能会有所不同。

@@ -35,7 +35,7 @@ summary: 使用攻略手册指定部署BeeGFS HA集群时应运行的任务。
 
 创建文件 `playbook.yml` 并按如下所示进行填充：
 
-. 首先定义一组任务(通常称为 link:https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html#playbook-syntax["播放"^])、并且只能在NetApp E系列块节点上运行。我们会使用暂停任务在运行安装之前进行提示(以避免意外运行攻略手册)、然后导入 `nar_santricity_management` 角色。此角色负责应用中定义的任何常规系统配置 `group_vars/eseries_storage_systems.yml` 或个人 `host_vars/<BLOCK NODE>.yml` 文件。
+. 首先定义一组仅应在 NetApp E 系列块节点上运行的任务（通常称为 link:https://docs.ansible.com/projects/ansible/latest/playbook_guide/playbooks_intro.html#playbook-syntax["播放"^]）。我们使用暂停任务在运行安装之前进行提示（以避免意外运行 playbook），然后导入  `nar_santricity_management` 角色。此角色负责应用在  `group_vars/eseries_storage_systems.yml` 或单个  `host_vars/<BLOCK NODE>.yml` 文件中定义的任何常规系统配置。
 +
 [source, yaml]
 ----

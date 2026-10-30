@@ -19,7 +19,6 @@
   <block id="d95adee972ae170512bd3bdbce557054" category="cell">起搏器</block>
   <block id="13f2a3097f055e043d74b20940df2658" category="section-title">Ansible控制节点要求</block>
   <block id="c3ee5ddf91e65773d3e9d27f9e627350" category="inline-link">Ansible文档</block>
-  <block id="83d32979307efd813f41ef5070206fd3" category="paragraph">NetApp解决方案 上的BeeGFS可从Ansible控制节点进行部署和管理。有关详细信息，请参见<block ref="4410f583cbabaee2389115371eb2ab02" category="inline-link-rx"></block>。</block>
   <block id="158a122309f0454b31e4853755a5962a" category="paragraph">下表中列出的软件要求特定于下面列出的NetApp BeeGFS Ansible集合版本。</block>
   <block id="d51d5ee15f404c2f4f7863bebcde1fac" category="cell">Ansible</block>
   <block id="a7f5f35426b927411fc9231b56382173" category="cell">Python</block>
@@ -226,7 +225,6 @@
   <block id="05c8acf59a637c421ef21a4a37d674de" category="list-text">在`host_vars/`下、为名为`&lt;HOSTNAME&gt;.yml`的每个BeeGFS客户端创建一个包含以下内容的文件、并使用适用于您环境的正确信息填写占位符文本：</block>
   <block id="ca6b4577e851d5587e19a3d017db68b1" category="list-text">创建一个新文件`client_inventory.yml`、然后在顶部填充以下参数：</block>
   <block id="ec6e88f08b026e04d1ce5f5f31493b21" category="inline-link">使用Ansible Vault加密内容</block>
-  <block id="d424a4948912165baf5c9641ad4de044" category="admonition">请勿以纯文本格式存储密码。请改用Ansible Vault (请参见的Ansible文档)<block ref="69d38d4b5deda302461f6461c5317006" category="inline-link-rx"></block>)或在运行攻略手册时使用`-ask-pass-pass`选项。</block>
   <block id="8f27eda73b5d4e7594b05bed1b90a053" category="list-text">在`client_inventory.yml`文件中、列出应在`beegfs_clients`组下配置为BeeGFS客户端的所有主机、然后指定构建BeeGFS客户端内核模块所需的任何其他配置。</block>
   <block id="42d868a1eb5776ce2eb9b95938bcc056" category="inline-link">RDMA支持</block>
   <block id="b9d3c4e1c18127cf36ad951b208d45bb" category="list-text">在`client_inventory.yml`文件中、列出要挂载到任何先前定义的`vars`底部的BeeGFS文件系统。</block>
@@ -659,7 +657,6 @@
   <block id="a79b02f70003beee254343e4cae10ad4" category="section-title">第3步：定义应应用于所有文件和块节点的配置</block>
   <block id="7a7623c76e8a35ad9b47b72876017ffc" category="paragraph">您可以使用与组对应的文件名在`group_vars`下定义一组主机的通用配置。这样可以防止在多个位置重复使用共享配置。</block>
   <block id="b8250a298e8217ebff19d4f7c62cf654" category="inline-link">使用变量</block>
-  <block id="45c67f165a1990ff04bfa4ffd3ad1908" category="paragraph">主机可以位于多个组中、运行时、Ansible会根据特定主机的可变优先级规则选择哪些变量适用于该主机。(有关这些规则的详细信息、请参见的Ansible文档<block ref="e846c866a706aed07204d4b81c43f562" category="inline-link-rx"></block>）</block>
   <block id="30670ef79ffcebf619cb84794bb9f467" category="paragraph">主机到组分配在实际可Ansible清单文件中进行定义、该文件在该操作步骤 接近末尾时创建。</block>
   <block id="13fe78da26730165534ca728d16729df" category="paragraph">在Ansible中、可以在名为`All`的组中定义要应用于所有主机的任何配置。使用以下内容创建文件`group_vars/all.yml`：</block>
   <block id="970c2de774d4cba551050f0b96346cc6" category="section-title">第4步：定义应应用于所有文件节点的配置</block>
@@ -1076,7 +1073,6 @@
   <block id="2f4c1ac28e39c823ee4c1a07b7cd93aa" category="paragraph">用于升级可访问的集合 <block ref="d8617fd1dfbd628e2360b843d6070e54" category="inline-link-macro-rx"></block>下，运行以下命令：</block>
   <block id="c199206a11a9882502e88de065338656" category="paragraph">要进行脱机收集升级、请从下载此收集 <block ref="d8617fd1dfbd628e2360b843d6070e54" category="inline-link-macro-rx"></block> 单击所需的<block ref="5ab34c986ae1945ee0c548bc8d6ac4a8" prefix=" " category="inline-code"></block> 然后<block ref="80af28150f2ffd9a902b18cd4e9b6656" prefix=" " category="inline-code"></block>。将tarball传输到Ansible控制节点并运行以下命令。</block>
   <block id="dd26fb41f43f69172e0099b87c9d0732" category="inline-link-macro">正在安装收集</block>
-  <block id="6aa260cc14fabe54e7e9f6efd513b871" category="paragraph">请参见 <block ref="78e19afa50f5104f13264e857fffab2b" category="inline-link-macro-rx"></block> 有关详细信息 ...</block>
   <block id="800371603b58ee549a4a9674cd231cfd" category="inline-link-macro">部署BeeGFS HA集群</block>
   <block id="5c349c42761230bd8e50fff98f6e7508" category="paragraph">要应用BeeGFS更新、请执行以下操作：</block>
   <block id="a2dd7653f3025e7feb8e282bcc0bde84" category="paragraph">BeeGFS HA角色将在后台处理：</block>
@@ -1344,7 +1340,6 @@
   <block id="9cdd817721bc924d0da9d43995b6cf7d" category="doc">设置Ansible控制节点</block>
   <block id="31996051b4f5b99834fd90885ae099c1" category="paragraph">Ansible控制节点是用于管理集群的物理或虚拟Linux计算机。它必须满足以下要求：</block>
   <block id="b4851e92b19af0c5c82447fc0937709d" category="inline-link-macro">要求</block>
-  <block id="5f4740da5b8ab13112ebf332f879cc6e" category="list-text">与官方人员会面 <block ref="37e11d19f014e84f10fff4770a09b235" category="inline-link-macro-rx"></block> 包括操作系统版本。</block>
   <block id="2bce5080fcc3d6b8a54a49745dd28d52" category="list-text">对所有文件和块节点具有SSH和HTTPS访问权限。</block>
   <block id="9635e0061cd355a35e70799e909727af" category="summary">在运行Ansible之前设置文件和块节点所需的手动步骤。</block>
   <block id="f5878e619c266b2ac6254dd1e4d95bfb" category="doc">设置文件和块节点</block>
@@ -1372,7 +1367,6 @@
   <block id="7dc2ac40c1549980b4ac09d940856f47" category="list-text">下<block ref="4d729f58293c8a48f1f8d918cdd1d28f" prefix=" " category="inline-code"></block>下、为名为的每个BeeGFS客户端创建一个文件<block ref="a0253f5b8f5dd7be8b02cda13da40729" prefix=" " category="inline-code"></block> 使用以下内容、在占位符文本中填写适用于您环境的正确信息：</block>
   <block id="689b0940ce8c21b1ecd3dafd9cc19d56" category="list-text">如果要使用NetApp E系列主机集合的角色配置InfiniBand或以太网接口、以便客户端连接到BeeGFS文件节点、也可以包括以下选项之一：</block>
   <block id="825f3be2c17c36c0e4901143db982773" category="list-text">创建新文件<block ref="c28f9364916e661fea858844d2b96b81" prefix=" " category="inline-code"></block> 并指定Ansible应用于连接到每个客户端的用户、Ansible应用于权限升级的密码(这需要<block ref="f2bf771afbc16045e1951ded58c56f98" prefix=" " category="inline-code"></block> 为root用户或具有sudo权限)：</block>
-  <block id="c5a4ae1aa23001e8780b413f175b50b3" category="admonition">请勿以纯文本格式存储密码。请改用Ansible Vault (请参见) <block ref="f2e33a881c3eb75b68333af99119c0b8" category="inline-link-macro-rx"></block> 使用Ansible Vault对内容进行加密)或使用<block ref="13d87b4892426ec19bdc58a4643d3104" prefix=" " category="inline-code"></block> 运行攻略手册时的选项。</block>
   <block id="848f64fc57104cb2b416f6102d34e699" category="list-text">在中<block ref="c28f9364916e661fea858844d2b96b81" prefix=" " category="inline-code"></block> 文件中、列出应在下配置为BeeGFS客户端的所有主机<block ref="fc2e11772a55c48ed2b4ec7bc5d94664" prefix=" " category="inline-code"></block> 组、然后参考实时注释、取消注释在系统上构建BeeGFS客户端内核模块所需的任何其他配置：</block>
   <block id="c378775497a55638adcb42719d8daddb" category="list-text">在中<block ref="c28f9364916e661fea858844d2b96b81" prefix=" " category="inline-code"></block> 文件中、列出要在先前定义的任何下挂载的BeeGFS文件系统<block ref="b63119da730344b345cdc8f62a4711e9" prefix=" " category="inline-code"></block>：</block>
   <block id="508ccac845ca75d6cdda20dfa455a2bd" category="inline-link-macro">通用文件节点配置</block>
@@ -1396,7 +1390,6 @@
   <block id="b3254ab5c14c4bb06dbb987f8ee20900" category="section-title">创建Ansible攻略手册</block>
   <block id="dc1e1a7b77e4fce07756f071e5ec7d8b" category="paragraph">创建文件<block ref="2f78c4e27feaf25ffb33d97e8ff7e7a6" prefix=" " category="inline-code"></block> 并按如下所示进行填充：</block>
   <block id="a3b34c0871dc2fd51eec5559b68f709d" category="inline-link-macro">播放</block>
-  <block id="3b4e65c5ca327e9a010b0e69fb90e476" category="list-text">首先定义一组任务(通常称为 <block ref="6d76655a02e5cb4ca885a92d78a5ab31" category="inline-link-macro-rx"></block>)、并且只能在NetApp E系列块节点上运行。我们会使用暂停任务在运行安装之前进行提示(以避免意外运行攻略手册)、然后导入<block ref="504ead1cde99fc3bc223588114102919" prefix=" " category="inline-code"></block> 角色。此角色负责应用中定义的任何常规系统配置<block ref="7bc866ffde9914c7ef21768fcf6f0683" prefix=" " category="inline-code"></block> 或个人<block ref="7011fddbea4410953d6718ccf9ef966a" prefix=" " category="inline-code"></block> 文件。</block>
   <block id="19c06a0dc65b61c783f73d77e193957e" category="list-text">定义对所有文件和块节点运行的播放：</block>
   <block id="25296aae8975fe74b18a42af79a293d3" category="list-text">在此角色中、我们可以选择定义一组"预任务"、这些任务应在部署HA集群之前运行。这对于验证/安装Python等任何前提条件非常有用。我们还可以注入任何飞行前检查、例如验证是否支持提供的Ansible标记：</block>
   <block id="adcd434b091e5725531891ba91d50193" category="list-text">最后、此Play会为您要部署的BeeGFS版本导入BeeGFS HA角色：</block>
@@ -1717,7 +1710,6 @@
   <block id="5c4a48e1bba2d7e97a5afb3329da8750" category="paragraph"><block ref="5c4a48e1bba2d7e97a5afb3329da8750" category="inline-image-macro-rx" type="image"></block></block>
   <block id="ab0440e4421843b823481ec8c40114fa" category="inline-image-macro">高容量驱动器插槽示意图</block>
   <block id="d471943365921fcc3ec56d2cb62b204d" category="paragraph"><block ref="d471943365921fcc3ec56d2cb62b204d" category="inline-image-macro-rx" type="image"></block></block>
-  <block id="ce0bc242efa1f7752857cac8fae4d239" category="admonition">尤其是对于大型部署、<block ref="448725115a83c589b33de77889e1e2f3" prefix=" " category="inline-code"></block>建议使用参数覆盖默认的分叉数(5)、以增加Ans可 并行配置的主机数量。(有关详细信息，请参阅<block ref="2f92d47aead0a3ef15304d32faf6a032" category="inline-link-rx"></block>。)最大值设置取决于可变控制节点上可用的处理功率。以上示例20是在具有4个CPU (Intel (R) Xeon (R) Gold 6146 CPU @ 3.20GHz)的虚拟Ansible控制节点上运行的。</block>
   <block id="e5e317ea18fb59bd91370981078a2eb6" category="inline-image-macro">NUMA配置</block>
   <block id="b69049bad10aec8bac8579c94488a401" category="paragraph"><block ref="b69049bad10aec8bac8579c94488a401" category="inline-image-macro-rx" type="image"></block></block>
   <block id="12316ea7d4573c51756ec0fb8fe2d354" category="inline-image-macro">网络布线</block>
@@ -1750,7 +1742,6 @@
   <block id="362973e7a4fa534a7db69e8dfa0877a8" category="inline-image-macro">两个BeeGFS元数据和存储组件MDTest结果</block>
   <block id="070cfbe37786e49518755132f73ded2c" category="paragraph"><block ref="070cfbe37786e49518755132f73ded2c" category="inline-image-macro-rx" type="image"></block></block>
   <block id="a00d274d551f6b74718d44ea2bb6e6c3" category="sidebar">更新HA集群组件</block>
-  <block id="67f62a9c37bde591abc850b5a2b22b02" category="list-text">为集群密码创建子目录，并通过使用Ans可 存储对文件进行加密来保护文件(请参见<block ref="69d38d4b5deda302461f6461c5317006" category="inline-link-rx"></block>)：</block>
   <block id="8e7f7bdc10cb596910cce6b79c2e2ed6" category="list-text">创建子目录<block ref="fc7cb0a7b647c6ff35b553a10d616c4b" prefix=" " category="inline-code"></block>。</block>
   <block id="166355001b2692bdc29d698719b5f702" category="list-text">在目录中<block ref="fc7cb0a7b647c6ff35b553a10d616c4b" prefix=" " category="inline-code"></block>，创建一个标记为的密码文件<block ref="97a67fc90fe6d13cef22fa951de48f8d" prefix=" " category="inline-code"></block>。</block>
   <block id="da8d8318ceb4254068ec25272c92bc85" category="list-text">使用以下内容填充<block ref="b8d32e4c2d78b6e404b69e5c1fbf3118" prefix=" " category="inline-code"></block>、根据您的配置替换所有用户名和密码参数：</block>
@@ -2306,4 +2297,13 @@
   <block id="5d19eac40cba34daeadf75a699707ab3" category="summary">决定何时使用 Ansible 或 pcs 命令行工具来管理 BeeGFS HA 集群。使用 Ansible 进行部署和配置更改，使用 pcs 进行临时集群状态更改。</block>
   <block id="513599b281713978d80226e0f56f9c0a" category="admonition">特别是对于生产环境，请勿以明文形式存储密码。而是在运行 playbook 时使用 Ansible Vault（请参阅<block ref="4b111299cca4fdd006b43308bd1ab354" category="inline-link-macro-rx"></block>）或<block ref="13d87b4892426ec19bdc58a4643d3104" prefix=" " category="inline-code"></block>选项。如果<block ref="f2bf771afbc16045e1951ded58c56f98" prefix=" " category="inline-code"></block>已经是 root，则可以选择省略<block ref="424240cd4e5c359372b7f199431603d5" prefix=" " category="inline-code"></block>。</block>
   <block id="85efe1210965d4287331f2ab6df5e168" category="paragraph">建议遵循标准的 Ansible 实践来组织 <block ref="54994086eb4d51da014367d96b838ce1" category="inline-link-macro-rx"></block>，包括使用 <block ref="4e9b100ee0802974cbea117806855df2" category="inline-link-macro-rx"></block>，而不是将整个清单存储在一个文件中。</block>
+  <block id="1b00c0fbcc4d60bbd7277cb567c38211" category="paragraph">有关详细信息，请参见 <block ref="924b11a36475c19725c786c8477e299b" category="inline-link-macro-rx"></block>。</block>
+  <block id="d5049f679adf9836616b60ab4f80bae4" category="admonition">请勿以纯文本形式存储密码。相反，请使用 Ansible Vault（请参阅<block ref="1b8edc2af96e25dedd2250ab0fa0090f" category="inline-link-macro-rx"></block>了解使用 Ansible Vault 加密内容）或在运行 playbook 时使用<block ref="13d87b4892426ec19bdc58a4643d3104" prefix=" " category="inline-code"></block>选项。</block>
+  <block id="8f575bb30a5d00fe8cc4ee3594b86ba3" category="list-text">首先定义一组仅应在 NetApp E 系列块节点上运行的任务（通常称为 <block ref="397c231d3a1481778f25f9061221a83c" category="inline-link-macro-rx"></block>）。我们使用暂停任务在运行安装之前进行提示（以避免意外运行 playbook），然后导入 <block ref="504ead1cde99fc3bc223588114102919" prefix=" " category="inline-code"></block> 角色。此角色负责应用在 <block ref="7bc866ffde9914c7ef21768fcf6f0683" prefix=" " category="inline-code"></block> 或单个 <block ref="7011fddbea4410953d6718ccf9ef966a" prefix=" " category="inline-code"></block> 文件中定义的任何常规系统配置。</block>
+  <block id="387375536e1e4239d68130ba9d73f7f6" category="list-text">满足官方<block ref="9b2905d42e7e02207acde545f003b480" category="inline-link-macro-rx"></block>，包括操作系统版本。</block>
+  <block id="9e93562436f5a02313017413b2d11ce1" category="admonition">请勿以纯文本形式存储密码。相反，请使用 Ansible Vault（请参阅有关<block ref="253e92ad6a52f8d4445e166c6d51e424" category="inline-link-rx"></block>的 Ansible 文档），或者在运行 playbook 时使用<block ref="13d87b4892426ec19bdc58a4643d3104" prefix=" " category="inline-code"></block>选项。</block>
+  <block id="ccb63594495dd5c0b63845b21d9de08e" category="list-text">创建集群密码的子目录，并通过使用 Ansible Vault 对其进行加密来保护文件（请参阅<block ref="253e92ad6a52f8d4445e166c6d51e424" category="inline-link-rx"></block>）：</block>
+  <block id="2d2984c644cf99907ef9c12557e5c3d8" category="paragraph">主机可以位于多个组中，并且在运行时，Ansible 会根据其变量优先级规则选择适用于特定主机的变量。（有关这些规则的更多信息，请参见有关<block ref="2689963a2e7b1a28872abc6ea1f21787" category="inline-link-rx"></block>的 Ansible 文档。）</block>
+  <block id="bdb603eaf4ab7723ea729f70e1c9a54b" category="admonition">特别是对于大型部署，建议使用<block ref="448725115a83c589b33de77889e1e2f3" prefix=" " category="inline-code"></block>参数覆盖默认的分叉数（5），以增加 Ansible 并行配置的主机数量。（有关详细信息，请参见<block ref="41c12765893df9e89a007e9df409a6e4" category="inline-link-rx"></block>。）最大值设置取决于 Ansible 控制节点上可用的处理能力。上面的示例 20 在具有 4 个 CPU（Intel(R) Xeon(R) Gold 6146 CPU @ 3.20GHz）的虚拟 Ansible 控制节点上运行。</block>
+  <block id="03bb7ed204775d08d0779d6d41a8790a" category="paragraph">BeeGFS on NetApp 解决方案是从 Ansible 控制节点部署和管理的。有关详细信息，请参见<block ref="e078c558327cf2fc56228fd779b44a15" category="inline-link-rx"></block>。</block>
 </blocks>

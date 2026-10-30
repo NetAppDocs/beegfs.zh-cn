@@ -42,7 +42,7 @@ summary: 要定义文件和块节点的配置、请创建一个Ansible清单、�
 +
 `软件包`
 
-. 为集群密码创建子目录，并通过使用Ans可 存储对文件进行加密来保护文件(请参见 https://docs.ansible.com/ansible/latest/user_guide/vault.html["使用Ansible Vault加密内容"^])：
+. 创建集群密码的子目录，并通过使用 Ansible Vault 对其进行加密来保护文件（请参阅 https://docs.ansible.com/projects/ansible/latest/vault_guide/index.html["使用Ansible Vault加密内容"^]）：
 +
 .. 创建子目录 `group_vars/all`。
 .. 在目录中 `group_vars/all`，创建一个标记为的密码文件 `passwords.yml`。
@@ -182,7 +182,7 @@ eseries_controller_nvme_ib_port:
 您可以使用与组对应的文件名在`group_vars`下定义一组主机的通用配置。这样可以防止在多个位置重复使用共享配置。
 
 .关于此任务
-主机可以位于多个组中、运行时、Ansible会根据特定主机的可变优先级规则选择哪些变量适用于该主机。(有关这些规则的详细信息、请参见的Ansible文档 https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html["使用变量"^]）
+主机可以位于多个组中，并且在运行时，Ansible 会根据其变量优先级规则选择适用于特定主机的变量。（有关这些规则的更多信息，请参见有关 https://docs.ansible.com/projects/ansible/latest/playbook_guide/playbooks_variables.html["使用变量"^]的 Ansible 文档。）
 
 主机到组分配在实际可Ansible清单文件中进行定义、该文件在该操作步骤 接近末尾时创建。
 
