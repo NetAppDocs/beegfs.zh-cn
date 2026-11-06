@@ -16,7 +16,7 @@ summary: 要设置Ansible控制节点、请确定可以通过网络访问可用�
 [role="lead"]
 要设置可扩展控制节点、您必须指定一台虚拟机或物理机、以便能够通过网络访问为基于NetApp的BeeGFS解决方案部署的所有文件和块节点。
 
-查看、link:beegfs-technology-requirements.html#ansible-control-node-requirements["技术要求"]了解建议的软件包版本列表。以下步骤已在Ubuntu 22.04上进行了测试。有关首选Linux发行版的特定步骤，请参见 https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html["Ansible文档"^]。
+查看 link:beegfs-technology-requirements.html#ansible-control-node-requirements["技术要求"] 以获取推荐的软件包版本列表。以下步骤已在 Ubuntu 22.04 上进行了测试。有关特定于您首选的 Linux 发行版的步骤，请参见 https://docs.ansible.com/projects/ansible/latest/installation_guide/intro_installation.html["Ansible文档"^]。
 
 . 从您的Ans还是 控制节点、安装以下Python和Python虚拟环境软件包。
 +

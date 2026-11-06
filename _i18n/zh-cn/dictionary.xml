@@ -1848,7 +1848,6 @@
   <block id="34d48088e2054cea7cef0c603ff25c57" category="paragraph">利用NetApp等公司的Ansilt，可以使用在Ansilt Galaxy上提供的集合来扩展内置功能(请参见<block ref="09c3689692686597c3ced866c6122b6c" category="inline-link-rx"></block>)。集合包括执行特定功能或任务(例如创建E系列卷)的模块以及可以调用多个模块和其他角色的角色。这种自动化方法可减少部署BeeGFS文件系统和底层HA集群所需的时间。此外、它还简化了集群和BeeGFS文件系统的维护和扩展。</block>
   <block id="219dedb226654f3cbb1fcae9a1dbf6f0" category="paragraph">这些配置文件展示了NetApp BeeGFS组件的完整建议配置文件。对于每个部署、元数据和存储组件或仅存储服务组件的数量可能会因容量和性能要求而异。</block>
   <block id="6d8fa04177add6fae81330f784f2ec28" category="paragraph">要设置可扩展控制节点、您必须指定一台虚拟机或物理机、以便能够通过网络访问为基于NetApp的BeeGFS解决方案部署的所有文件和块节点。</block>
-  <block id="95b6926dc09df085df3f516ff202c9b3" category="paragraph">查看、<block ref="1048598744d9ad3deb64b0d833d9a48d" category="inline-link-macro-rx"></block>了解建议的软件包版本列表。以下步骤已在Ubuntu 22.04上进行了测试。有关首选Linux发行版的特定步骤，请参见<block ref="34c856f227a1cab1577af9d235784d24" category="inline-link-rx"></block>。</block>
   <block id="ac80ffa19a9be958e8c0594639394b8a" category="list-text">从您的Ans还是 控制节点、安装以下Python和Python虚拟环境软件包。</block>
   <block id="44bf2f842c54b0fad1167e3efd65cf55" category="list-text">激活虚拟环境。</block>
   <block id="3f6f2236da97e94c248453e2c9ca404a" category="list-text">在激活的虚拟环境中安装所需的Python软件包。</block>
@@ -2306,4 +2305,5 @@
   <block id="2d2984c644cf99907ef9c12557e5c3d8" category="paragraph">主机可以位于多个组中，并且在运行时，Ansible 会根据其变量优先级规则选择适用于特定主机的变量。（有关这些规则的更多信息，请参见有关<block ref="2689963a2e7b1a28872abc6ea1f21787" category="inline-link-rx"></block>的 Ansible 文档。）</block>
   <block id="bdb603eaf4ab7723ea729f70e1c9a54b" category="admonition">特别是对于大型部署，建议使用<block ref="448725115a83c589b33de77889e1e2f3" prefix=" " category="inline-code"></block>参数覆盖默认的分叉数（5），以增加 Ansible 并行配置的主机数量。（有关详细信息，请参见<block ref="41c12765893df9e89a007e9df409a6e4" category="inline-link-rx"></block>。）最大值设置取决于 Ansible 控制节点上可用的处理能力。上面的示例 20 在具有 4 个 CPU（Intel(R) Xeon(R) Gold 6146 CPU @ 3.20GHz）的虚拟 Ansible 控制节点上运行。</block>
   <block id="03bb7ed204775d08d0779d6d41a8790a" category="paragraph">BeeGFS on NetApp 解决方案是从 Ansible 控制节点部署和管理的。有关详细信息，请参见<block ref="e078c558327cf2fc56228fd779b44a15" category="inline-link-rx"></block>。</block>
+  <block id="13c1d5c69a7483028f3b4d321806ef06" category="paragraph">查看 <block ref="1048598744d9ad3deb64b0d833d9a48d" category="inline-link-macro-rx"></block> 以获取推荐的软件包版本列表。以下步骤已在 Ubuntu 22.04 上进行了测试。有关特定于您首选的 Linux 发行版的步骤，请参见<block ref="4bb99a862a8d3a8963681cc68928f7f5" category="inline-link-rx"></block>。</block>
 </blocks>
